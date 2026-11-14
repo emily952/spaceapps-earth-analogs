@@ -1,1 +1,204 @@
-<h1>Coming soon</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_3d97a9d6c576dc343e930f7e422decff {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    <div style='position:fixed;bottom:20px;left:20px;z-index:9999;background:white;padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;max-width:300px'><b>Earth analogs for Moon and Mars</b><br>Click a marker for its scores.<br>Compared against:<ul style='margin:4px 0;padding-left:18px'><li>FAKE Moon Target (south pole)</li><li>FAKE Mars Target (ice zone)</li></ul></div>
+    
+            <div class="folium-map" id="map_3d97a9d6c576dc343e930f7e422decff" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_3d97a9d6c576dc343e930f7e422decff = L.map(
+                "map_3d97a9d6c576dc343e930f7e422decff",
+                {
+                    center: [20.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 2,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_92bba6e549ce4ade48efc5cfe887b1ba = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_92bba6e549ce4ade48efc5cfe887b1ba.addTo(map_3d97a9d6c576dc343e930f7e422decff);
+        
+    
+            var marker_bc6f2c0a384dd61a7c95160a27c555b8 = L.marker(
+                [-77.5, 162.0],
+                {
+}
+            ).addTo(map_3d97a9d6c576dc343e930f7e422decff);
+        
+    
+        var popup_12049e4fa3e2b6e02bb5b474dda917e6 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_5318f88a1f969410fba195a2f7745dd8 = $(`<div id="html_5318f88a1f969410fba195a2f7745dd8" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site A</b><br><a href='sites/fake-earth-site-a.html'>Open radar chart</a></div>`)[0];
+                popup_12049e4fa3e2b6e02bb5b474dda917e6.setContent(html_5318f88a1f969410fba195a2f7745dd8);
+            
+        
+
+        marker_bc6f2c0a384dd61a7c95160a27c555b8.bindPopup(popup_12049e4fa3e2b6e02bb5b474dda917e6)
+        ;
+
+        
+    
+    
+            marker_bc6f2c0a384dd61a7c95160a27c555b8.bindTooltip(
+                `<div>
+                     FAKE Earth Site A
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_094a63c4ce15d576255bb80f7ccccd15 = L.marker(
+                [19.5, -155.5],
+                {
+}
+            ).addTo(map_3d97a9d6c576dc343e930f7e422decff);
+        
+    
+        var popup_5274f51a3a713641ae7c23d80af5874b = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_330de389b85d5f9410750e4aa2e56cfc = $(`<div id="html_330de389b85d5f9410750e4aa2e56cfc" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site B</b><br><a href='sites/fake-earth-site-b.html'>Open radar chart</a></div>`)[0];
+                popup_5274f51a3a713641ae7c23d80af5874b.setContent(html_330de389b85d5f9410750e4aa2e56cfc);
+            
+        
+
+        marker_094a63c4ce15d576255bb80f7ccccd15.bindPopup(popup_5274f51a3a713641ae7c23d80af5874b)
+        ;
+
+        
+    
+    
+            marker_094a63c4ce15d576255bb80f7ccccd15.bindTooltip(
+                `<div>
+                     FAKE Earth Site B
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4531db9ec7995ce4dc02635841d3d6ee = L.marker(
+                [24.0, 10.0],
+                {
+}
+            ).addTo(map_3d97a9d6c576dc343e930f7e422decff);
+        
+    
+        var popup_11e8b8f9dac29e4317736d37d99d2086 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_ef1c364fac90e86c0ad36a66831968cb = $(`<div id="html_ef1c364fac90e86c0ad36a66831968cb" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site C</b><br><a href='sites/fake-earth-site-c.html'>Open radar chart</a></div>`)[0];
+                popup_11e8b8f9dac29e4317736d37d99d2086.setContent(html_ef1c364fac90e86c0ad36a66831968cb);
+            
+        
+
+        marker_4531db9ec7995ce4dc02635841d3d6ee.bindPopup(popup_11e8b8f9dac29e4317736d37d99d2086)
+        ;
+
+        
+    
+    
+            marker_4531db9ec7995ce4dc02635841d3d6ee.bindTooltip(
+                `<div>
+                     FAKE Earth Site C
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
