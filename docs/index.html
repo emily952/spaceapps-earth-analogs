@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_5f36d6e51088ad3d2fab61c17184c81d {
+                #map_f6ecc283dac6e2dd9896669cfcf55601 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -55,18 +55,28 @@
     
     <div style='position:fixed;bottom:20px;left:20px;z-index:9999;background:white;padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;max-width:300px'><b>Earth analogs for Moon and Mars</b><br>Click a marker for its scores.<br>Compared against:<ul style='margin:4px 0;padding-left:18px'><li>FAKE Moon Target (south pole)</li><li>FAKE Mars Target (ice zone)</li></ul></div>
     
-            <div class="folium-map" id="map_5f36d6e51088ad3d2fab61c17184c81d" ></div>
+            <div class="folium-map" id="map_f6ecc283dac6e2dd9896669cfcf55601" ></div>
         
 </body>
 <script>
     
     
-            var map_5f36d6e51088ad3d2fab61c17184c81d = L.map(
-                "map_5f36d6e51088ad3d2fab61c17184c81d",
+            var map_f6ecc283dac6e2dd9896669cfcf55601 = L.map(
+                "map_f6ecc283dac6e2dd9896669cfcf55601",
                 {
                     center: [20.0, 0.0],
                     crs: L.CRS.EPSG3857,
                     ...{
+  "maxBounds": [
+[
+-90,
+-180,
+],
+[
+90,
+180,
+],
+],
   "zoom": 2,
   "zoomControl": true,
   "preferCanvas": false,
@@ -79,13 +89,13 @@
 
         
     
-            var tile_layer_c852f0429cc03f2ae7fa027b8ba70ca3 = L.tileLayer(
+            var tile_layer_bf77133073df55c13fa7266fb47c3b22 = L.tileLayer(
                 "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg",
                 {
-  "minZoom": 0,
+  "minZoom": 1,
   "maxZoom": 8,
   "maxNativeZoom": 8,
-  "noWrap": false,
+  "noWrap": true,
   "attribution": "Imagery: NASA EOSDIS GIBS, Blue Marble",
   "subdomains": "abc",
   "detectRetina": false,
@@ -96,34 +106,34 @@
             );
         
     
-            tile_layer_c852f0429cc03f2ae7fa027b8ba70ca3.addTo(map_5f36d6e51088ad3d2fab61c17184c81d);
+            tile_layer_bf77133073df55c13fa7266fb47c3b22.addTo(map_f6ecc283dac6e2dd9896669cfcf55601);
         
     
-            var marker_25a62722372057238a6cccdbf17f21f1 = L.marker(
+            var marker_a3120956498adb8faebf38be273640e8 = L.marker(
                 [-77.5, 162.0],
                 {
 }
-            ).addTo(map_5f36d6e51088ad3d2fab61c17184c81d);
+            ).addTo(map_f6ecc283dac6e2dd9896669cfcf55601);
         
     
-        var popup_a6f176e328b9ef0ac5157eaee1432947 = L.popup({
+        var popup_fb871dbdf58b9298b45d58b293b1b1a0 = L.popup({
   "maxWidth": 250,
 });
 
         
             
-                var html_e671c5e7b15662c7aafcb53395858904 = $(`<div id="html_e671c5e7b15662c7aafcb53395858904" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site A</b><br><a href='sites/fake-earth-site-a.html'>Open radar chart</a></div>`)[0];
-                popup_a6f176e328b9ef0ac5157eaee1432947.setContent(html_e671c5e7b15662c7aafcb53395858904);
+                var html_9c32bb239a1f40f0d1d3bc5b2cfc1ec6 = $(`<div id="html_9c32bb239a1f40f0d1d3bc5b2cfc1ec6" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site A</b><br><a href='sites/fake-earth-site-a.html'>Open radar chart</a></div>`)[0];
+                popup_fb871dbdf58b9298b45d58b293b1b1a0.setContent(html_9c32bb239a1f40f0d1d3bc5b2cfc1ec6);
             
         
 
-        marker_25a62722372057238a6cccdbf17f21f1.bindPopup(popup_a6f176e328b9ef0ac5157eaee1432947)
+        marker_a3120956498adb8faebf38be273640e8.bindPopup(popup_fb871dbdf58b9298b45d58b293b1b1a0)
         ;
 
         
     
     
-            marker_25a62722372057238a6cccdbf17f21f1.bindTooltip(
+            marker_a3120956498adb8faebf38be273640e8.bindTooltip(
                 `<div>
                      FAKE Earth Site A
                  </div>`,
@@ -133,31 +143,31 @@
             );
         
     
-            var marker_1014997729f6e89cc716e0d7f780267a = L.marker(
+            var marker_ccd2fc8f796304fdd5b102a703ef83e6 = L.marker(
                 [19.5, -155.5],
                 {
 }
-            ).addTo(map_5f36d6e51088ad3d2fab61c17184c81d);
+            ).addTo(map_f6ecc283dac6e2dd9896669cfcf55601);
         
     
-        var popup_68d098bc8a91d04880d47f54cf9133c3 = L.popup({
+        var popup_1732f18455679c62b296169f4f8463e7 = L.popup({
   "maxWidth": 250,
 });
 
         
             
-                var html_1f40c1abb4dbc92518af0eb42f9b60bb = $(`<div id="html_1f40c1abb4dbc92518af0eb42f9b60bb" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site B</b><br><a href='sites/fake-earth-site-b.html'>Open radar chart</a></div>`)[0];
-                popup_68d098bc8a91d04880d47f54cf9133c3.setContent(html_1f40c1abb4dbc92518af0eb42f9b60bb);
+                var html_2936d6ac5d5ba3dfc3f95b6f08a8fd0b = $(`<div id="html_2936d6ac5d5ba3dfc3f95b6f08a8fd0b" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site B</b><br><a href='sites/fake-earth-site-b.html'>Open radar chart</a></div>`)[0];
+                popup_1732f18455679c62b296169f4f8463e7.setContent(html_2936d6ac5d5ba3dfc3f95b6f08a8fd0b);
             
         
 
-        marker_1014997729f6e89cc716e0d7f780267a.bindPopup(popup_68d098bc8a91d04880d47f54cf9133c3)
+        marker_ccd2fc8f796304fdd5b102a703ef83e6.bindPopup(popup_1732f18455679c62b296169f4f8463e7)
         ;
 
         
     
     
-            marker_1014997729f6e89cc716e0d7f780267a.bindTooltip(
+            marker_ccd2fc8f796304fdd5b102a703ef83e6.bindTooltip(
                 `<div>
                      FAKE Earth Site B
                  </div>`,
@@ -167,31 +177,31 @@
             );
         
     
-            var marker_f590d5630498c22ce4538f77090d35d9 = L.marker(
+            var marker_f370ab40b47ff3bd5aef16c34cc4ac82 = L.marker(
                 [24.0, 10.0],
                 {
 }
-            ).addTo(map_5f36d6e51088ad3d2fab61c17184c81d);
+            ).addTo(map_f6ecc283dac6e2dd9896669cfcf55601);
         
     
-        var popup_b4ae3e70afa2601e28968248d30a5152 = L.popup({
+        var popup_e034a8db8a52d831d1d03d0eeadb52b6 = L.popup({
   "maxWidth": 250,
 });
 
         
             
-                var html_a2c23ef084c2c399354a372820f64e7a = $(`<div id="html_a2c23ef084c2c399354a372820f64e7a" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site C</b><br><a href='sites/fake-earth-site-c.html'>Open radar chart</a></div>`)[0];
-                popup_b4ae3e70afa2601e28968248d30a5152.setContent(html_a2c23ef084c2c399354a372820f64e7a);
+                var html_daae69fabed81082c8411124f7b3421a = $(`<div id="html_daae69fabed81082c8411124f7b3421a" style="width: 100.0%; height: 100.0%;"><b>FAKE Earth Site C</b><br><a href='sites/fake-earth-site-c.html'>Open radar chart</a></div>`)[0];
+                popup_e034a8db8a52d831d1d03d0eeadb52b6.setContent(html_daae69fabed81082c8411124f7b3421a);
             
         
 
-        marker_f590d5630498c22ce4538f77090d35d9.bindPopup(popup_b4ae3e70afa2601e28968248d30a5152)
+        marker_f370ab40b47ff3bd5aef16c34cc4ac82.bindPopup(popup_e034a8db8a52d831d1d03d0eeadb52b6)
         ;
 
         
     
     
-            marker_f590d5630498c22ce4538f77090d35d9.bindTooltip(
+            marker_f370ab40b47ff3bd5aef16c34cc4ac82.bindTooltip(
                 `<div>
                      FAKE Earth Site C
                  </div>`,

@@ -97,8 +97,12 @@ def build_map(earth_sites, targets):
     # Background map: NASA GIBS "Blue Marble" imagery (public, no API key).
     # We don't use OpenStreetMap's tile servers: they block pages opened from
     # disk with "403 Access blocked". CARTO tiles now want an API key.
-    world = folium.Map(location=[20, 0], zoom_start=2, max_zoom=8, tiles=GIBS_TILES,
-                       attr="Imagery: NASA EOSDIS GIBS, Blue Marble")
+    # Show only one copy of the world: min_zoom stops zooming out too far,
+    # max_bounds stops panning past the edges, no_wrap stops repeated tiles.
+    world = folium.Map(location=[20, 0], zoom_start=2, min_zoom=1, max_zoom=8,
+                       max_bounds=True, tiles=None)
+    folium.TileLayer(GIBS_TILES, attr="Imagery: NASA EOSDIS GIBS, Blue Marble",
+                     min_zoom=1, max_zoom=8, no_wrap=True).add_to(world)
     for _, site in earth_sites.iterrows():
         # A site without coordinates can't go on the map; say so instead of guessing.
         if pd.isna(site["lat"]) or pd.isna(site["lon"]):
