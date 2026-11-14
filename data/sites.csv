@@ -1,0 +1,6 @@
+name,type,lat,lon,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod,matches,breaks,source_links
+FAKE Earth Site A,earth,-77.5,162.0,5,15,-40,55,10,0.05,FAKE: placeholder text about what matches the targets.,FAKE: placeholder text about what does not match.,https://example.com/fake-source-a
+FAKE Earth Site B,earth,19.5,-155.5,12,25,-5,30,200,,FAKE: placeholder text about what matches the targets.,FAKE: placeholder text about what does not match.,https://example.com/fake-source-b
+FAKE Earth Site C,earth,24.0,10.0,2,45,5,40,50,0.3,FAKE: placeholder text about what matches the targets.,FAKE: placeholder text about what does not match.,https://example.com/fake-source-c
+FAKE Moon Target (south pole),moon_target,-89.5,0.0,8,-20,-230,210,0,,FAKE target row for testing.,FAKE target row for testing.,https://example.com/fake-moon
+FAKE Mars Target (ice zone),mars_target,45.0,150.0,3,-10,-110,100,0,0.5,FAKE target row for testing.,FAKE target row for testing.,https://example.com/fake-mars
