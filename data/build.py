@@ -28,6 +28,10 @@ LIMITS_NOTE = ("No place on Earth can reproduce lunar or Martian gravity, the Mo
                "or Mars' thin atmosphere, or their radiation environment. These scores compare "
                "surface conditions only.")
 
+# Map background tiles (max zoom level 8 for this layer).
+GIBS_TILES = ("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry"
+              "/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg")
+
 # Chart colour per target type.
 COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}
 
@@ -90,7 +94,11 @@ table{{border-collapse:collapse}}td,th{{padding:4px 10px;border-bottom:1px solid
 
 def build_map(earth_sites, targets):
     """World map with a clickable marker for each Earth site."""
-    world = folium.Map(location=[20, 0], zoom_start=2)
+    # Background map: NASA GIBS "Blue Marble" imagery (public, no API key).
+    # We don't use OpenStreetMap's tile servers: they block pages opened from
+    # disk with "403 Access blocked". CARTO tiles now want an API key.
+    world = folium.Map(location=[20, 0], zoom_start=2, max_zoom=8, tiles=GIBS_TILES,
+                       attr="Imagery: NASA EOSDIS GIBS, Blue Marble")
     for _, site in earth_sites.iterrows():
         # A site without coordinates can't go on the map; say so instead of guessing.
         if pd.isna(site["lat"]) or pd.isna(site["lon"]):
