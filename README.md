@@ -21,6 +21,8 @@ data/sites.csv  ->  data/score.py  ->  data/build.py  ->  docs/index.html (map)
 | `data/build.py` | Builds the website in `docs/` (runs the scoring itself) |
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |
+| `notes/data-sources.md` | Where to get data for each CSV column |
+| `notes/team-decisions.md` | Open questions and decisions the team still needs to make |
 
 ## Run it
 
