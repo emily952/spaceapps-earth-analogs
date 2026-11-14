@@ -1,0 +1,7 @@
+site,target,target_type,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod
+FAKE Earth Site A,FAKE Moon Target (south pole),moon_target,0.7,0.462,0.191,0.139,0.95,
+FAKE Earth Site A,FAKE Mars Target (ice zone),mars_target,0.8,0.615,0.702,0.75,0.95,0.0
+FAKE Earth Site B,FAKE Moon Target (south pole),moon_target,0.6,0.308,0.043,0.0,0.0,
+FAKE Earth Site B,FAKE Mars Target (ice zone),mars_target,0.1,0.462,0.553,0.611,0.0,
+FAKE Earth Site C,FAKE Moon Target (south pole),moon_target,0.4,0.0,0.0,0.056,0.75,
+FAKE Earth Site C,FAKE Mars Target (ice zone),mars_target,0.9,0.154,0.511,0.667,0.75,0.556
