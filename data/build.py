@@ -92,7 +92,7 @@ def main():
         old_page.unlink()
     for _, site in earth_sites.iterrows():
         write(SITE_PAGES / f"{pages.slugify(site['name'])}.html",
-              pages.site_page(site, scores[scores["site"] == site["name"]]))
+              pages.site_page(site, scores[scores["site"] == site["name"]], sites))
     write(DOCS / "gap.html", topic_pages.gap_page(limits))
     write(DOCS / "tasks.html", topic_pages.tasks_page(tasks, sites))
     write(DOCS / "about.html", topic_pages.about_page(sites, limits))

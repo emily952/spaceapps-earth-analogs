@@ -35,6 +35,11 @@ TARGET_COLUMNS = {
     "geology": "Terrain", "matches": "Earth sites that match parts of it (suggested)",
     "source_links": "Source URLs (plain text)",
 }
+# Scoring values that come from somewhere other than an exact-name Sheet column.
+# Each must be the same kind of number as the column: max ground (skin) temperature.
+TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)"}  # LRO Diviner, entered by the team
+POWER_CSV = score.DATA_DIR / "power_skin_temps.csv"  # Earth temp_max_c, made by fetch_power.py
+
 # Sheet columns shown together as "Climate and conditions" notes, word for word.
 SITE_NOTES = ["Elevation (m)", "Mean annual temp (°C)", "Extreme temp (°C)", "Precip (mm/yr)"]
 TARGET_NOTES = ["Gravity (m/s²)", "Surface pressure", "Surface temperature", "Ice and water"]
@@ -73,20 +78,41 @@ def convert(tab, column_map, note_columns):
     return out
 
 
+def read_targets():
+    """The Targets tab, checked for every column we use (including scoring columns)."""
+    return read_tab(TARGETS, list(TARGET_COLUMNS.values()) + TARGET_NOTES + ["Body"]
+                    + list(TARGET_SCORE_COLUMNS.values()))
+
+
 def reference_rows():
     """Target rows marked '(reference)': used on the gap page, never scored."""
-    targets = read_tab(TARGETS, list(TARGET_COLUMNS.values()) + TARGET_NOTES + ["Body"])
+    targets = read_targets()
     return targets[targets["Target"].str.contains("(reference)", regex=False)]
+
+
+def add_power_temps(sites):
+    """Earth temp_max_c = NASA POWER annual TS_MAX (maximum hourly skin temperature)."""
+    if not POWER_CSV.exists():
+        print("  No data/power_skin_temps.csv: run data/fetch_power.py to score max temperature.")
+        return
+    power = pd.read_csv(POWER_CSV).set_index("site")["TS_MAX_annual_c"]
+    sites["temp_max_c"] = sites["name"].map(power)  # sites missing from the file stay blank
+    missing = sites.loc[sites["temp_max_c"].isna(), "name"].tolist()
+    if missing:
+        print(f"  No NASA POWER value for {missing}: run data/fetch_power.py again.")
 
 
 def main():
     sites = convert(read_tab(SITE_OPTIONS, list(SITE_COLUMNS.values()) + SITE_NOTES),
                     SITE_COLUMNS, SITE_NOTES)
     sites["type"] = "earth"
+    add_power_temps(sites)
 
-    targets = read_tab(TARGETS, list(TARGET_COLUMNS.values()) + TARGET_NOTES + ["Body"])
+    targets = read_targets()
     targets = targets[~targets["Target"].str.contains("(reference)", regex=False)]
     target_rows = convert(targets, TARGET_COLUMNS, TARGET_NOTES)
+    for ours, theirs in TARGET_SCORE_COLUMNS.items():
+        target_rows[ours] = targets[theirs]  # must be a plain number or blank; load_sites checks
     # "Moon" -> moon_target, "Mars" -> mars_target. Anything else is caught by score.load_sites.
     target_rows["type"] = targets["Body"].str.strip().str.lower() + "_target"
     target_rows["category"] = "Target"

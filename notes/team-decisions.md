@@ -16,12 +16,15 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 ## 2. How to measure each column (so all rows compare like with like)
 
-> **Status (Nov 15):** no site can be scored yet, so no radar charts are shown. The
-> targets have no exact ground-surface values: Malapert's −50 ± 10 °C is a general
-> figure for sunlit polar spots, and Arcadia's figures are Viking *air* temperatures.
-> To get charts, someone needs ground-surface numbers for a target (e.g. Diviner for
-> Malapert) and for Earth sites (e.g. MODIS land surface temperature), entered in
-> plain-number columns. See "Updating the data" in the README.
+> **Status (Nov 15):** one condition is scored: **max ground temperature vs Malapert**.
+> Earth: NASA POWER annual TS_MAX (maximum hourly skin temperature, MERRA-2 ~50 km
+> grid; `data/fetch_power.py`). Moon: LRO Diviner 47 °C at the Malapert ridge top.
+> Scores range from 0.98 (Qaidam, Atacama) to 0.20 (East Antarctic Plateau); 10 of 12
+> sites score ≥ 0.80, so this score mainly separates cold sites from hot ones.
+> Arcadia has no ground-temperature value (only Viking *air* temperatures): "no data".
+> Malapert's slope (5.6°) is in the sheet but not scored: no Earth slope values yet.
+> No radar charts until a site has 3+ scored conditions; scores show as cards.
+> Note: POWER's grid smooths extremes (Lut 63.86 °C vs the 80.8 °C satellite record).
 
 - [x] **Temperature type**: ground surface temperature for every row (matches Diviner).
   Decision: yes. Air temperatures stay in the text only.

@@ -10,19 +10,13 @@ import re
 from urllib.parse import urlparse
 
 import pandas as pd
-import plotly.graph_objects as go
 
-import score  # our own data/score.py
+import score        # our own data/score.py
+import scores_html  # our own data/scores_html.py (the "Similarity scores" section)
 
 # Shown on every site page and the About page, as required by the project rules.
 LIMITS_NOTE = ("No place on Earth can reproduce lunar or Martian gravity, the Moon's vacuum "
                "or Mars' thin atmosphere, or their radiation environment.")
-
-# Shown instead of a radar chart when a site has no real scores (project rule).
-NOT_SCORED_NOTE = ("Not scored yet. We only score a condition when we have an exact, ground-surface "
-                   "value for both this site and a Moon or Mars target. We don't have such a pair "
-                   "yet, so we show no chart rather than an empty or misleading one. The values we "
-                   "do have are listed above, with their caveats.")
 
 # AI disclosure (a challenge rule). Keep in step with the README's "Use of AI" section.
 AI_NOTE = ("AI tools helped with this project's research and coding (coding: Claude Code and "
@@ -41,9 +35,6 @@ TOOL_CREDITS = [
 CATEGORIES = [("New find", "blue", "#38aadd", "new finds"),
               ("Baseline", "gray", "#575757", "well-known baselines"),
               ("Limit site", "purple", "#d252b9", "limit site (shows Earth's gap)")]
-
-# Radar chart colour per target type.
-COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}
 
 
 def slugify(name):
@@ -91,35 +82,9 @@ def notes_list(text):
     return f"<dl>{items}</dl>" if items else "<p>no data</p>"
 
 
-def radar_chart(site_scores):
-    """Radar chart with one shape per target. Missing scores leave a gap."""
-    labels = list(score.DIMENSIONS.values())
-    fig = go.Figure()
-    for _, row in site_scores.iterrows():
-        values = [row[col] for col in score.DIMENSIONS]
-        hover = ["no data" if pd.isna(v) else f"{v:.2f}" for v in values]
-        # Repeat the first point at the end so the shape closes.
-        fig.add_trace(go.Scatterpolar(
-            r=values + values[:1], theta=labels + labels[:1], customdata=hover + hover[:1],
-            name=row["target"], fill="toself", line_color=COLOURS[row["target_type"]],
-            hovertemplate="%{theta}: %{customdata}<extra>%{fullData.name}</extra>"))
-    fig.update_layout(polar={"radialaxis": {"range": [0, 1]}}, height=480,
-                      legend={"orientation": "h"}, margin={"t": 30, "b": 30})
-    return fig.to_html(full_html=False, include_plotlyjs="cdn")
-
-
-def scores_section(site_scores):
-    """Radar chart and score table, but only if the site has at least one real score."""
-    if not site_scores[list(score.DIMENSIONS)].notna().any().any():
-        return f'<p class="meta">{NOT_SCORED_NOTE}</p>'
-    table = (site_scores.set_index("target")[list(score.DIMENSIONS)].T.rename(index=score.DIMENSIONS)
-             .to_html(na_rep="no data", float_format="%.2f", border=0))
-    return (f"<p>1 = same as the target, 0 = as different as anything in our dataset.</p>"
-            f"{radar_chart(site_scores)}<div class='scroll'>{table}</div>")
-
-
-def site_page(site, site_scores):
-    """Full HTML for one Earth site's page (saved in docs/sites/)."""
+def site_page(site, site_scores, sites):
+    """Full HTML for one Earth site's page (saved in docs/sites/).
+    sites (all rows, incl. targets) is needed to show the values each score compares."""
     return page(site["name"], f"""
 <h1>{show(site['name'])}</h1>
 <div class="badges">{category_badge(site['category'])}<span class="badge">Analog for: {show(site['analog_for'])}</span>
@@ -132,5 +97,5 @@ def site_page(site, site_scores):
 <div class="grid"><section class="card"><h2>Climate and conditions</h2>{notes_list(site['climate_notes'])}</section>
 <section class="card"><h2>Geology and minerals</h2><p>{show(site['geology'])}</p>
 <h2>Suggested mission tasks</h2><p>{show(site['mission_tasks'])} <span class="meta">(team judgment)</span></p></section></div>
-<section class="card"><h2>Similarity scores</h2>{scores_section(site_scores)}</section>
+<section class="card"><h2>Similarity scores</h2>{scores_html.scores_section(site, site_scores, sites)}</section>
 <section class="card"><h2>Sources</h2>{link_list(score.split_links(site['source_links']))}</section>""", root="../")

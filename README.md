@@ -21,6 +21,8 @@ scores; until then its page says "Not scored yet" and why.
 |---|---|
 | `data/site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`, `datasets.csv` | The research sheet's tabs, exported as CSV. **These are the inputs.** |
 | `data/import_sheet.py` | Turns `site_options.csv` + `targets.csv` into `data/sites.csv` |
+| `data/fetch_power.py` | Downloads NASA POWER max/min skin temperatures per site into `data/power_skin_temps.csv` (needs internet; run when sites change) |
+| `data/scores_html.py` | The score cards on site pages and the NASA POWER citation |
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
@@ -30,6 +32,7 @@ scores; until then its page says "Not scored yet" and why.
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |
 | `notes/data-sources.md` | Where to get data for each CSV column |
+| `notes/nasa-data-field.md` | Text for the submission form's NASA Data field |
 | `notes/team-decisions.md` | Open questions and decisions the team still needs to make |
 
 ## Run it
@@ -50,7 +53,12 @@ open docs/index.html               # macOS; or double-click the file
    in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
-4. **To get radar charts:** add columns named exactly `slope_deg`, `temp_max_c`,
+4. **Scores so far:** max ground temperature vs Malapert. Earth values come from
+   NASA POWER (`data/fetch_power.py` → `data/power_skin_temps.csv`; re-run it if
+   sites are added or moved), Malapert's from the Targets tab column
+   "Max ground surface temp (°C)" (LRO Diviner). Each score shows as a card; a
+   radar chart appears once a site has 3 or more scored conditions.
+   **To score more conditions:** add columns named exactly `slope_deg`, `temp_max_c`,
    `temp_min_c`, `temp_range_c`, `precip_mm_yr` or `dust_aod` to the Site options and
    Targets tabs, holding plain numbers (ground-surface values only). A site is scored
    on a column only when both it and a target have a number there. Leave cells

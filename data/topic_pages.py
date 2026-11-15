@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import import_sheet  # our own data/import_sheet.py (reads the tab exports)
 import pages         # our own data/pages.py (shared HTML helpers)
 import score         # our own data/score.py
+import scores_html   # our own data/scores_html.py (NASA POWER citation)
 
 LIMITS_CSV = score.DATA_DIR / "earths_limits.csv"
 TASKS_CSV = score.DATA_DIR / "mission_tasks.csv"
@@ -139,4 +140,5 @@ Missing data shows as "no data"; we never estimate.</p></section>
 <p class="note"><strong>Limits of any Earth analog:</strong> {pages.LIMITS_NOTE}</p>
 <section class="card"><h2>Use of AI</h2><p>{pages.AI_NOTE}</p></section>
 <section class="card"><h2>Tools and imagery</h2><ul>{tools}</ul></section>
+{scores_html.power_credit()}
 <section class="card"><h2>Data sources</h2>{data_sources}</section>""")
