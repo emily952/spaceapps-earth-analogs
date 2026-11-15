@@ -14,6 +14,7 @@ We never combine dimensions into one overall number.
 Run on its own:  python3 data/score.py   -> writes data/scores.csv
 build.py also imports this file, so normally you just run build.py.
 """
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -58,6 +59,39 @@ def load_sites(path=SITES_CSV):
         except ValueError as err:
             raise ValueError(f"Column '{column}' has a non-number value: {err}") from err
     return sites
+
+
+def split_links(cell):
+    """Split a source_links cell into a list. Links are separated by ; or line breaks."""
+    if pd.isna(cell):
+        return []
+    return [link.strip() for link in re.split(r"[;\n]+", str(cell)) if link.strip()]
+
+
+# Link addresses that usually need a login, so they break the "public links only" rule.
+PRIVATE_HINTS = ["docs.google.com", "drive.google.com", "localhost", "file:"]
+
+
+def check_sites(sites):
+    """List problems to fix before submitting. These are warnings, not errors."""
+    warnings = []
+    for _, row in sites.iterrows():
+        name = row["name"]
+        if "FAKE" in str(name).upper():
+            warnings.append(f"{name}: FAKE test row. Replace it with real data.")
+        links = split_links(row["source_links"])
+        # Rule: every source cited.
+        if not links:
+            warnings.append(f"{name}: no source_links. Every source must be cited.")
+        # Rule: public links only.
+        for link in links:
+            if not link.startswith(("http://", "https://")):
+                warnings.append(f"{name}: '{link}' is not a web link.")
+            elif " " in link:
+                warnings.append(f"{name}: '{link}' contains a space. Separate links with ;")
+            elif any(hint in link for hint in PRIVATE_HINTS):
+                warnings.append(f"{name}: '{link}' may need a login. Links must be public.")
+    return warnings
 
 
 def score_one(earth_value, target_value, spread):

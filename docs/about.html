@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About &amp; credits</title>
+<style>body{font-family:sans-serif;max-width:820px;margin:auto;padding:16px;line-height:1.5}
+table{border-collapse:collapse}td,th{padding:4px 10px;border-bottom:1px solid #ddd;text-align:left}
+.note{background:#fff4e5;border-left:4px solid #e67e22;padding:8px 12px}a{overflow-wrap:anywhere}</style></head>
+<body>
+<p><a href="index.html">&larr; Back to map</a></p>
+<h1>About &amp; credits</h1>
+<h2>What this is</h2>
+<p>We compare Earth sites with a Moon target and a Mars target, one condition at a time
+(slope, temperatures, precipitation, dust). Each condition gets its own score from 0 to 1:
+<code>1 - |Earth value - target value| / (largest - smallest value in our dataset)</code>.
+1 means the same as the target, 0 means as different as anything in our dataset. Scores are
+never added together. Blank data shows as "no data"; we never estimate missing values.</p>
+<p class="note"><strong>Limits of any Earth analog:</strong> No place on Earth can reproduce lunar or Martian gravity, the Moon's vacuum or Mars' thin atmosphere, or their radiation environment. These scores compare surface conditions only.</p>
+<h2>Data sources</h2><h3>FAKE Earth Site A</h3><ul><li><a href="https://example.com/fake-source-a">https://example.com/fake-source-a</a></li></ul><h3>FAKE Earth Site B</h3><ul><li><a href="https://example.com/fake-source-b">https://example.com/fake-source-b</a></li></ul><h3>FAKE Earth Site C</h3><ul><li><a href="https://example.com/fake-source-c">https://example.com/fake-source-c</a></li></ul><h3>FAKE Moon Target (south pole)</h3><ul><li><a href="https://example.com/fake-moon">https://example.com/fake-moon</a></li></ul><h3>FAKE Mars Target (ice zone)</h3><ul><li><a href="https://example.com/fake-mars">https://example.com/fake-mars</a></li></ul>
+<h2>Tools and imagery</h2><ul><li>Map imagery: NASA EOSDIS GIBS, Blue Marble shaded relief: <a href="https://nasa-gibs.github.io/gibs-api-docs/">https://nasa-gibs.github.io/gibs-api-docs/</a></li><li>Map library: Leaflet, via folium: <a href="https://python-visualization.github.io/folium/">https://python-visualization.github.io/folium/</a></li><li>Charts: plotly: <a href="https://plotly.com/python/">https://plotly.com/python/</a></li><li>Data handling: pandas: <a href="https://pandas.pydata.org">https://pandas.pydata.org</a></li></ul>
+<h2>Use of AI</h2><p>This project was built with AI assistance (Claude Code, Cursor) and reviewed by the team. All site data and citations were gathered and checked by team members.</p></body></html>
