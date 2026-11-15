@@ -1,0 +1,62 @@
+/* style.css: the shared look of every page except the map.
+   build.py copies this file to docs/style.css. Edit it here, not in docs/. */
+:root {
+  --bg: #f4f5f7; --card: #ffffff; --ink: #1d2330; --muted: #5b6474; --line: #e2e5ea;
+  --accent: #2a6fc4; --match: #1f8a5b; --break: #c2571a; --note-bg: #fff5ea;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--accent); overflow-wrap: anywhere; }
+
+/* Navigation bar: stays at the top while scrolling. */
+nav { position: sticky; top: 0; z-index: 10; background: var(--card); border-bottom: 1px solid var(--line);
+      padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a:hover { color: var(--accent); text-decoration: underline; }
+
+main { max-width: 940px; margin: 0 auto; padding: 24px 16px 56px; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 8px 0 12px; letter-spacing: -0.01em; }
+h2 { font-size: 1.1rem; margin: 0 0 8px; }
+h3 { font-size: 1rem; margin: 18px 0 4px; }
+p { margin: 0 0 10px; }
+.lead { font-size: 1.05rem; color: var(--muted); max-width: 70ch; }
+.meta { color: var(--muted); font-size: 15px; }
+
+/* Cards and two-column grid (one column on narrow screens). */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+        padding: 18px 20px; margin: 16px 0; }
+.card > :last-child { margin-bottom: 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin: 16px 0; }
+.grid > .card { margin: 0; }
+.match { border-top: 4px solid var(--match); }
+.break { border-top: 4px solid var(--break); }
+
+/* Badges under the page title. The dot matches the site's map-marker colour. */
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.badge { display: inline-flex; align-items: center; gap: 7px; padding: 3px 12px; border-radius: 999px;
+         border: 1px solid var(--line); background: var(--card); font-size: 14px; color: var(--muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+/* Orange callout for the limits note. */
+.note { background: var(--note-bg); border-left: 4px solid var(--break); border-radius: 8px;
+        padding: 12px 16px; margin: 16px 0; }
+
+/* Label / value list for climate notes. */
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+@media (max-width: 560px) { dl { grid-template-columns: 1fr; gap: 0; } dd { margin-bottom: 8px; } }
+
+/* Tables (gap page, task page, score table). */
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--line); }
+td, th { padding: 8px 10px; vertical-align: top; }
+tr + tr td { border-top: 1px solid var(--line); }
+
+/* Numbered source list: site name, full address underneath. */
+.sources { margin: 0; padding-left: 22px; }
+.sources li { margin: 6px 0; }
+.sources small { display: block; color: var(--muted); }
+code { background: var(--bg); padding: 1px 5px; border-radius: 4px; }

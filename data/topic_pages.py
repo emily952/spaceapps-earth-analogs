@@ -1,6 +1,7 @@
 """
-topic_pages.py: the "Where Earth falls short" page (docs/gap.html) and the
-"Sites by mission task" page (docs/tasks.html).
+topic_pages.py: the "Where Earth falls short" page (docs/gap.html), the
+"Sites by mission task" page (docs/tasks.html) and the About & credits page
+(docs/about.html).
 
 Inputs: data/earths_limits.csv and data/mission_tasks.csv (tabs of the research
 sheet), plus the "(reference)" row of data/targets.csv.
@@ -74,21 +75,21 @@ def gap_page(limits):
                       f"{pages.link_list(score.split_links(row['Source URLs (plain text)']))}"
                       for _, row in limits.iterrows())
     reference = "".join(
-        f"<h3>Reference: {pages.show(r['Target'])}</h3><p>{pages.show(r['Surface temperature'])}. "
+        f"<h2>Reference: {pages.show(r['Target'])}</h2><p>{pages.show(r['Surface temperature'])}. "
         f"{pages.show(r['Ice and water'])}.</p>{pages.link_list(score.split_links(r['Source URLs (plain text)']))}"
         for _, r in import_sheet.reference_rows().iterrows())
     return pages.page("Where Earth falls short", f"""
 <h1>Where Earth falls short</h1>
-<p>Some Moon and Mars conditions have no match anywhere on Earth. Tests that depend on them need
-laboratory chambers or other methods, not field sites.</p>
-<h2>Coldest surfaces</h2>
+<p class="lead">Some Moon and Mars conditions have no match anywhere on Earth. Tests that depend on
+them need laboratory chambers or other methods, not field sites.</p>
+<section class="card"><h2>Coldest surfaces</h2>
 <p>Earth's coldest measured surface (about −98 °C, East Antarctic Plateau) is colder than sunlit
 lunar polar spots, but about 135 °C warmer than the Moon's shadowed craters.</p>
-{cold_chart()}
-<h2>Condition by condition</h2><div class="scroll"><table><tr>{header}</tr>{rows}</table></div>
+{cold_chart()}</section>
+<section class="card"><h2>Condition by condition</h2><div class="scroll"><table><tr>{header}</tr>{rows}</table></div></section>
 <p class="note"><strong>Limits of any Earth analog:</strong> {pages.LIMITS_NOTE}</p>
-{reference}
-<h2>Sources</h2>{sources}""")
+<section class="card">{reference}</section>
+<section class="card"><h2>Sources</h2>{sources}</section>""")
 
 
 def link_sites(cell, earth_names):
@@ -111,8 +112,31 @@ def tasks_page(tasks, sites):
         f"<td>{pages.show(t['Moon, Mars or both'])}</td></tr>" for _, t in tasks.iterrows())
     return pages.page("Sites by mission task", f"""
 <h1>Sites by mission task</h1>
-<p>A good place to test rover driving is not the same as a good place to test dust mitigation.
-This table pairs mission tasks with candidate sites. <strong>These pairings are our team's
-judgment</strong>, based on each site's features; they are not computed from scores.</p>
-<div class="scroll"><table><tr><th>Mission task</th><th>What matters most</th><th>Candidate sites</th>
-<th>Moon, Mars or both</th></tr>{rows}</table></div>""")
+<p class="lead">A good place to test rover driving is not the same as a good place to test dust
+mitigation. This table pairs mission tasks with candidate sites. <strong>These pairings are our
+team's judgment</strong>, based on each site's features; they are not computed from scores.</p>
+<section class="card"><div class="scroll"><table><tr><th>Mission task</th><th>What matters most</th>
+<th>Candidate sites</th><th>Moon, Mars or both</th></tr>{rows}</table></div></section>""")
+
+
+def about_page(sites, limits):
+    """Full HTML for docs/about.html: method, limits, every source, AI use."""
+    # One entry per site/target, then per row of the Earth's limits table.
+    rows = [(r["name"], r["source_links"]) for _, r in sites.iterrows()]
+    rows += [(f"Earth's limits: {r['Condition']}", r["Source URLs (plain text)"]) for _, r in limits.iterrows()]
+    data_sources = "".join(f"<h3>{pages.show(name)}</h3>{pages.link_list(score.split_links(links))}"
+                           for name, links in rows)
+    tools = "".join(f'<li>{pages.show(label)}: <a href="{url}">{url}</a></li>' for label, url in pages.TOOL_CREDITS)
+    return pages.page("About & credits", f"""
+<h1>About &amp; credits</h1>
+<section class="card"><h2>What this is</h2>
+<p>Earth places that resemble parts of the Moon's south pole (Malapert Massif) and a Martian
+ice plain (Arcadia Planitia): what matches, where each falls short, and which mission tests
+each could support. We also score individual conditions from 0 to 1 with
+<code>1 - |Earth value - target value| / (largest - smallest value in our dataset)</code>,
+but only where we have exact, comparable measurements; scores are never added together.
+Missing data shows as "no data"; we never estimate.</p></section>
+<p class="note"><strong>Limits of any Earth analog:</strong> {pages.LIMITS_NOTE}</p>
+<section class="card"><h2>Use of AI</h2><p>{pages.AI_NOTE}</p></section>
+<section class="card"><h2>Tools and imagery</h2><ul>{tools}</ul></section>
+<section class="card"><h2>Data sources</h2>{data_sources}</section>""")

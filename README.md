@@ -23,8 +23,9 @@ scores; until then its page says "Not scored yet" and why.
 | `data/import_sheet.py` | Turns `site_options.csv` + `targets.csv` into `data/sites.csv` |
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
-| `data/pages.py` | HTML for each site page and the About & credits page |
-| `data/topic_pages.py` | HTML for the gap page (with its chart) and the task page |
+| `data/pages.py` | Shared HTML helpers and each site page |
+| `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
+| `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |
 | `data/build.py` | Runs all of the above and prints warnings about anything that breaks the challenge rules |
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |

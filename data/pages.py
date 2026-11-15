@@ -1,11 +1,13 @@
 """
-pages.py: shared HTML helpers, each Earth site's page, and the About & credits page.
+pages.py: shared HTML helpers and each Earth site's page.
 
 build.py calls these functions and saves the results into docs/.
 All text from the CSV goes through show(), so it is safe to put in HTML.
+The look of every page comes from data/style.css (copied to docs/ by build.py).
 """
 import html
 import re
+from urllib.parse import urlparse
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -34,7 +36,13 @@ TOOL_CREDITS = [
     ("Data handling: pandas", "https://pandas.pydata.org"),
 ]
 
-# Chart colour per target type.
+# Site categories: (start of the Category text, map marker colour, matching dot colour, legend text).
+# build.py uses this for the map markers, so map and pages always agree.
+CATEGORIES = [("New find", "blue", "#38aadd", "new finds"),
+              ("Baseline", "gray", "#575757", "well-known baselines"),
+              ("Limit site", "purple", "#d252b9", "limit site (shows Earth's gap)")]
+
+# Radar chart colour per target type.
 COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}
 
 
@@ -52,24 +60,35 @@ def show(value):
 
 
 def link_list(links):
-    """A bulleted list of links, or 'no data' if there are none."""
-    items = "".join(f'<li><a href="{show(u)}">{show(u)}</a></li>' for u in links)
-    return f"<ul>{items or '<li>no data</li>'}</ul>"
+    """Numbered list of sources: the website's name as the link, the full address underneath."""
+    items = "".join(f'<li><a href="{show(u)}">{show(urlparse(u).netloc.removeprefix("www.") or u)}</a>'
+                    f"<small>{show(u)}</small></li>" for u in links)
+    return f'<ol class="sources">{items}</ol>' if items else "<p>no data</p>"
 
 
 def page(title, body, root=""):
-    """Wrap a page body in the shared header, style and navigation bar.
+    """Wrap a page body in the shared header, stylesheet and navigation bar.
     root is "" for pages in docs/ and "../" for pages in docs/sites/."""
-    nav = (f'<nav><a href="{root}index.html">Map</a> · <a href="{root}gap.html">Where Earth falls short</a> · '
-           f'<a href="{root}tasks.html">Sites by mission task</a> · <a href="{root}about.html">About &amp; credits</a></nav>')
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{show(title)}</title>
-<style>body{{font-family:sans-serif;max-width:860px;margin:auto;padding:16px;line-height:1.5;background:#fff;color:#222}}
-table{{border-collapse:collapse;width:100%}}td,th{{padding:6px 8px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}}
-.note{{background:#fff4e5;border-left:4px solid #e67e22;padding:8px 12px}}.meta{{color:#555}}
-nav{{padding-bottom:8px;border-bottom:1px solid #ddd}}a{{overflow-wrap:anywhere}}.scroll{{overflow-x:auto}}</style></head>
-<body>{nav}{body}</body></html>"""
+<title>{show(title)}</title><link rel="stylesheet" href="{root}style.css"></head>
+<body><nav><a href="{root}index.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
+<a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>
+<main>{body}</main></body></html>"""
+
+
+def category_badge(category):
+    """Pill showing the site's category, with a dot in its map-marker colour."""
+    colour = next((dot for start, _, dot, _ in CATEGORIES if str(category).startswith(start)), "#888")
+    return f'<span class="badge"><span class="dot" style="background:{colour}"></span>{show(category)}</span>'
+
+
+def notes_list(text):
+    """'Label: value' lines (from import_sheet.py) as a two-column label/value list."""
+    lines = [] if pd.isna(text) else str(text).splitlines()
+    items = "".join(f"<dt>{show(label)}</dt><dd>{show(value)}</dd>"
+                    for label, _, value in (line.partition(": ") for line in lines))
+    return f"<dl>{items}</dl>" if items else "<p>no data</p>"
 
 
 def radar_chart(site_scores):
@@ -92,7 +111,7 @@ def radar_chart(site_scores):
 def scores_section(site_scores):
     """Radar chart and score table, but only if the site has at least one real score."""
     if not site_scores[list(score.DIMENSIONS)].notna().any().any():
-        return f'<p class="note">{NOT_SCORED_NOTE}</p>'
+        return f'<p class="meta">{NOT_SCORED_NOTE}</p>'
     table = (site_scores.set_index("target")[list(score.DIMENSIONS)].T.rename(index=score.DIMENSIONS)
              .to_html(na_rep="no data", float_format="%.2f", border=0))
     return (f"<p>1 = same as the target, 0 = as different as anything in our dataset.</p>"
@@ -101,40 +120,17 @@ def scores_section(site_scores):
 
 def site_page(site, site_scores):
     """Full HTML for one Earth site's page (saved in docs/sites/)."""
-    notes = "".join(f"<li>{show(line)}</li>" for line in str(site["climate_notes"]).splitlines()
-                    if not pd.isna(site["climate_notes"]))
     return page(site["name"], f"""
 <h1>{show(site['name'])}</h1>
-<p class="meta">{show(site['category'])} · Analog for: {show(site['analog_for'])}<br>
-Lat {show(site['lat'])}, lon {show(site['lon'])} · How well studied (team estimate): {show(site['how_well_studied'])}</p>
-<h2>What matches</h2><p>{show(site['matches'])}</p>
-<h2>Where it breaks</h2><p>{show(site['breaks'])}</p>
+<div class="badges">{category_badge(site['category'])}<span class="badge">Analog for: {show(site['analog_for'])}</span>
+<span class="badge">How well studied: {show(site['how_well_studied'])} (team estimate)</span></div>
+<p class="meta">Lat {show(site['lat'])}, lon {show(site['lon'])}</p>
+<div class="grid"><section class="card match"><h2>What matches</h2><p>{show(site['matches'])}</p></section>
+<section class="card break"><h2>Where it breaks</h2><p>{show(site['breaks'])}</p></section></div>
 <p class="note"><strong>Limits of any Earth analog:</strong> {LIMITS_NOTE}</p>
-<h2>Suggested mission tasks</h2><p>{show(site['mission_tasks'])} <span class="meta">(team judgment)</span></p>
-<h2>Key facts</h2><p>{show(site['key_facts'])}</p>
-<h2>Climate and conditions</h2><ul>{notes or '<li>no data</li>'}</ul>
-<h2>Geology and minerals</h2><p>{show(site['geology'])}</p>
-<h2>Similarity scores</h2>{scores_section(site_scores)}
-<h2>Sources</h2>{link_list(score.split_links(site['source_links']))}""", root="../")
-
-
-def about_page(sites, limits):
-    """Full HTML for docs/about.html: method, limits, every source, AI use."""
-    # One entry per site/target, then per row of the Earth's limits table.
-    rows = [(r["name"], r["source_links"]) for _, r in sites.iterrows()]
-    rows += [(f"Earth's limits: {r['Condition']}", r["Source URLs (plain text)"]) for _, r in limits.iterrows()]
-    data_sources = "".join(f"<h3>{show(name)}</h3>{link_list(score.split_links(links))}" for name, links in rows)
-    tools = "".join(f'<li>{html.escape(label)}: <a href="{url}">{url}</a></li>' for label, url in TOOL_CREDITS)
-    return page("About & credits", f"""
-<h1>About &amp; credits</h1>
-<h2>What this is</h2>
-<p>Earth places that resemble parts of the Moon's south pole (Malapert Massif) and a Martian
-ice plain (Arcadia Planitia): what matches, where each falls short, and which mission tests
-each could support. We also score individual conditions from 0 to 1 with
-<code>1 - |Earth value - target value| / (largest - smallest value in our dataset)</code>,
-but only where we have exact, comparable measurements; scores are never added together.
-Missing data shows as "no data"; we never estimate.</p>
-<p class="note"><strong>Limits of any Earth analog:</strong> {LIMITS_NOTE}</p>
-<h2>Use of AI</h2><p>{AI_NOTE}</p>
-<h2>Tools and imagery</h2><ul>{tools}</ul>
-<h2>Data sources</h2>{data_sources}""")
+<section class="card"><h2>Key facts</h2><p>{show(site['key_facts'])}</p></section>
+<div class="grid"><section class="card"><h2>Climate and conditions</h2>{notes_list(site['climate_notes'])}</section>
+<section class="card"><h2>Geology and minerals</h2><p>{show(site['geology'])}</p>
+<h2>Suggested mission tasks</h2><p>{show(site['mission_tasks'])} <span class="meta">(team judgment)</span></p></section></div>
+<section class="card"><h2>Similarity scores</h2>{scores_section(site_scores)}</section>
+<section class="card"><h2>Sources</h2>{link_list(score.split_links(site['source_links']))}</section>""", root="../")

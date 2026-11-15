@@ -11,6 +11,7 @@ Steps:
 Run:  python3 data/build.py   then open docs/index.html in a browser.
 Everything in docs/ is generated: edit the Sheet or these scripts, not docs/.
 """
+import shutil
 from pathlib import Path
 
 import folium
@@ -29,13 +30,9 @@ SITE_PAGES = DOCS / "sites"
 GIBS_TILES = ("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry"
               "/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg")
 
-# Marker colour by the start of the site's Category, as (category start, folium colour, legend text).
-MARKER_COLOURS = [("New find", "blue", "new finds"), ("Baseline", "gray", "well-known baselines"),
-                  ("Limit site", "purple", "limit site (shows Earth's gap)")]
-
-
 def marker_colour(category):
-    return next((colour for start, colour, _ in MARKER_COLOURS if str(category).startswith(start)), "green")
+    """Map-marker colour from the site's category (pages.CATEGORIES, shared with the site pages)."""
+    return next((colour for start, colour, _, _ in pages.CATEGORIES if str(category).startswith(start)), "green")
 
 
 def build_map(earth_sites, targets):
@@ -62,7 +59,7 @@ def build_map(earth_sites, targets):
                       icon=folium.Icon(color=marker_colour(site["category"]))).add_to(world)
     # Info box: title, targets, marker legend and links to the other pages.
     target_list = "".join(f"<li>{pages.show(n)}</li>" for n in targets["name"])
-    legend = " · ".join(f"{colour}: {text}" for _, colour, text in MARKER_COLOURS)
+    legend = " · ".join(f"{colour}: {text}" for _, colour, _, text in pages.CATEGORIES)
     world.get_root().html.add_child(folium.Element(
         "<div style='position:fixed;bottom:20px;left:20px;z-index:9999;background:white;"
         "padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;"
@@ -98,7 +95,8 @@ def main():
               pages.site_page(site, scores[scores["site"] == site["name"]]))
     write(DOCS / "gap.html", topic_pages.gap_page(limits))
     write(DOCS / "tasks.html", topic_pages.tasks_page(tasks, sites))
-    write(DOCS / "about.html", pages.about_page(sites, limits))
+    write(DOCS / "about.html", topic_pages.about_page(sites, limits))
+    shutil.copy(Path(__file__).parent / "style.css", DOCS / "style.css")  # shared look of all pages
 
     # Step 4: the map.
     build_map(earth_sites, targets)
