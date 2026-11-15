@@ -4,7 +4,7 @@ build.py: build the website in docs/ from the research sheet exports in data/.
 Steps:
   1. Turn the sheet exports into data/sites.csv (import_sheet.py).
   2. Score every Earth site against every target (score.py).
-  3. Write one page per Earth site, the gap page, the task page and the About page.
+  3. Write one page per Earth site, the compare, gap, task and About pages.
   4. Write docs/index.html: a world map with one marker per Earth site.
   5. Print warnings about anything to fix before submitting.
 
@@ -21,6 +21,7 @@ import import_sheet  # our own data/import_sheet.py
 import pages         # our own data/pages.py
 import score         # our own data/score.py
 import topic_pages   # our own data/topic_pages.py
+import compare_page  # our own data/compare_page.py
 
 # Where the website goes.
 DOCS = Path(__file__).resolve().parent.parent / "docs"
@@ -35,6 +36,18 @@ def marker_colour(category):
     return next((colour for start, colour, _, _ in pages.CATEGORIES if str(category).startswith(start)), "green")
 
 
+# Map filters: each site goes in exactly one group, read from its "Analog for" text
+# ("both" counts as Moon and Mars). The map's checkboxes show or hide each group.
+FILTER_GROUPS = ["Moon analogs", "Mars analogs", "Moon and Mars analogs"]
+
+
+def analog_group(analog_for):
+    """Which filter group a site belongs to, e.g. 'Mars (dust storms)' -> 'Mars analogs'."""
+    text = str(analog_for).lower()
+    moon, mars = ("moon" in text or "both" in text), ("mars" in text or "both" in text)
+    return FILTER_GROUPS[2] if moon and mars else FILTER_GROUPS[0] if moon else FILTER_GROUPS[1]
+
+
 def build_map(earth_sites, targets):
     """World map with a clickable marker for each Earth site."""
     # Background map: NASA GIBS "Blue Marble" imagery (public, no API key).
@@ -45,7 +58,11 @@ def build_map(earth_sites, targets):
     world = folium.Map(location=[20, 0], zoom_start=2, min_zoom=1, max_zoom=8,
                        max_bounds=True, tiles=None)
     folium.TileLayer(GIBS_TILES, attr="Imagery: NASA EOSDIS GIBS, Blue Marble",
-                     min_zoom=1, max_zoom=8, no_wrap=True).add_to(world)
+                     min_zoom=1, max_zoom=8, no_wrap=True, control=False).add_to(world)
+    # One layer per filter group; its label says how many sites are in it.
+    counts = earth_sites["analog_for"].map(analog_group).value_counts()
+    groups = {name: folium.FeatureGroup(name=f"{name} ({counts.get(name, 0)})").add_to(world)
+              for name in FILTER_GROUPS}
     for _, site in earth_sites.iterrows():
         # A site without coordinates can't go on the map; say so instead of guessing.
         if pd.isna(site["lat"]) or pd.isna(site["lon"]):
@@ -56,7 +73,10 @@ def build_map(earth_sites, targets):
                  f"<a href='sites/{pages.slugify(site['name'])}.html'>Open site page</a>")
         folium.Marker([site["lat"], site["lon"]], tooltip=pages.show(site["name"]),
                       popup=folium.Popup(popup, max_width=260),
-                      icon=folium.Icon(color=marker_colour(site["category"]))).add_to(world)
+                      icon=folium.Icon(color=marker_colour(site["category"]))
+                      ).add_to(groups[analog_group(site["analog_for"])])
+    # Checkboxes (top right) to show or hide each group.
+    folium.LayerControl(collapsed=False).add_to(world)
     # Info box: title, targets, marker legend and links to the other pages.
     target_list = "".join(f"<li>{pages.show(n)}</li>" for n in targets["name"])
     legend = " · ".join(f"{colour}: {text}" for _, colour, _, text in pages.CATEGORIES)
@@ -65,7 +85,7 @@ def build_map(earth_sites, targets):
         "padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;"
         f"max-width:300px;font-size:14px'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
         f"for the site. Compared with:<ul style='margin:4px 0;padding-left:18px'>{target_list}</ul>"
-        f"<small>Markers: {legend}</small><br><a href='gap.html'>Where Earth falls short</a> · "
+        f"<small>Markers: {legend}</small><br><a href='compare.html'>Compare sites</a> · <a href='gap.html'>Where Earth falls short</a> · "
         "<a href='tasks.html'>Sites by mission task</a> · <a href='about.html'>About &amp; credits</a></div>"))
     world.save(DOCS / "index.html")
 
@@ -94,6 +114,7 @@ def main():
         write(SITE_PAGES / f"{pages.slugify(site['name'])}.html",
               pages.site_page(site, scores[scores["site"] == site["name"]], sites))
     write(DOCS / "gap.html", topic_pages.gap_page(limits))
+    write(DOCS / "compare.html", compare_page.compare_page(sites, scores))
     write(DOCS / "tasks.html", topic_pages.tasks_page(tasks, sites))
     write(DOCS / "about.html", topic_pages.about_page(sites, limits))
     shutil.copy(Path(__file__).parent / "style.css", DOCS / "style.css")  # shared look of all pages

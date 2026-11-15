@@ -68,3 +68,10 @@ code { background: var(--bg); padding: 1px 5px; border-radius: 4px; }
 .big { font-size: 2.2rem; font-weight: 700; line-height: 1.15; margin: 4px 0; }
 .big.muted { color: var(--muted); font-size: 1.4rem; }
 .tile .meta { margin: 0; font-size: 14px; }
+
+/* Compare page: a small bar behind each score (width = score), and greyed "no data". */
+.bar { display: inline-block; width: 60px; height: 8px; background: var(--line); border-radius: 4px;
+       margin-right: 8px; vertical-align: middle; overflow: hidden; }
+.bar span { display: block; height: 100%; background: #2a78d6; border-radius: 4px; }
+td.muted { color: var(--muted); }
+table.compare td:nth-last-child(-n+2) { white-space: nowrap; }

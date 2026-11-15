@@ -12,7 +12,8 @@ Google Sheet tabs  ->  import_sheet.py  ->  sites.csv  ->  score.py  ->  build.p
 (exported as CSV)      (copies text)                       (0-1 scores)  (website)
 ```
 
-The website (`docs/`): a map (`index.html`), one page per site (`sites/`),
+The website (`docs/`): a map (`index.html`, with Moon/Mars filter checkboxes), one page per
+site (`sites/`), **Compare sites** (`compare.html`: all sites side by side),
 **Where Earth falls short** (`gap.html`), **Sites by mission task** (`tasks.html`) and
 **About & credits** (`about.html`). A site gets a radar chart only once it has real
 scores; until then its page says "Not scored yet" and why.
@@ -26,6 +27,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
+| `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
 | `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |
 | `data/build.py` | Runs all of the above and prints warnings about anything that breaks the challenge rules |
