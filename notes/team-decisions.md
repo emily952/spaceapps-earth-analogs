@@ -57,10 +57,12 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 - [ ] Turn on GitHub Pages (Settings → Pages → branch `main`, folder `/docs`).
 - [ ] Who exports the Google Sheet to `data/sites.csv`, and when is the final export?
 - [ ] **Remove all FAKE rows** before submitting.
-- [ ] Add a credits/about section listing data providers?
+- [x] Add a credits/about section listing data providers. Done: `docs/about.html`,
+  built automatically from every row's `source_links`.
 - [ ] Check the site on a phone.
-- [ ] `data/build.py` is at the 150-line limit: move site-page code into its own
-  file before adding more features.
+- [x] `data/build.py` was at the 150-line limit. Done: page HTML moved to `data/pages.py`.
+- [x] `build.py` now prints a "BEFORE SUBMITTING" list (FAKE rows, missing
+  sources, links that may need a login).
 
 ## 6. Submission rules (official)
 
@@ -72,15 +74,15 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 - [ ] **Demo format**: 30-second video with English subtitles, OR at most 7 slides.
   Decision:  Owner:
-- [ ] **AI disclosure**: README "Use of AI" section is up to date. Also add a
-  one-line AI note on the website itself?
+- [x] **AI disclosure**: README "Use of AI" section, repeated on the website's
+  About page. Also mention it in the video or slides.
 - [ ] **AI images**: any AI-generated image (slides, video, site) carries a visible
   watermark. We have none in the repo so far.
 - [ ] **No NASA logos**: none in the repo. The map uses NASA GIBS satellite
   *imagery* (not a logo), credited in the map's corner. Check slides and video too.
 - [ ] **Every source cited**: every CSV row has `source_links`; also credit the
   map imagery (NASA GIBS Blue Marble) and tools (Leaflet/folium, plotly) in the
-  demo. A credits section on the site would help.
+  demo. The site's About page lists all of these automatically.
 - [ ] **Public links only**: every link in `source_links` and the demo must open
   without logging in. No links to our private Google Sheet. The GitHub repo
   and GitHub Pages site must be public.

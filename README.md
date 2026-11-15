@@ -18,7 +18,8 @@ data/sites.csv  ->  data/score.py  ->  data/build.py  ->  docs/index.html (map)
 |---|---|
 | `data/sites.csv` | Input data, one row per Earth site or Moon/Mars target |
 | `data/score.py` | Computes similarity scores; also writes `data/scores.csv` |
-| `data/build.py` | Builds the website in `docs/` (runs the scoring itself) |
+| `data/build.py` | Builds the website in `docs/` (runs the scoring itself) and prints warnings about anything that breaks the challenge rules |
+| `data/pages.py` | The HTML for each site page and the About & credits page (`docs/about.html`) |
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |
 | `notes/data-sources.md` | Where to get data for each CSV column |
@@ -41,8 +42,10 @@ open docs/index.html               # macOS; or double-click the file
    `name, type, lat, lon, slope_deg, temp_max_c, temp_min_c, temp_range_c, precip_mm_yr, dust_aod, matches, breaks, source_links`
 3. `type` must be `earth`, `moon_target` or `mars_target`.
 4. Leave a cell **blank** if we have no data. Never guess a value. Blanks show as "no data".
-5. Put several source links in one cell separated by `;`.
-6. Run `build.py`, check the map, then commit.
+5. Put several source links in one cell separated by `;`. Links must be public
+   (open without logging in).
+6. Run `build.py` and read the **"BEFORE SUBMITTING"** list it prints: FAKE rows,
+   missing sources, or links that may need a login. Fix them, check the map, commit.
 
 ## How scores work
 
@@ -57,6 +60,8 @@ vacuum or thin atmosphere, or radiation.
 ## Use of AI
 
 This code is written with AI assistance (Claude Code, Cursor) and reviewed by the team.
-- Claude Code wrote the first versions of `data/score.py`, `data/build.py`, the
-  FAKE sample `data/sites.csv` and this README.
+- Claude Code wrote the first versions of `data/score.py`, `data/build.py`,
+  `data/pages.py`, the FAKE sample `data/sites.csv`, the notes in `notes/` and this README.
+- The website's About page (`docs/about.html`) repeats this disclosure. If you
+  change one, change the `AI_NOTE` text in `data/pages.py` too.
 - All site data, write-ups and citations are gathered and checked by team members.
