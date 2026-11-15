@@ -18,8 +18,8 @@ LIMITS_NOTE = ("No place on Earth can reproduce lunar or Martian gravity, the Mo
                "surface conditions only.")
 
 # AI disclosure (a challenge rule). Keep in step with the README's "Use of AI" section.
-AI_NOTE = ("This project was built with AI assistance (Claude Code, Cursor) and reviewed by "
-           "the team. All site data and citations were gathered and checked by team members.")
+AI_NOTE = ("AI tools helped with this project's research and coding (coding: Claude Code and "
+           "Cursor). Team members verified the sources and reviewed the code.")
 
 # Things we use that are not in sites.csv, so they still get credited.
 TOOL_CREDITS = [
