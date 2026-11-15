@@ -1,25 +1,31 @@
 # Earth Analogs for Moon and Mars
 
-NASA Space Apps Challenge 2026 entry. We score Earth sites against a Moon target
-(Artemis III south pole region) and a Mars target (ice landing zone), one dimension
-at a time, and show the results as an interactive map with a radar chart per site.
-
-> **Current data is FAKE.** `data/sites.csv` holds placeholder rows for testing.
-> Replace them with the export from the team Google Sheet.
+NASA Space Apps Challenge 2026 entry. We compare 12 Earth sites with a Moon target
+(Malapert Massif, an Artemis III candidate region) and a Mars target (Arcadia Planitia,
+an ice-rich plain): what matches, where each falls short, which mission tests each
+could support, and which Moon/Mars conditions no place on Earth can match.
 
 ## How it fits together
 
 ```
-data/sites.csv  ->  data/score.py  ->  data/build.py  ->  docs/index.html (map)
-(team sheet)        (0-1 scores)       (makes website)    docs/sites/*.html (radar charts)
+Google Sheet tabs  ->  import_sheet.py  ->  sites.csv  ->  score.py  ->  build.py  ->  docs/
+(exported as CSV)      (copies text)                       (0-1 scores)  (website)
 ```
+
+The website (`docs/`): a map (`index.html`), one page per site (`sites/`),
+**Where Earth falls short** (`gap.html`), **Sites by mission task** (`tasks.html`) and
+**About & credits** (`about.html`). A site gets a radar chart only once it has real
+scores; until then its page says "Not scored yet" and why.
 
 | Path | What it is |
 |---|---|
-| `data/sites.csv` | Input data, one row per Earth site or Moon/Mars target |
-| `data/score.py` | Computes similarity scores; also writes `data/scores.csv` |
-| `data/build.py` | Builds the website in `docs/` (runs the scoring itself) and prints warnings about anything that breaks the challenge rules |
-| `data/pages.py` | The HTML for each site page and the About & credits page (`docs/about.html`) |
+| `data/site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`, `datasets.csv` | The research sheet's tabs, exported as CSV. **These are the inputs.** |
+| `data/import_sheet.py` | Turns `site_options.csv` + `targets.csv` into `data/sites.csv` |
+| `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
+| `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
+| `data/pages.py` | HTML for each site page and the About & credits page |
+| `data/topic_pages.py` | HTML for the gap page (with its chart) and the task page |
+| `data/build.py` | Runs all of the above and prints warnings about anything that breaks the challenge rules |
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |
 | `notes/data-sources.md` | Where to get data for each CSV column |
@@ -37,15 +43,23 @@ open docs/index.html               # macOS; or double-click the file
 
 ## Updating the data
 
-1. Export the team Google Sheet as CSV and save it over `data/sites.csv`.
-2. Keep the column names exactly:
-   `name, type, lat, lon, slope_deg, temp_max_c, temp_min_c, temp_range_c, precip_mm_yr, dust_aod, matches, breaks, source_links`
-3. `type` must be `earth`, `moon_target` or `mars_target`.
-4. Leave a cell **blank** if we have no data. Never guess a value. Blanks show as "no data".
-5. Put several source links in one cell separated by `;`. Links must be public
-   (open without logging in).
-6. Run `build.py` and read the **"BEFORE SUBMITTING"** list it prints: FAKE rows,
-   missing sources, or links that may need a login. Fix them, check the map, commit.
+1. Edit the research Google Sheet. Don't rename column headers: the import checks them
+   and stops with a clear message if one changed.
+2. Export each changed tab (File → Download → CSV) and save it over the matching file
+   in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
+3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
+   Links must be public (open without logging in).
+4. **To get radar charts:** add columns named exactly `slope_deg`, `temp_max_c`,
+   `temp_min_c`, `temp_range_c`, `precip_mm_yr` or `dust_aod` to the Site options and
+   Targets tabs, holding plain numbers (ground-surface values only). A site is scored
+   on a column only when both it and a target have a number there. Leave cells
+   **blank** when there's no exact value. Never guess.
+5. Run `build.py` and read the **"BEFORE SUBMITTING"** list it prints (missing sources,
+   links that may need a login, gap-chart numbers that no longer match the sheet).
+   Fix them, check the site, commit.
+
+The gap chart's four numbers are copied into `COLD_BARS` in `data/topic_pages.py`.
+The build warns if the Earth's limits tab no longer contains them.
 
 ## How scores work
 

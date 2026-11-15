@@ -5,18 +5,28 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 ## 1. Targets (decide first: every score depends on these)
 
-- [ ] **Which Artemis III candidate region** is our Moon target, and its lat/lon?
-  Decision:
-- [ ] **Which Mars ice landing zone** is our Mars target, and its lat/lon?
-  Decision:
+- [x] **Which Artemis III candidate region** is our Moon target, and its lat/lon?
+  Decision: Malapert Massif (−86, 0.3). Lunar south pole shadowed craters are a
+  reference row only, used on the gap page.
+- [x] **Which Mars ice landing zone** is our Mars target, and its lat/lon?
+  Decision: Arcadia Planitia (47.2, −175.7).
 - [ ] **Point or area?** Is a target (and each Earth site) one point, or an average
   over an area? If an area, how big?
   Decision:
 
 ## 2. How to measure each column (so all rows compare like with like)
 
-- [ ] **Temperature type**: ground surface temperature for every row (matches Diviner)?
-  Recommended: yes. Decision:
+> **Status (Nov 15):** no site can be scored yet, so no radar charts are shown. The
+> targets have no exact ground-surface values: Malapert's −50 ± 10 °C is a general
+> figure for sunlit polar spots, and Arcadia's figures are Viking *air* temperatures.
+> To get charts, someone needs ground-surface numbers for a target (e.g. Diviner for
+> Malapert) and for Earth sites (e.g. MODIS land surface temperature), entered in
+> plain-number columns. See "Updating the data" in the README.
+
+- [x] **Temperature type**: ground surface temperature for every row (matches Diviner).
+  Decision: yes. Air temperatures stay in the text only.
+- [x] **Precipitation upper bounds** ("<30", "<4"): Decision: blank in scoring,
+  kept word for word in the site pages' "Climate and conditions" notes.
 - [ ] **Max/min meaning**: the most extreme value ever recorded, or the average daily
   max/min? Over which years?
   Decision:
@@ -36,10 +46,18 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 ## 3. Earth sites
 
-- [ ] Final list of Earth sites (how many? aim for quality over quantity).
-- [ ] Who researches which site (one owner per row in the Google Sheet).
-- [ ] Every site has `matches`, `breaks` and `source_links` filled in.
-- [ ] A write-up in `notes/` for each site? (Not linked from the website yet.)
+- [x] Final list of Earth sites: the 12 in the research sheet (10 new finds,
+  2 baselines: Atacama and Haughton Crater).
+- [x] Every site has matches, breaks and source links filled in.
+- [ ] **Check each source link opens and supports its number** (the sheet's own rule).
+- [ ] **Swap weak sources where possible.** Some links are to a tour company
+  (Kharga rainfall), a camping site listing (Río Tinto coordinates), Wondermondo
+  (Atacama coordinates), volcanodb and Wikipedia. They're public, but judges may
+  trust primary sources more.
+- [ ] **Small fix in the Earth's limits tab**, "Hottest surface" row: Lut's 80.8 °C
+  is about 19 °C short of the Moon's "over 100 °C", not "at least 20 °C".
+- [x] Mission tasks: shown on the site as a table labelled "team judgment".
+  Review the pairings before submitting.
 
 ## 4. Scoring: things to be aware of
 
@@ -53,10 +71,11 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 ## 5. Website and code
 
-- [ ] Review and merge the `sample-data-pipeline` branch into `main`.
+- [x] Review and merge the `sample-data-pipeline` branch into `main`.
 - [ ] Turn on GitHub Pages (Settings → Pages → branch `main`, folder `/docs`).
-- [ ] Who exports the Google Sheet to `data/sites.csv`, and when is the final export?
-- [ ] **Remove all FAKE rows** before submitting.
+- [ ] Who does the final export of the sheet tabs into `data/`, and when?
+- [x] **Remove all FAKE rows.** Done: real sheet data replaced them.
+- [x] Gap page (`docs/gap.html`) and task page (`docs/tasks.html`) built from the sheet.
 - [x] Add a credits/about section listing data providers. Done: `docs/about.html`,
   built automatically from every row's `source_links`.
 - [ ] Check the site on a phone.
@@ -86,4 +105,4 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 - [ ] **Public links only**: every link in `source_links` and the demo must open
   without logging in. No links to our private Google Sheet. The GitHub repo
   and GitHub Pages site must be public.
-- [ ] Final check that nothing FAKE is left (see section 5).
+- [x] Final check that nothing FAKE is left. `build.py` warns if any row says FAKE.
