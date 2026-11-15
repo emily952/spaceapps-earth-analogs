@@ -109,3 +109,19 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   without logging in. No links to our private Google Sheet. The GitHub repo
   and GitHub Pages site must be public.
 - [x] Final check that nothing FAKE is left. `build.py` warns if any row says FAKE.
+
+## 7. How we'll be judged (official Judging & Awards Guide)
+
+Source: https://www.spaceappschallenge.org/resources/judging-awards-guide
+Each criterion is scored 1 to 5, at every level of judging.
+
+- **Impact:** how big a problem it addresses and how many it could help or inspire.
+- **Creativity:** originality; a new idea or a meaningful improvement on existing ones.
+- **Validity:** scientifically sound, feasible, complete, and *usable and user-friendly*.
+- **Relevance:** answers the challenge directly; **NASA data is a core part, not an add-on**.
+- **Presentation:** clear story of the challenge, solution and why it matters. "Judges
+  evaluate the demo and full project", and the guide says teams often underweight this one.
+
+Global awards that fit us best: **Best Use of Data** ("makes space data accessible or
+leverages it to a unique application"), **Best Use of Science** ("most valid use of the
+scientific method"), **Best Storytelling**.
