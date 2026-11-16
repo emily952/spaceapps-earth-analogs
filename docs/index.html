@@ -13,6 +13,13 @@ practise in similar places on Earth. We compared 12 Earth sites with two targets
 time, so mission planners and field-test teams can see <strong>which site to use for which test</strong>, and
 where no place on Earth can help.</p><a class="button" href="map.html">Explore the map</a><a class="button ghost" href="compare.html">Compare all sites</a><a class="button ghost" href="gap.html">Where Earth falls short</a><a class="button ghost" href="about.html">How we score &amp; sources</a></section>
 
+<section class="card" id="globes"><h2>The two targets in 3D</h2>
+<p class="meta">Drag to rotate, and click anywhere on a globe to see the most similar Earth site. The yellow dot marks each target region (approximate position; the surface is a stylised model, not real imagery).</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+<div><div id="globe-moon" style="height:300px;touch-action:none;cursor:grab;position:relative"></div><p><strong>Moon:</strong> Malapert Massif, near the south pole</p></div>
+<div><div id="globe-mars" style="height:300px;touch-action:none;cursor:grab;position:relative"></div><p><strong>Mars:</strong> Arcadia Planitia, an ice-rich northern plain</p></div>
+</div></section>
+
 <div class="grid"><section class="card moon-card"><h2>Moon: Malapert Massif</h2>
 <p class="meta">An Artemis candidate landing region near the lunar south pole.</p>
 <p>Closest Earth site for each condition:</p><ul><li><strong>Slope:</strong> <a href="sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html">Harrat Khaybar and Umm Jirsan lava tube</a> (3.78°) vs 5.6°; score 0.83</li><li><strong>Max temperature:</strong> <a href="sites/kamil-crater-egypt.html">Kamil Crater</a> (53.92 °C) vs 47 °C; score 0.92</li><li><strong>Highest Sun angle:</strong> <a href="sites/east-antarctic-plateau-cold-spots.html">East Antarctic Plateau cold spots</a> (33.07°) vs 5.54°; score 0.67</li></ul></section>
@@ -49,6 +56,187 @@ the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored o
   #chat-send{border:0;border-radius:8px;padding:8px 12px;background:#4a8cf0;color:#fff;font-weight:600;cursor:pointer}
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  if (!window.THREE) return;
+
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // Draws a stylised surface (blotches + craters) so no image files are needed
+  function makeTexture(kind) {
+    const W = 1024, H = 512, c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const g = c.getContext("2d"), moon = kind === "moon", r = rng(moon ? 7 : 21);
+    g.fillStyle = moon ? "#8c8c8c" : "#b4552b";
+    g.fillRect(0, 0, W, H);
+    const wrap = (fn, x, rad) => { fn(x); if (x - rad < 0) fn(x + W); if (x + rad > W) fn(x - W); };
+
+    for (let i = 0; i < 60; i++) {
+      const x = r() * W, y = r() * H, rad = 30 + r() * 90, dark = r() < 0.6;
+      const col = moon ? (dark ? "60,60,60" : "170,170,170") : (dark ? "90,40,22" : "222,150,100");
+      wrap((xx) => {
+        const gr = g.createRadialGradient(xx, y, 0, xx, y, rad);
+        gr.addColorStop(0, `rgba(${col},0.45)`);
+        gr.addColorStop(1, `rgba(${col},0)`);
+        g.fillStyle = gr;
+        g.fillRect(xx - rad, y - rad, rad * 2, rad * 2);
+      }, x, rad);
+    }
+    const n = moon ? 700 : 260;
+    for (let i = 0; i < n; i++) {
+      const x = r() * W, y = r() * H, rad = 2 + Math.pow(r(), 3) * 28;
+      wrap((xx) => {
+        g.beginPath(); g.arc(xx, y, rad, 0, 7); g.fillStyle = "rgba(0,0,0,0.28)"; g.fill();
+        g.lineWidth = Math.max(1, rad / 6); g.strokeStyle = "rgba(255,255,255,0.35)";
+        g.beginPath(); g.arc(xx - rad * 0.08, y - rad * 0.08, rad, 0, 7); g.stroke();
+      }, x, rad);
+    }
+    if (!moon) { g.fillStyle = "rgba(245,245,250,0.9)"; g.fillRect(0, 0, W, 18); g.fillRect(0, H - 18, W, 18); }
+    return new THREE.CanvasTexture(c);
+  }
+
+  function angDist(a1, o1, a2, o2) {
+    const r = Math.PI / 180;
+    const c = Math.sin(a1 * r) * Math.sin(a2 * r) + Math.cos(a1 * r) * Math.cos(a2 * r) * Math.cos((o1 - o2) * r);
+    return Math.acos(Math.max(-1, Math.min(1, c))) / r;
+  }
+
+  function globe(id, kind, lat, lon, tiltX, cfg) {
+    const host = document.getElementById(id);
+    if (!host) return;
+    const w = host.clientWidth || 300, h = 300;
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+    cam.position.set(0, 0, 3.6);
+    const rend = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    rend.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    rend.setSize(w, h);
+    host.appendChild(rend.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+    sun.position.set(3, 2, 4);
+    scene.add(sun);
+
+    const tex = makeTexture(kind);
+    const grp = new THREE.Group();
+    scene.add(grp);
+    grp.add(new THREE.Mesh(
+      new THREE.SphereGeometry(1, 64, 48),
+      new THREE.MeshStandardMaterial({ map: tex, bumpMap: tex, bumpScale: 0.04, roughness: 1, metalness: 0 })
+    ));
+
+    // target marker at (lat, lon)
+    const la = lat * Math.PI / 180, lo = lon * Math.PI / 180, R = 1.02;
+    const px = -R * Math.cos(lo) * Math.cos(la), py = R * Math.sin(la), pz = R * Math.sin(lo) * Math.cos(la);
+    const pin = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffd23f }));
+    pin.position.set(px, py, pz);
+    grp.add(pin);
+
+    grp.rotation.set(tiltX, Math.atan2(-px, pz), 0);
+
+    // marker for the spot the visitor clicks
+    const sphere = grp.children[0];
+    const mark = new THREE.Mesh(new THREE.SphereGeometry(0.03, 16, 16), new THREE.MeshBasicMaterial({ color: 0x4dd8ff }));
+    mark.visible = false;
+    grp.add(mark);
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+
+    // popup that tells the visitor which Earth site is most similar
+    const pop = document.createElement("div");
+    pop.style.cssText = "position:absolute;left:8px;right:8px;bottom:8px;display:none;padding:10px 12px;background:rgba(17,26,48,.96);color:#eef2ff;border:1px solid #34476e;border-radius:10px;font:13px/1.4 system-ui,sans-serif;max-height:75%;overflow:auto;cursor:default";
+    host.appendChild(pop);
+
+    function showSpot(latD, lonD) {
+      const label = Math.abs(latD).toFixed(1) + "\u00b0" + (latD >= 0 ? "N" : "S") + ", " + lonD.toFixed(1) + "\u00b0E";
+      let html = '<span data-x style="float:right;cursor:pointer;padding-left:10px">\u2715</span><strong>' + label + "</strong><br>";
+      if (angDist(latD, lonD, lat, lon) < 15) {
+        html += "This is the <strong>" + cfg.name + "</strong> region. Closest Earth site for each condition:" +
+          '<ul style="margin:6px 0 0 18px;padding:0">' +
+          cfg.picks.map((p) => '<li>' + p.label + ': <a style="color:#9cc4ff;font-weight:600" href="sites/' + p.slug + '.html">' + p.site + "</a> (" + p.val + ", score " + p.score + ")</li>").join("") +
+          "</ul>";
+      } else {
+        const X = 90 - Math.max(0, Math.abs(latD) - cfg.tilt);
+        html += "Highest Sun angle here: <strong>" + X.toFixed(1) + "\u00b0</strong>.";
+        const d = window.analogData;
+        if (d) {
+          const best = d.sites.slice().sort((a, b) => Math.abs(a.sunAngle - X) - Math.abs(b.sunAngle - X)).slice(0, 2);
+          html += "<br>Most similar Earth sites by Sun angle: " + best.map((b) =>
+            '<a style="color:#9cc4ff;font-weight:600" href="sites/' + d.pages[b.name] + '.html">' + b.name + "</a> (" + b.sunAngle + "\u00b0)").join(" and ") + ".";
+        }
+        if (X < 23.4) html += "<br>Earth never gets this little Sun, so no site matches it closely.";
+        html += '<br><span style="opacity:.75">We only have slope, temperature and dust data for the ' + cfg.name + " region, so click the yellow dot for the full comparison.</span>";
+      }
+      pop.innerHTML = html;
+      pop.style.display = "block";
+      pop.querySelector("[data-x]").onclick = () => { pop.style.display = "none"; mark.visible = false; };
+    }
+
+    let drag = false, moved = 0, lx = 0, ly = 0;
+    const el = rend.domElement;
+    el.addEventListener("pointerdown", (e) => { drag = true; moved = 0; lx = e.clientX; ly = e.clientY; el.setPointerCapture(e.pointerId); });
+    el.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const dx = e.clientX - lx, dy = e.clientY - ly;
+      moved += Math.abs(dx) + Math.abs(dy);
+      grp.rotation.y += dx * 0.01;
+      grp.rotation.x = Math.max(-1.4, Math.min(1.4, grp.rotation.x + dy * 0.01));
+      lx = e.clientX; ly = e.clientY;
+    });
+    el.addEventListener("pointerup", (e) => {
+      drag = false;
+      if (moved > 5) return; // it was a drag, not a click
+      const rect = el.getBoundingClientRect();
+      ndc.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+      ray.setFromCamera(ndc, cam);
+      const hit = ray.intersectObject(sphere)[0];
+      if (!hit) return;
+      const p = grp.worldToLocal(hit.point.clone()).normalize();
+      const latD = Math.asin(p.y) * 180 / Math.PI;
+      const lonD = (((Math.atan2(p.z, -p.x) * 180) / Math.PI) % 360 + 360) % 360;
+      mark.position.copy(p).multiplyScalar(1.02);
+      mark.visible = true;
+      showSpot(latD, lonD);
+    });
+
+    (function loop(t) {
+      if (!drag) grp.rotation.y += 0.002;
+      pin.scale.setScalar(1 + 0.35 * Math.sin(t / 300));
+      rend.render(scene, cam);
+      requestAnimationFrame(loop);
+    })(0);
+  }
+
+  try {
+    globe("globe-moon", "moon", -85.9, 0, -0.9, {   // Malapert Massif (approx.)
+      name: "Malapert Massif", tilt: 1.54,
+      picks: [
+        { label: "Slope", site: "Harrat Khaybar and Umm Jirsan lava tube", slug: "harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia", val: "3.78\u00b0 vs 5.6\u00b0", score: "0.83" },
+        { label: "Max temperature", site: "Kamil Crater", slug: "kamil-crater-egypt", val: "53.92 \u00b0C vs 47 \u00b0C", score: "0.92" },
+        { label: "Sun angle", site: "East Antarctic Plateau cold spots", slug: "east-antarctic-plateau-cold-spots", val: "33.07\u00b0 vs 5.54\u00b0", score: "0.67" },
+      ],
+    });
+    globe("globe-mars", "mars", 47, 184, 0.5, {     // Arcadia Planitia (approx.)
+      name: "Arcadia Planitia", tilt: 25.19,
+      picks: [
+        { label: "Slope", site: "Lut Desert (Dasht-e Lut)", slug: "lut-desert-dasht-e-lut-iran", val: "0.44\u00b0 vs 0.36\u00b0", score: "0.98" },
+        { label: "Dust", site: "Dallol", slug: "dallol-danakil-depression-ethiopia", val: "0.4 vs 0.377", score: "0.96" },
+        { label: "Sun angle", site: "Western Qaidam Basin", slug: "western-qaidam-basin-china", val: "75.4\u00b0 vs 67.99\u00b0", score: "0.91" },
+        { label: "Sun angle", site: "R\u00edo Tinto (Pe\u00f1a de Hierro)", slug: "rio-tinto-pena-de-hierro-spain", val: "75.72\u00b0 vs 67.99\u00b0", score: "0.91" },
+      ],
+    });
+  } catch (err) { console.error("Globe error:", err); }
+})();
+</script>
+
 <button id="chat-toggle" type="button">💬 Find a site</button>
 <div id="chat-panel">
   <div id="chat-head">Site finder</div>
@@ -60,7 +248,52 @@ the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored o
 </div>
 
 <script type="module">
-  import { findMatches } from "./match.js";
+  // ---- site data + matcher (inlined so no separate match.js is needed) ----
+  const sites = [
+    { name: "Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia", slope: 3.78, maxTemp: 60.03, dust: 0.34, sunAngle: 87.94 },
+    { name: "Kamil Crater, Egypt", slope: 2.94, maxTemp: 53.92, dust: 0.3, sunAngle: 90 },
+    { name: "Lonar Crater, India", slope: 2, maxTemp: 51.95, dust: 0.52, sunAngle: 90 },
+    { name: "East Antarctic Plateau cold spots", slope: 1.04, maxTemp: -24.19, dust: 0, sunAngle: 33.07 },
+    { name: "Lut Desert (Dasht-e Lut), Iran", slope: 0.64, maxTemp: 73.25, dust: 0.32, sunAngle: 82.84 },
+    { name: "Kharga yardangs (Western Desert), Egypt", slope: 2.15, maxTemp: 55.49, dust: 0.32, sunAngle: 87.99 },
+    { name: "Western Qaidam Basin, China", slope: 3.46, maxTemp: 59.51, dust: 0.27, sunAngle: 75.4 },
+    { name: "Bodélé Depression, Chad", slope: 1.08, maxTemp: 62.87, dust: 0.57, sunAngle: 90 },
+    { name: "Dallol, Danakil Depression, Ethiopia", slope: 0.45, maxTemp: 58.31, dust: 0.4, sunAngle: 90 },
+    { name: "Río Tinto (Peña de Hierro), Spain", slope: 11.04, maxTemp: 50.93, dust: 0.16, sunAngle: 75.72 },
+    { name: "Atacama Desert (Yungay), Chile", slope: 5.3, maxTemp: 56.89, dust: 0.04, sunAngle: 89.37 },
+    { name: "Haughton Crater, Devon Island, Canada", slope: 7.42, maxTemp: 14.91, dust: 0.07, sunAngle: 38.06 },
+  ];
+  const traits = [
+    { words: ["flat", "low slope", "smooth"], key: "slope", want: "low" },
+    { words: ["steep", "high slope", "rugged"], key: "slope", want: "high" },
+    { words: ["hot", "high temp", "warm", "heat"], key: "maxTemp", want: "high" },
+    { words: ["cold", "low temp", "freezing", "cool"], key: "maxTemp", want: "low" },
+    { words: ["dusty", "high dust"], key: "dust", want: "high" },
+    { words: ["low dust", "clear", "clean air"], key: "dust", want: "low" },
+    { words: ["high sun", "bright"], key: "sunAngle", want: "high" },
+    { words: ["low sun", "dim"], key: "sunAngle", want: "low" },
+  ];
+  function range(key) {
+    const vals = sites.map((s) => s[key]);
+    return [Math.min(...vals), Math.max(...vals)];
+  }
+  function findMatches(userInput, topN = 3) {
+    const text = userInput.toLowerCase();
+    const wanted = traits.filter((t) => t.words.some((w) => text.includes(w)));
+    return sites
+      .map((s) => {
+        let score = 0;
+        for (const t of wanted) {
+          const [min, max] = range(t.key);
+          const n = (s[t.key] - min) / (max - min);
+          score += t.want === "high" ? n : 1 - n;
+        }
+        return { ...s, score: wanted.length ? score / wanted.length : 0 };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, topN);
+  }
+  // -------------------------------------------------------------------------
 
   // site name -> its page in the sites/ folder
   const pages = {
@@ -77,6 +310,7 @@ the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored o
     "Atacama Desert (Yungay), Chile": "atacama-desert-yungay-chile",
     "Haughton Crater, Devon Island, Canada": "haughton-crater-devon-island-canada",
   };
+  window.analogData = { sites, pages };
   const link = (m) => `<a href="sites/${pages[m.name]}.html">${m.name}</a>`;
 
   const panel = document.getElementById("chat-panel");
