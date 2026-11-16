@@ -41,7 +41,7 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   kept word for word in the site pages' "Climate and conditions" notes.
 - [x] **Max/min meaning**: the most extreme value ever recorded, or the average daily
   max/min? Over which years?
-  Decision: use average max/min, since the temperates are more likely to be those values
+  Decision: Max/min mean the highest and lowest hourly ground-surface (skin) temperature reported by the cited dataset during its stated period not an all-time record and not an average of daily maxima or minima.
 - [ ] **`temp_range_c`**: always calculate it as max − min in the sheet, so it can't
   disagree with the other two columns?
   Recommended: yes. Decision:
