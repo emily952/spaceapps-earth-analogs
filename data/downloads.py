@@ -17,7 +17,7 @@ import sun_angle    # our own data/sun_angle.py (why the Sun angle matters)
 # (file in data/, what it holds). Copied to docs/data/ so the website can link to them.
 FILES = [("sites.csv", "Every Earth site and target: coordinates, scored values and all text"),
          ("scores.csv", "Every score shown on the site: one row per Earth site and the target it is compared with"),
-         ("modis_daily_lst.csv", "Hottest daily MODIS temperature per site, with days kept and dropped"),
+         ("power_skin_temps.csv", "Highest hourly ground (skin) temperature per site, NASA POWER TS_MAX"),
          ("copernicus_slope.csv", "Slope per site (1, 5 and 15 km boxes) from Copernicus DEM GLO-30"),
          ("slope_463m.csv", "Slope at ~463 m pixels: Earth (Copernicus, averaged) and Mars (MOLA)"),
          ("dust_aod.csv", "Earth dust/haze optical depth per site (NASA POWER AOD_55)"),
@@ -38,8 +38,7 @@ SCORE_SOURCES = [
     ("Dust (Earth): NASA POWER AOD_55, climatology 2001–2025 (CERES SYN1deg)", "https://power.larc.nasa.gov"),
     ("Dust (Mars): LMD Mars dust climatology v2, Montabone et al. 2015, Icarus 251:65–95, "
      "doi:10.1016/j.icarus.2014.12.034", "https://www-mars.lmd.jussieu.fr/mars/dust_climatology/index.html"),
-    ("Max temperature (Earth): MODIS MYD11A1 v6.1 (Wan, Hook & Hulley 2021), doi:10.5067/MODIS/MYD11A1.061, "
-     "via NASA AppEEARS (LP DAAC)", "https://appeears.earthdatacloud.nasa.gov"),
+    ("Max temperature (Earth): NASA POWER TS_MAX, Climatology API v2.10.1, 2001–2025", "https://power.larc.nasa.gov"),
 ]
 
 
@@ -92,34 +91,28 @@ def section(sites, scores):
             f"(CSV files; open in any spreadsheet):</p><ul>{links}</ul></section>")
 
 
-# MODIS citations, word for word from AppEEARS' README (data/appeears/README.md).
-MODIS_CSV = score.DATA_DIR / "modis_daily_lst.csv"
-MODIS_REFERENCES = [
-    "Wan, Z., Hook, S., & Hulley, G. (2021). MODIS/Aqua Land Surface Temperature/Emissivity Daily L3 Global "
-    "1km SIN Grid V061. NASA Land Processes Distributed Active Archive Center. "
-    "https://doi.org/10.5067/MODIS/MYD11A1.061. Accessed November 16, 2026.",
-    "AppEEARS Team. (2026). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). "
-    "Ver. 3.137. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources "
-    "Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed November 16, 2026. "
-    "https://appeears.earthdatacloud.nasa.gov",
-]
+# NASA POWER's requested citation (power.larc.nasa.gov/docs/referencing/), and our exact requests.
+POWER_CSV = score.DATA_DIR / "power_skin_temps.csv"
+POWER_REFERENCE = ("The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research "
+                   "Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth "
+                   "Science Division.")
 
 
-def modis_credit():
-    """About page section: MODIS citations, method, and days kept vs dropped at each site."""
-    if not MODIS_CSV.exists():
+def temperature_credit():
+    """About page section: the max-temperature data (NASA POWER TS_MAX), citation and each site's request."""
+    if not POWER_CSV.exists():
         return ""
-    modis = pd.read_csv(MODIS_CSV)
-    rows = "".join(f"<tr><td>{html.escape(r.site)}</td><td>{r.LST_day_max_c:g} °C</td><td>{r.date_of_max}</td>"
-                   f"<td>{r.usable_days}</td><td>{r.dropped_days}</td></tr>" for r in modis.itertuples())
-    refs = "".join(f"<li>{html.escape(ref)}</li>" for ref in MODIS_REFERENCES)
-    return (f'<section class="card"><h2>Ground temperatures: MODIS daily (1 km)</h2><ul>{refs}</ul>'
-            f'<p>Product MYD11A1 v6.1 (MODIS Aqua, daily land surface temperature, band LST_Day_1km), '
-            f'every day of 2025, extracted with NASA AppEEARS at each site\'s coordinates (one 1 km pixel). '
-            f'Aqua passes over at about 1:30 pm local time. We keep a day only if it has a reading (not cloud) '
-            f'and its quality flags say "good" or "other" quality with an average error of 2 K or less; '
-            f'the score uses the hottest kept day.</p>'
-            f'<div class="scroll"><table><tr><th>Site</th><th>Hottest kept day</th><th>Date</th>'
-            f'<th>Days kept</th><th>Days dropped</th></tr>{rows}</table></div>'
-            f'<p class="meta">Earlier versions used NASA POWER (~50 km grid) and then MODIS 8-day averages '
-            f'(MYD11A2, ORNL DAAC). Both are kept in our repository for reference; neither is scored.</p></section>')
+    power = pd.read_csv(POWER_CSV)
+    first = power.iloc[0]
+    rows = "".join(f'<tr><td>{html.escape(r.site)}</td><td>{r.TS_MAX_annual_c:g} °C</td>'
+                   f'<td><a href="{html.escape(r.request_url)}">request</a></td></tr>' for r in power.itertuples())
+    return (f'<section class="card"><h2>Ground temperatures: NASA POWER (hourly maximum)</h2><p>{POWER_REFERENCE}</p>'
+            f'<p>{html.escape(first["api"])}, accessed {html.escape(first["accessed"])}. Parameter TS_MAX: '
+            f'"{html.escape(first["TS_MAX_definition"])}" Period: {html.escape(first["period"])}. Source MERRA-2, '
+            f'about 50 km grid. This follows our team decision: max = the highest hourly ground (skin) temperature '
+            f'reported by the dataset in its stated period, not an all-time record or an average of daily maxima. '
+            f'Home: <a href="https://power.larc.nasa.gov">power.larc.nasa.gov</a></p>'
+            f'<div class="scroll"><table><tr><th>Site</th><th>TS_MAX</th><th>Exact request</th></tr>{rows}</table></div>'
+            f'<p class="meta">We also downloaded MODIS daily (1 km, MYD11A1 via NASA AppEEARS, doi:10.5067/MODIS/'
+            f'MYD11A1.061) and 8-day (MYD11A2) temperatures; they are in our repository for reference and not scored, '
+            f'because MODIS gives one reading a day, not hourly values.</p></section>')

@@ -35,7 +35,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/fetch_dust.py` | Dust/haze optical depth: Earth from NASA POWER AOD_55, Mars from the LMD Mars dust climatology → `data/dust_aod.csv`, `data/mars_dust.csv` (scored vs Arcadia) |
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
-| `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1 → `modis_daily_lst.csv`, **the scored Earth max temperature**) or ground brightness (MCD43A3, not scored yet) |
+| `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1 → `modis_daily_lst.csv`, reference only) or ground brightness (MCD43A3, not scored yet) |
 | `data/appeears/` | AppEEARS request record, metadata and README (citations) for the daily MODIS file |
 | `data/fetch_tes_albedo.py` | Arcadia's ground brightness (albedo 0.236) from NASA's TES map (one ~7.4 km pixel; dust in the air not removed) → `data/mars_albedo.csv` (not scored until Earth albedo, 500 m MODIS pixels, arrives) |
 | `data/analog.py` | Decides which target(s) each site is compared with, from its "Analog for" text (Moon / Mars / both); a typo shows both and triggers a build warning |
@@ -74,12 +74,10 @@ open docs/index.html               # macOS; or double-click the file
    candidate landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
    `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
    (b) max ground temperature vs Malapert. Earth values come from
-   MODIS Aqua daily land surface temperature, MYD11A1 v6.1: the hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel,
-   extracted with NASA AppEEARS (`data/earth-analogs-lst-2025-MYD11A1-061-results.csv`,
-   request record in `data/appeears/`) and read by `data/read_appeears.py MYD11A1` →
-   `data/modis_daily_lst.csv`. Days are kept only if MODLAND quality is 00/01 and the LST
-   error is 2 K or less. History: NASA POWER (~50 km cell), then MODIS 8-day averages
-   (MYD11A2, `data/fetch_modis.py`); both kept for reference only. Malapert's value comes from the Targets tab column
+   NASA POWER TS_MAX: the maximum hourly ground (skin) temperature in 2001–2025, ~50 km grid
+   (`data/fetch_power.py` → `data/power_skin_temps.csv`). Why: team decision (Nov 15): max = the highest hourly ground (skin) temperature reported by the dataset in its stated period. MODIS daily
+   (MYD11A1 via AppEEARS, `data/read_appeears.py`) and 8-day (`data/fetch_modis.py`) values
+   are kept for reference only: MODIS gives one reading a day, not hourly values. Malapert's value comes from the Targets tab column
    "Max ground surface temp (°C)" (LRO Diviner). Each score shows as a card; a
    radar chart appears once a site has 3 or more scored conditions.
    **To score more conditions:** add columns named exactly `slope_deg`, `temp_max_c`,

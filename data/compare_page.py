@@ -39,7 +39,7 @@ def temp_chart(earth, target, site_scores):
                   annotation_text=f"{pages.show(target['name'])}: {target['temp_max_c']:g} °C",
                   annotation_position="top")
     fig.update_layout(height=460, margin={"l": 10, "r": 20, "t": 40, "b": 40}, **pages.DARK_CHART,
-                      xaxis={"title": "Hottest daily ground temperature, 2025 (°C)", "gridcolor": pages.GRID,
+                      xaxis={"title": "Highest hourly ground (skin) temperature, 2001–2025 (°C)", "gridcolor": pages.GRID,
                              "zeroline": False},
                       yaxis={"gridcolor": pages.GRID}, showlegend=False)
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
@@ -91,10 +91,10 @@ we don't add scores into one overall ranking, because a site can be a great anal
 test and a poor one for another.</p>
 <section class="card"><h2>How close does each Moon-analog site get to {pages.show(moon['name'])}'s hottest ground?</h2>
 {temp_chart(earth[[moon["type"] in analog.compared_targets(a) for a in earth["analog_for"]]], moon, moon_scores)}
-<p class="meta">Each dot is one site's hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel (MODIS MYD11A1, via NASA AppEEARS). The dashed line is
+<p class="meta">Each dot is one site's NASA POWER TS_MAX, the highest hourly ground (skin) temperature in its 2001–2025 record (MERRA-2, ~50 km grid cell). The dashed line is
 {pages.show(moon['name'])}'s ridge top measured by LRO Diviner. The closer a dot is to the line, the higher
-the score. A 1 km pixel averages the ground inside it: single spots can be hotter (80.8 °C has been
-measured in the Lut Desert).</p></section>
+the score. A ~50 km cell averages the ground inside it: single spots can be much hotter (80.8 °C has been
+measured by satellite in the Lut Desert).</p></section>
 {tables}
 <p class="meta">Scale: 1 = same value as the target, 0 = as different as anything in our dataset.
 Click a site for its matches, limits and sources. "no data" means we have no exact, comparable value:

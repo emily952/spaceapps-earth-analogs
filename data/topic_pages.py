@@ -143,5 +143,5 @@ Missing data shows as "no data"; we never estimate.</p></section>
 <section class="card"><h2>Use of AI</h2><p>{pages.AI_NOTE}</p></section>
 <section class="card"><h2>Tools and imagery</h2><ul>{tools}</ul></section>
 {downloads.section(sites, scores)}
-{downloads.modis_credit()}
+{downloads.temperature_credit()}
 <section class="card"><h2>Data sources</h2>{data_sources}</section>""")
