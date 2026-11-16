@@ -62,43 +62,125 @@
             <div class="folium-map" id="map_dfa9e6ef72b8094efe67939bc0e18cf5" ></div>
         
 <style>
-#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;width:min(540px,calc(100vw - 24px));padding:10px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.45 system-ui,sans-serif}
-#map-target-tabs .tab-buttons{display:flex;gap:8px;margin-top:6px}
-#map-target-tabs button{flex:1;padding:7px 12px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}
-#map-target-tabs button[aria-selected="true"]{background:#7db4ff;color:#14203a;border-color:#7db4ff}
-#map-target-summary{margin:7px 0 0;color:#c8d2e5;font-size:12px}
-@media(max-width:640px){#map-target-tabs{top:56px;left:8px;right:8px;transform:none;width:auto;padding:8px 10px}#map-target-summary{max-width:100%}}
+#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;display:flex;gap:8px;padding:8px 10px;background:#26334ff2;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055}
+#map-target-tabs button{padding:7px 14px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}
+#map-target-tabs button[aria-selected="true"]{background:#7db4ff;color:#14203a}
+#planet-map{display:none;position:fixed;top:49px;left:0;right:0;bottom:0;z-index:600;background:#101827}
+#planet-analog-panel{display:none;position:fixed;right:18px;bottom:20px;z-index:8000;width:min(340px,calc(100vw - 36px));max-height:52vh;overflow:auto;padding:12px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.5 system-ui,sans-serif}
+#planet-analog-panel h3{margin:0 0 6px;font-size:16px}
+#planet-analog-panel p{margin:4px 0;color:#c8d2e5;font-size:12px}
+#planet-analog-panel ul{margin:8px 0;padding-left:20px}
+#planet-analog-panel li{margin:5px 0}
+#planet-analog-panel a{color:#9cc4ff}
+@media(max-width:640px){#map-target-tabs{top:54px}#planet-analog-panel{right:8px;bottom:10px;width:calc(100vw - 16px);max-height:38vh}}
 </style>
-<aside id="map-target-tabs" aria-label="Compare Earth analog sites by target">
-  <strong>Compare Earth analog sites with:</strong>
-  <div class="tab-buttons" role="tablist" aria-label="Target body">
-    <button type="button" role="tab" data-body="moon" aria-selected="true">Moon</button>
-    <button type="button" role="tab" data-body="mars" aria-selected="false">Mars</button>
-  </div>
-  <p id="map-target-summary" aria-live="polite"></p>
+<div id="map-target-tabs" role="tablist" aria-label="Map body">
+  <button type="button" role="tab" data-mode="earth" aria-selected="true">Earth sites</button>
+  <button type="button" role="tab" data-mode="moon" aria-selected="false">Moon</button>
+  <button type="button" role="tab" data-mode="mars" aria-selected="false">Mars</button>
+</div>
+<div id="planet-map" aria-label="Moon or Mars surface map"></div>
+<aside id="planet-analog-panel">
+  <h3 id="planet-target-title"></h3>
+  <p id="planet-target-note">Target-body map with its reference target. Earth analogs are listed here because their coordinates belong on an Earth map.</p>
+  <ul id="planet-analog-list"></ul>
+  <p>Basemap: NASA/JPL Solar System Treks. Scores remain separate by condition; see each site page.</p>
 </aside>
 <script>
 (() => {
-  const targets = {"moon": {"name": "Malapert Massif", "count": 5}, "mars": {"name": "Arcadia Planitia", "count": 11}};
-  const buttons = document.querySelectorAll("#map-target-tabs [data-body]");
-  const groupLabels = document.querySelectorAll(".leaflet-control-layers-overlays label");
-  const summary = document.getElementById("map-target-summary");
+  const bodyData = {"moon": {"body": "Moon", "name": "Malapert Massif", "lat": -86.0, "lon": 0.3, "sites": [{"name": "Kamil Crater, Egypt", "href": "sites/kamil-crater-egypt.html", "scores": ["Slope score: 0.75", "Max-temperature score: 0.92", "Sun-angle score: 0.00"]}, {"name": "Lut Desert (Dasht-e Lut), Iran", "href": "sites/lut-desert-dasht-e-lut-iran.html", "scores": ["Slope score: 0.53", "Max-temperature score: 0.80", "Sun-angle score: 0.09"]}, {"name": "Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia", "href": "sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html", "scores": ["Slope score: 0.83", "Max-temperature score: 0.80", "Sun-angle score: 0.02"]}, {"name": "Lonar Crater, India", "href": "sites/lonar-crater-india.html", "scores": ["Slope score: 0.66", "Max-temperature score: 0.85", "Sun-angle score: 0.00"]}, {"name": "East Antarctic Plateau cold spots", "href": "sites/east-antarctic-plateau-cold-spots.html", "scores": ["Slope score: 0.57", "Max-temperature score: 0.20", "Sun-angle score: 0.67"]}], "tiles": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/{z}/{y}/{x}.jpg", "attribution": "Imagery: NASA/JPL Solar System Treks"}, "mars": {"body": "Mars", "name": "Arcadia Planitia", "lat": 47.2, "lon": -175.7, "sites": [{"name": "Kharga yardangs (Western Desert), Egypt", "href": "sites/kharga-yardangs-western-desert-egypt.html", "scores": ["Slope score: 0.92", "Dust score: 0.90", "Sun-angle score: 0.76"]}, {"name": "Lut Desert (Dasht-e Lut), Iran", "href": "sites/lut-desert-dasht-e-lut-iran.html", "scores": ["Slope score: 0.98", "Dust score: 0.90", "Sun-angle score: 0.82"]}, {"name": "Western Qaidam Basin, China", "href": "sites/western-qaidam-basin-china.html", "scores": ["Slope score: 0.62", "Dust score: 0.81", "Sun-angle score: 0.91"]}, {"name": "Bodélé Depression, Chad", "href": "sites/bodele-depression-chad.html", "scores": ["Slope score: 0.95", "Dust score: 0.66", "Sun-angle score: 0.74"]}, {"name": "Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia", "href": "sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html", "scores": ["Slope score: 0.60", "Dust score: 0.94", "Sun-angle score: 0.76"]}, {"name": "Lonar Crater, India", "href": "sites/lonar-crater-india.html", "scores": ["Slope score: 0.86", "Dust score: 0.75", "Sun-angle score: 0.74"]}, {"name": "Dallol, Danakil Depression, Ethiopia", "href": "sites/dallol-danakil-depression-ethiopia.html", "scores": ["Slope score: 0.95", "Dust score: 0.96", "Sun-angle score: 0.74"]}, {"name": "Río Tinto (Peña de Hierro), Spain", "href": "sites/rio-tinto-pena-de-hierro-spain.html", "scores": ["Slope score: 0.08", "Dust score: 0.62", "Sun-angle score: 0.91"]}, {"name": "East Antarctic Plateau cold spots", "href": "sites/east-antarctic-plateau-cold-spots.html", "scores": ["Slope score: 0.92", "Dust score: 0.34", "Sun-angle score: 0.59"]}, {"name": "Atacama Desert (Yungay), Chile", "href": "sites/atacama-desert-yungay-chile.html", "scores": ["Slope score: 0.24", "Dust score: 0.41", "Sun-angle score: 0.75"]}, {"name": "Haughton Crater, Devon Island, Canada", "href": "sites/haughton-crater-devon-island-canada.html", "scores": ["Slope score: 0.41", "Dust score: 0.46", "Sun-angle score: 0.65"]}], "tiles": "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg", "attribution": "Imagery: NASA/JPL Solar System Treks"}};
+  const buttons = document.querySelectorAll("#map-target-tabs [data-mode]");
+  const planetDiv = document.getElementById("planet-map");
+  const panel = document.getElementById("planet-analog-panel");
+  const mapInfo = document.querySelector(".map-info");
+  const earthMap = document.querySelector(".folium-map");
+  const layerControl = document.querySelector(".leaflet-control-layers");
+  let planetMap = null;
+  let planetLayer = null;
+  let targetPin = null;
 
-  function selectBody(body) {
-    groupLabels.forEach((label) => {
+  function setEarthBody(body) {
+    document.querySelectorAll(".leaflet-control-layers-overlays label").forEach((label) => {
       const text = label.textContent || "";
-      const isBoth = text.includes("Moon and Mars analogs");
-      const belongs = isBoth || text.includes(body === "moon" ? "Moon analogs" : "Mars analogs");
+      const both = text.includes("Moon and Mars analogs");
+      const relevant = body === "all" || both || text.includes(body === "moon" ? "Moon analogs" : "Mars analogs");
       const checkbox = label.querySelector('input[type="checkbox"]');
-      if (checkbox && checkbox.checked !== belongs) checkbox.click();
+      if (checkbox && checkbox.checked !== relevant) checkbox.click();
     });
-    buttons.forEach((button) => button.setAttribute("aria-selected", String(button.dataset.body === body)));
-    const target = targets[body];
-    summary.textContent = `Target: ${target.name}. ${target.count} candidate Earth sites are marked for comparison. Earth markers stay at Earth locations; click a marker to open its site page and see the separate target scores.`;
   }
 
-  buttons.forEach((button) => button.addEventListener("click", () => selectBody(button.dataset.body)));
-  selectBody("moon");
+  function fillAnalogPanel(body) {
+    const info = bodyData[body];
+    document.getElementById("planet-target-title").textContent = `${info.body} target: ${info.name}`;
+    const list = document.getElementById("planet-analog-list");
+    list.replaceChildren();
+    info.sites.forEach((site) => {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = site.href;
+      link.textContent = site.name;
+      item.append(link);
+      if (site.scores.length) {
+        item.append(document.createTextNode(" — " + site.scores.join("; ")));
+      } else {
+        item.append(document.createTextNode(" — suggested analog; no comparable scores yet"));
+      }
+      list.append(item);
+    });
+  }
+
+  function showPlanet(body) {
+    const info = bodyData[body];
+    document.body.classList.add("planetary-map-open");
+    if (earthMap) earthMap.style.visibility = "hidden";
+    if (mapInfo) mapInfo.style.display = "none";
+    if (layerControl) layerControl.style.display = "none";
+    planetDiv.style.display = "block";
+    panel.style.display = "block";
+
+    if (!planetMap) {
+      planetMap = L.map(planetDiv, {
+        crs: L.CRS.EPSG4326,
+        center: [info.lat, info.lon],
+        zoom: 1,
+        minZoom: 0,
+        maxZoom: 8,
+        zoomControl: true,
+        attributionControl: true,
+      });
+    }
+    if (planetLayer) planetMap.removeLayer(planetLayer);
+    planetLayer = L.tileLayer(info.tiles, {
+      tileSize: 256,
+      minZoom: 0,
+      maxZoom: 8,
+      noWrap: false,
+      attribution: info.attribution,
+    }).addTo(planetMap);
+    if (targetPin) planetMap.removeLayer(targetPin);
+    targetPin = L.marker([info.lat, info.lon]).bindTooltip(info.name).addTo(planetMap);
+    planetMap.setView([info.lat, info.lon], 2);
+    fillAnalogPanel(body);
+    window.setTimeout(() => planetMap.invalidateSize(), 80);
+  }
+
+  function showEarth() {
+    document.body.classList.remove("planetary-map-open");
+    planetDiv.style.display = "none";
+    panel.style.display = "none";
+    if (earthMap) earthMap.style.visibility = "visible";
+    if (mapInfo) mapInfo.style.display = "";
+    if (layerControl) layerControl.style.display = "";
+    setEarthBody("all");
+  }
+
+  buttons.forEach((button) => button.addEventListener("click", () => {
+    const mode = button.dataset.mode;
+    buttons.forEach((item) => item.setAttribute("aria-selected", String(item === button)));
+    if (mode === "earth") showEarth();
+    else showPlanet(mode);
+  }));
+  showEarth();
 })();
 </script>
 </body>
