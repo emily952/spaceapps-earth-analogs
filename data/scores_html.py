@@ -19,7 +19,8 @@ NOT_SCORED_NOTE = ("Not scored yet. We only score a condition when we have an ex
 
 # Who measured what, shown under each scored condition. Keep in step with import_sheet.py.
 DIMENSION_SOURCES = {
-    "temp_max_c": "Earth: NASA POWER skin temperature (MERRA-2, ~50 km grid). "
+    "temp_max_c": "Earth: MODIS Aqua land surface temperature (MYD11A2), hottest 8-day average "
+                  "of clear-sky ~1:30 pm readings in 2025, one 1 km pixel. "
                   "Moon: LRO Diviner, Malapert ridge top.",
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
@@ -81,23 +82,26 @@ def scores_section(site, site_scores, sites):
     return "".join(parts)
 
 
-# NASA POWER's requested citation (from power.larc.nasa.gov/docs/referencing/).
-POWER_CSV = score.DATA_DIR / "power_skin_temps.csv"
-POWER_REFERENCE = ("The data was obtained from National Aeronautics and Space Administration (NASA) "
-                   "Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project "
-                   "funded through the NASA Earth Science Division.")
+# MODIS citation (from the top of fetch_modis.py). One example request per site is in modis_lst.csv.
+MODIS_CSV = score.DATA_DIR / "modis_lst.csv"
+MODIS_REFERENCE = ("ORNL DAAC. 2018. MODIS and VIIRS Land Product Subsets RESTful Web Service. "
+                   "https://doi.org/10.3334/ORNLDAAC/1600 . Product MYD11A2 v6.1 (Wan, Hook, Hulley).")
 
 
-def power_credit():
-    """About page section: POWER's citation, version, access date and each site's exact request."""
-    if not POWER_CSV.exists():
+def modis_credit():
+    """About page section: MODIS citation, product, year, access date and each site's example request."""
+    if not MODIS_CSV.exists():
         return ""
-    power = pd.read_csv(POWER_CSV)
-    first = power.iloc[0]
-    requests = "".join(f'<li>{html.escape(r.site)}: <a href="{html.escape(r.request_url)}">'
-                       f'{html.escape(r.request_url)}</a></li>' for r in power.itertuples())
-    return (f'<section class="card"><h2>Ground temperatures: NASA POWER</h2><p>{POWER_REFERENCE}</p>'
-            f'<p>Data reference: {html.escape(first["api"])}, accessed {html.escape(first["accessed"])}. '
-            f'Parameter TS_MAX ({html.escape(first["TS_MAX_definition"])}), annual climatology, '
-            f'source MERRA-2 (~50 km grid). Home: <a href="https://power.larc.nasa.gov">power.larc.nasa.gov</a></p>'
-            f'<details><summary>Exact request for each site</summary><ul>{requests}</ul></details></section>')
+    modis = pd.read_csv(MODIS_CSV)
+    first = modis.iloc[0]
+    requests = "".join(f'<li>{html.escape(r.site)}: <a href="{html.escape(r.example_request_url)}">'
+                       f'{html.escape(r.example_request_url)}</a></li>' for r in modis.itertuples())
+    return (f'<section class="card"><h2>Ground temperatures: MODIS (1 km)</h2><p>{html.escape(MODIS_REFERENCE)}</p>'
+            f'<p>Product MYD11A2 v6.1 (MODIS Aqua, 8-day land surface temperature, band LST_Day_1km), '
+            f'year 2025, accessed {html.escape(first["accessed"])}. For each site we keep the hottest '
+            f'8-day average of clear-sky daytime readings (Aqua passes about 1:30 pm local time) in the '
+            f'one 1 km pixel at its coordinates. Service: <a href="https://modis.ornl.gov">modis.ornl.gov</a></p>'
+            f'<p class="meta">We first used NASA POWER (~50 km grid cell) and switched to MODIS because it is the '
+            f'smallest Earth temperature data on the challenge Resources list that covers all 12 sites without '
+            f'a login. The POWER download is kept in our repository for reference; it is not scored.</p>'
+            f'<details><summary>Example request for each site</summary><ul>{requests}</ul></details></section>')

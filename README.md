@@ -22,8 +22,10 @@ scores; until then its page says "Not scored yet" and why.
 |---|---|
 | `data/site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`, `datasets.csv` | The research sheet's tabs, exported as CSV. **These are the inputs.** |
 | `data/import_sheet.py` | Turns `site_options.csv` + `targets.csv` into `data/sites.csv` |
-| `data/fetch_power.py` | Downloads NASA POWER max/min skin temperatures per site into `data/power_skin_temps.csv` (needs internet; run when sites change) |
-| `data/scores_html.py` | The score cards on site pages and the NASA POWER citation |
+| `data/fetch_modis.py` | Downloads MODIS 1 km land surface temperatures per site into `data/modis_lst.csv`: **the scored Earth max temperature** (needs internet; run when sites change) |
+| `data/fetch_power.py` | NASA POWER (~50 km) skin temperatures into `data/power_skin_temps.csv`. Kept for reference only: no longer scored |
+| `data/appeears_points.csv` | Our 12 sites as a point file for NASA AppEEARS (ID, Category, Latitude, Longitude) |
+| `data/scores_html.py` | The score cards on site pages and the MODIS citation |
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
@@ -56,8 +58,11 @@ open docs/index.html               # macOS; or double-click the file
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
 4. **Scores so far:** max ground temperature vs Malapert. Earth values come from
-   NASA POWER (`data/fetch_power.py` → `data/power_skin_temps.csv`; re-run it if
-   sites are added or moved), Malapert's from the Targets tab column
+   MODIS Aqua land surface temperature, MYD11A2: the hottest 8-day average of clear-sky
+   ~1:30 pm readings in 2025, in the one 1 km pixel at the site (`data/fetch_modis.py` →
+   `data/modis_lst.csv`; re-run it if sites are added or moved). We first used NASA POWER,
+   but we switched from NASA POWER (~50 km grid cell) to MODIS (1 km pixel) because it is the smallest Earth temperature data on the challenge Resources list that covers all 12 sites without a login. Daily MODIS (MYD11A1) isn't offered by that no-login service, so
+   we use the 8-day product. Malapert's value comes from the Targets tab column
    "Max ground surface temp (°C)" (LRO Diviner). Each score shows as a card; a
    radar chart appears once a site has 3 or more scored conditions.
    **To score more conditions:** add columns named exactly `slope_deg`, `temp_max_c`,

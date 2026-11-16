@@ -8,7 +8,7 @@ From the challenge's official Resources list. Any source is fine as long as
 | Column | Earth sites | Moon target | Mars target |
 |---|---|---|---|
 | `slope_deg` | Copernicus DEM (Copernicus Data Space) or SRTM (NASA Earthdata Search) | LRO **LOLA** slope maps (PDS) | MOLA or HiRISE terrain models (PDS) |
-| `temp_max_c`, `temp_min_c`, `temp_range_c` | **In use:** NASA POWER skin temperature, TS_MAX (`data/fetch_power.py`). Also: MODIS **land surface** temperature (NASA Earthdata Search) | LRO **Diviner** polar products | PDS atmospheres archive (e.g. Mars Climate Sounder, TES) |
+| `temp_max_c`, `temp_min_c`, `temp_range_c` | **In use:** MODIS Aqua **land surface** temperature, MYD11A2 1 km (`data/fetch_modis.py`). Replaced NASA POWER TS_MAX (~50 km; `data/fetch_power.py`, kept for reference) | LRO **Diviner** polar products | PDS atmospheres archive (e.g. Mars Climate Sounder, TES) |
 | `precip_mm_yr` | GPM IMERG (Earthdata Search) or GSMaP (JAXA G-Portal) | Team decision, see [team-decisions.md](team-decisions.md) | Team decision, see [team-decisions.md](team-decisions.md) |
 | `dust_aod` | MODIS aerosol optical depth (Earthdata Search, preview in Worldview) or Sentinel-5P (Copernicus Data Space) | Team decision, see [team-decisions.md](team-decisions.md) | Rover or orbiter dust opacity (PDS) |
 

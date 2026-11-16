@@ -17,14 +17,17 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 ## 2. How to measure each column (so all rows compare like with like)
 
 > **Status (Nov 15):** one condition is scored: **max ground temperature vs Malapert**.
-> Earth: NASA POWER annual TS_MAX (maximum hourly skin temperature, MERRA-2 ~50 km
-> grid; `data/fetch_power.py`). Moon: LRO Diviner 47 °C at the Malapert ridge top.
-> Scores range from 0.98 (Qaidam, Atacama) to 0.20 (East Antarctic Plateau); 10 of 12
-> sites score ≥ 0.80, so this score mainly separates cold sites from hot ones.
+> Earth: MODIS Aqua MYD11A2 land surface temperature, hottest 8-day average of
+> clear-sky ~1:30 pm readings in 2025, one 1 km pixel (`data/fetch_modis.py`).
+> Moon: LRO Diviner 47 °C at the Malapert ridge top.
+> **Switched (Nov 15):** we switched from NASA POWER (~50 km grid cell) to MODIS (1 km pixel) because it is the smallest Earth temperature data on the challenge Resources list that covers all 12 sites without a login. Daily MODIS (MYD11A1) isn't offered by that
+> service, so the value is an 8-day average: a few °C below the single hottest reading.
+> Scores range from 0.99 (Lonar) to 0.20 (East Antarctic Plateau); 10 of 12 sites
+> score ≥ 0.80, so this score mainly separates cold sites from hot ones.
 > Arcadia has no ground-temperature value (only Viking *air* temperatures): "no data".
 > Malapert's slope (5.6°) is in the sheet but not scored: no Earth slope values yet.
 > No radar charts until a site has 3+ scored conditions; scores show as cards.
-> Note: POWER's grid smooths extremes (Lut 63.86 °C vs the 80.8 °C satellite record).
+> Note: 8-day averaging lowers peaks (Lut 65.41 °C vs the 80.8 °C single-reading record).
 
 - [x] **Temperature type**: ground surface temperature for every row (matches Diviner).
   Decision: yes. Air temperatures stay in the text only.

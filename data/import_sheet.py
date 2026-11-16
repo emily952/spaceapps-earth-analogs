@@ -38,7 +38,9 @@ TARGET_COLUMNS = {
 # Scoring values that come from somewhere other than an exact-name Sheet column.
 # Each must be the same kind of number as the column: max ground (skin) temperature.
 TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)"}  # LRO Diviner, entered by the team
-POWER_CSV = score.DATA_DIR / "power_skin_temps.csv"  # Earth temp_max_c, made by fetch_power.py
+# Earth temp_max_c: hottest 8-day MODIS land surface temperature, 1 km pixel (made by fetch_modis.py).
+# (fetch_power.py / power_skin_temps.csv, ~50 km grid, are kept for reference but no longer scored.)
+MODIS_CSV = score.DATA_DIR / "modis_lst.csv"
 
 # Sheet columns shown together as "Climate and conditions" notes, word for word.
 SITE_NOTES = ["Elevation (m)", "Mean annual temp (°C)", "Extreme temp (°C)", "Precip (mm/yr)"]
@@ -90,23 +92,23 @@ def reference_rows():
     return targets[targets["Target"].str.contains("(reference)", regex=False)]
 
 
-def add_power_temps(sites):
-    """Earth temp_max_c = NASA POWER annual TS_MAX (maximum hourly skin temperature)."""
-    if not POWER_CSV.exists():
-        print("  No data/power_skin_temps.csv: run data/fetch_power.py to score max temperature.")
+def add_modis_temps(sites):
+    """Earth temp_max_c = MODIS Aqua MYD11A2 LST_Day_1km: hottest 8-day average in the year."""
+    if not MODIS_CSV.exists():
+        print("  No data/modis_lst.csv: run data/fetch_modis.py to score max temperature.")
         return
-    power = pd.read_csv(POWER_CSV).set_index("site")["TS_MAX_annual_c"]
-    sites["temp_max_c"] = sites["name"].map(power)  # sites missing from the file stay blank
+    modis = pd.read_csv(MODIS_CSV).set_index("site")["LST_day_max_c"]
+    sites["temp_max_c"] = sites["name"].map(modis)  # sites missing from the file stay blank
     missing = sites.loc[sites["temp_max_c"].isna(), "name"].tolist()
     if missing:
-        print(f"  No NASA POWER value for {missing}: run data/fetch_power.py again.")
+        print(f"  No MODIS value for {missing}: run data/fetch_modis.py again.")
 
 
 def main():
     sites = convert(read_tab(SITE_OPTIONS, list(SITE_COLUMNS.values()) + SITE_NOTES),
                     SITE_COLUMNS, SITE_NOTES)
     sites["type"] = "earth"
-    add_power_temps(sites)
+    add_modis_temps(sites)
 
     targets = read_targets()
     targets = targets[~targets["Target"].str.contains("(reference)", regex=False)]

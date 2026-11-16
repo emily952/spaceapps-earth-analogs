@@ -5,11 +5,17 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
 
 ## NASA data we used
 
-- **NASA POWER (Prediction Of Worldwide Energy Resources), Climatology API v2.10.1,
-  accessed 2026-11-15.** Annual TS_MAX ("the maximum hourly earth skin temperature in
-  the period of interest") at each of our 12 Earth sites. Source: MERRA-2 reanalysis,
-  about 50 km grid, so values describe the grid cell, not the exact spot. Used for
-  the max ground temperature score against Malapert Massif.
+- **MODIS Aqua land surface temperature, MYD11A2 v6.1 (1 km, 8-day), year 2025,
+  accessed 2026-11-15, via the ORNL DAAC MODIS/VIIRS Land Product Subsets web service.**
+  For each of our 12 Earth sites: the hottest 8-day average of clear-sky daytime
+  (~1:30 pm) readings in the one 1 km pixel at the site. Used for the max ground
+  temperature score against Malapert Massif. Citation: "ORNL DAAC. 2018. MODIS and
+  VIIRS Land Product Subsets RESTful Web Service. https://doi.org/10.3334/ORNLDAAC/1600 .
+  Product MYD11A2 v6.1 (Wan, Hook, Hulley)." Example request per site: `data/modis_lst.csv`.
+  Why MODIS: we switched from NASA POWER (~50 km grid cell) to MODIS (1 km pixel) because it is the smallest Earth temperature data on the challenge Resources list that covers all 12 sites without a login.
+- **NASA POWER, Climatology API v2.10.1, accessed 2026-11-15 (reference only, not
+  scored).** Annual TS_MAX at each site (MERRA-2, about 50 km grid). Our first source
+  for max temperature, replaced by MODIS.
   Citation (POWER's requested wording): "The data was obtained from National
   Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of
   Worldwide Energy Resources (POWER) project funded through the NASA Earth Science
