@@ -129,7 +129,7 @@ export async function findMatches(query, limit = 2) {
   if (/\b(hot|hottest|warm|heat)\b/.test(text)) criteria.push({ key: "temp_max_c", label: "Maximum ground temperature", unit: " °C", direction: -1 });
   if (/\b(flat|flattest|gentle slope|low slope)\b/.test(text)) criteria.push({ key: body === "mars" ? "slope_463m_deg" : "slope_deg", label: "Slope", unit: "°", direction: 1 });
   if (/\b(steep|steepest|high slope)\b/.test(text)) criteria.push({ key: body === "mars" ? "slope_463m_deg" : "slope_deg", label: "Slope", unit: "°", direction: -1 });
-  if (/\b(high sun|more sunlight|sunlight|sun angle)\b/.test(text)) criteria.push({ key: "sun_max_elev_deg", label: "Highest Sun angle", unit: "°", direction: -1 });
+  if (/\b(high sun|high sunlight|more sunlight|sun angle)\b/.test(text)) criteria.push({ key: "sun_max_elev_deg", label: "Highest Sun angle", unit: "°", direction: -1 });
   if (/\b(low sun|less sunlight)\b/.test(text)) criteria.push({ key: "sun_max_elev_deg", label: "Highest Sun angle", unit: "°", direction: 1 });
 
   if (criteria.length > 1) {
