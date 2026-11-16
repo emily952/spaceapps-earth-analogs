@@ -21,8 +21,7 @@ NOT_SCORED_NOTE = ("Not scored yet. We only score a condition when we have an ex
 
 # Who measured what, shown under each scored condition. Keep in step with import_sheet.py.
 DIMENSION_SOURCES = {
-    "temp_max_c": "Earth: MODIS Aqua land surface temperature (MYD11A1 v6.1, via NASA AppEEARS), "
-                  "hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel. "
+    "temp_max_c": "Earth: NASA POWER TS_MAX, the highest hourly ground (skin) temperature in its 2001–2025 record (MERRA-2, ~50 km grid cell). "
                   "Moon: LRO Diviner, Malapert ridge top.",
     "sun_max_elev_deg": sun_angle.SOURCE,
     "slope_deg": "Earth: Copernicus DEM GLO-30 (~30 m pixels; wider east-west near the poles), mean "

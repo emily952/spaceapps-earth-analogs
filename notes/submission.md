@@ -63,15 +63,15 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 
 | Condition | Earth side | Target side |
 |---|---|---|
-| Hottest ground temperature | MODIS Aqua MYD11A1 (daily, via NASA AppEEARS): hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel | Malapert 47 °C, LRO Diviner (McClanahan et al.) |
+| Hottest ground temperature | NASA POWER TS_MAX: the highest hourly ground (skin) temperature in 2001–2025 (MERRA-2, ~50 km grid cell) | Malapert 47 °C, LRO Diviner (McClanahan et al.) |
 | Slope | Copernicus DEM GLO-30 (~30 m): mean slope over a 15 × 15 km box (the size of a NASA Artemis candidate landing region) | Malapert 5.6° ± 2.0° (Wueller et al. 2025) |
 | Highest Sun angle | Calculated: 90° − max(0, \|latitude\| − axial tilt) | Malapert 5.54°, Arcadia 67.99° (tilts from NASA fact sheets) |
 | Slope at 463 m pixels (Mars) | Copernicus DEM heights averaged into ~463 m blocks, mean slope over 15 × 15 km | Arcadia 0.36°, NASA MOLA map (same pixel size, same box) |
 | Dust (Mars) | NASA POWER aerosol optical depth at 0.55 µm, 2001–2025 average (~100 km grid) | Arcadia 0.377: LMD Mars dust climatology from orbiter data, Mars Years 24–36 average, 9.3 µm value × 2.6 visible equivalent (~180 km grid) |
 
 **Key findings.**
-- **Hottest ground (Moon):** Lonar Crater, India comes closest to Malapert (52.0 vs 47 °C;
-  score 0.95). The East Antarctic Plateau is the furthest (0.27).
+- **Hottest ground (Moon):** Kamil Crater, Egypt comes closest to Malapert (53.9 vs 47 °C;
+  score 0.92). The East Antarctic Plateau is the furthest (0.20).
 - **Slope (Moon):** Harrat Khaybar, Saudi Arabia is the closest of the Moon-analog sites
   (3.8° vs 5.6°; 0.83).
 - **Sun angle (Mars):** Western Qaidam Basin, China and Río Tinto, Spain match Arcadia
@@ -92,9 +92,9 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
   converted from 9.3 µm with LMD's factor of 2.6. Both are yearly averages on coarse grids.
 - **Mars slope map is smoothed.** MOLA fills in between laser tracks, so Arcadia may be
   rougher than 0.36°; Earth is averaged to the same ~463 m pixels to keep it fair.
-- **Temperatures are measured differently.** Earth is the hottest reading at one fixed
-  time of day (~1:30 pm), averaged over a 1 km pixel; Malapert is Diviner's maximum.
-  Cloudy and low-quality days are dropped (about half the year at Lonar: 185 of 365 days, mostly monsoon cloud).
+- **Earth temperatures describe a ~50 km area.** NASA POWER's hourly maximum is for a grid
+  cell, so local hot spots are smoothed (Lut: 63.9 °C in POWER vs 80.8 °C measured on one
+  spot by satellite). We chose it because the team defined "max" as the highest hourly value.
 - **Slope depends on the box and pixel size.** At 30 m, measurement noise adds about
   0.5–1° on flat ground, and Malapert's source doesn't state its map resolution.
 - **Sun angle is calculated, not measured.** It assumes a flat horizon.
@@ -110,7 +110,8 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 
 | Dataset | What for | Link |
 |---|---|---|
-| MODIS Aqua daily land surface temperature, MYD11A1 v6.1 (doi:10.5067/MODIS/MYD11A1.061), via NASA AppEEARS (LP DAAC) | Earth hottest ground temperature (scored) | https://appeears.earthdatacloud.nasa.gov |
+| NASA POWER TS_MAX (maximum hourly skin temperature, MERRA-2) | Earth hottest ground temperature (scored) | https://power.larc.nasa.gov |
+| MODIS Aqua daily land surface temperature, MYD11A1 v6.1 (doi:10.5067/MODIS/MYD11A1.061), via NASA AppEEARS | Reference only, not scored | https://appeears.earthdatacloud.nasa.gov |
 | MODIS 8-day MYD11A2 via ORNL DAAC | Earlier temperature source; reference only, not scored | https://modis.ornl.gov |
 | LRO Diviner surface temperatures (via McClanahan et al., arXiv 2303.03911) | Malapert 47 °C maximum (scored); shadowed-crater cold (gap page) | https://arxiv.org/abs/2303.03911 |
 | NASA planetary fact sheets (NSSDC) | Axial tilts for Sun angle (scored); gravity and pressure (text) | https://nssdc.gsfc.nasa.gov/planetary/factsheet/ |
@@ -199,7 +200,7 @@ AI tools helped with research and coding; the team made the decisions and checke
 2. **Targets:** Malapert Massif (an Artemis candidate landing region) and Arcadia Planitia (icy Mars plain).
 3. **12 Earth sites on one map,** including 10 lesser-known ones, filterable by Moon / Mars analogs.
 4. **How we score:** one condition at a time, 0 to 1, from NASA MODIS, LRO Diviner, MOLA, POWER, NASA fact sheets, ESA Copernicus and the LMD Mars dust climatology.
-5. **Findings:** Lonar matches Malapert's hottest ground; Lut matches Arcadia's flat plain, Dallol its dusty haze, Qaidam and Río Tinto its Sun; no single best site.
+5. **Findings:** Kamil Crater matches Malapert's hottest ground; Lut matches Arcadia's flat plain, Dallol its dusty haze, Qaidam and Río Tinto its Sun; no single best site.
 6. **Where Earth falls short:** nowhere on Earth does the Sun's highest point of the year stay below 23.4° (Malapert: never above 5.5°); no −233 °C cold; no low gravity, vacuum or Mars radiation.
 7. **Use it:** live site + open data and code; AI disclosure; next steps (albedo, Mars temperatures, more sites).
 

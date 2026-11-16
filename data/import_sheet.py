@@ -42,9 +42,10 @@ TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)",  # LRO Di
                         "slope_deg": "Landing-area slope (°)"}         # Wueller et al. 2025, entered by the team
 # Scoring values made by our download scripts: (our column, file in data/, name column,
 # value column, script that makes the file). Rows not in a file stay blank ("no data").
-# Not scored, kept for reference: modis_lst.csv (8-day MODIS) and power_skin_temps.csv (POWER).
+# Not scored, kept for reference: modis_daily_lst.csv (daily MODIS, 1 km) and modis_lst.csv (8-day MODIS).
 DOWNLOADED = [
-    ("temp_max_c", "modis_daily_lst.csv", "site", "LST_day_max_c", "read_appeears.py MYD11A1"),  # daily MODIS, 1 km
+    # Team decision: max = highest HOURLY ground (skin) temperature reported by the dataset in its period.
+    ("temp_max_c", "power_skin_temps.csv", "site", "TS_MAX_annual_c", "fetch_power.py"),     # NASA POWER TS_MAX
     ("slope_deg", "copernicus_slope.csv", "site", "slope_mean_15km", "fetch_slope.py"),       # Copernicus 30 m, 15 km box
     ("slope_463m_deg", "slope_463m.csv", "name", "slope_463m_deg", "fetch_mars_slope.py"),     # Earth + Mars at 463 m
     ("dust_aod", "dust_aod.csv", "site", "aod_55_annual", "fetch_dust.py"),                     # Earth: NASA POWER AOD_55

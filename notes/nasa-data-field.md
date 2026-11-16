@@ -5,9 +5,11 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
 
 ## NASA data we used
 
-- **MODIS Aqua daily land surface temperature, MYD11A1 v6.1 (1 km), every day of 2025,
-  via NASA AppEEARS (LP DAAC).** For each of our 12 Earth sites: the hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel.
-  Used for the max ground temperature score against Malapert Massif. Quality filter:
+- **NASA POWER TS_MAX (scored):** the maximum hourly ground (skin) temperature, 2001–2025,
+  MERRA-2 ~50 km grid; used for the max temperature score vs Malapert (team decision (Nov 15): max = the highest hourly ground (skin) temperature reported by the dataset in its stated period).
+  POWER citation: see the NASA POWER entry below.
+- **MODIS Aqua daily land surface temperature, MYD11A1 v6.1 (1 km), 2025, via NASA AppEEARS
+  (reference only, not scored).** For each site: the hottest good-quality daily reading. Quality filter:
   MODLAND 00/01 and LST error 2 K or less (days kept vs dropped are on the About page).
   Citations: Wan, Z., Hook, S., & Hulley, G. (2021). MODIS/Aqua Land Surface
   Temperature/Emissivity Daily L3 Global 1km SIN Grid V061. NASA LP DAAC.
@@ -16,8 +18,7 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
 - **MODIS 8-day MYD11A2 via ORNL DAAC (doi:10.3334/ORNLDAAC/1600): reference only,
   not scored.** Our second temperature source, replaced by the daily data.
   Why MODIS: we switched from NASA POWER (~50 km grid cell) to MODIS (1 km pixel) because it is the smallest Earth temperature data on the challenge Resources list that covers all 12 sites without a login.
-- **NASA POWER, Climatology API v2.10.1, accessed 2026-11-15 (reference only, not
-  scored).** Annual TS_MAX at each site (MERRA-2, about 50 km grid). Our first source
+- **NASA POWER, Climatology API v2.10.1, accessed 2026-11-15 (TS_MAX is scored).** Annual TS_MAX at each site (MERRA-2, about 50 km grid). Our first source
   for max temperature, replaced by MODIS.
   Citation (POWER's requested wording): "The data was obtained from National
   Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of

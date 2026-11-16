@@ -1,4 +1,4 @@
-/* style.css: the shared look of every page except the map.
+/* style.css: the shared look of every page, including the map page.
    build.py copies this file to docs/style.css. Edit it here, not in docs/.
    Theme: a dark "mission control" look, inspired by NASA's Solar System Treks portals:
    deep space navy, slightly lighter panels, Moon in cool blue and Mars in rust.
