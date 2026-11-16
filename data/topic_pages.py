@@ -15,6 +15,7 @@ import pages         # our own data/pages.py (shared HTML helpers)
 import score         # our own data/score.py
 import downloads     # our own data/downloads.py (How we score, Download our data)
 import scores_html   # our own data/scores_html.py (MODIS citation)
+import sun_angle     # our own data/sun_angle.py (Lowest Sun card)
 
 LIMITS_CSV = score.DATA_DIR / "earths_limits.csv"
 TASKS_CSV = score.DATA_DIR / "mission_tasks.csv"
@@ -68,7 +69,7 @@ def cold_chart():
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 
-def gap_page(limits):
+def gap_page(limits, sites):
     """Where no Earth site comes close, and what that means for testing."""
     header = "".join(f"<th>{pages.show(col)}</th>" for col in LIMIT_COLUMNS)
     rows = "".join("<tr>" + "".join(f"<td>{pages.show(row[col])}</td>" for col in LIMIT_COLUMNS) + "</tr>"
@@ -88,6 +89,7 @@ them need laboratory chambers or other methods, not field sites.</p>
 <p>Earth's coldest measured surface (about −98 °C, East Antarctic Plateau) is colder than sunlit
 lunar polar spots, but about 135 °C warmer than the Moon's shadowed craters.</p>
 {cold_chart()}</section>
+{sun_angle.gap_card(sites)}
 <section class="card"><h2>Condition by condition</h2><div class="scroll"><table><tr>{header}</tr>{rows}</table></div></section>
 <p class="note"><strong>Limits of any Earth analog:</strong> {pages.LIMITS_NOTE}</p>
 <section class="card">{reference}</section>

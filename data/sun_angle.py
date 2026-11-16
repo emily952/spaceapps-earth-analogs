@@ -38,3 +38,16 @@ def add_column(rows):
     """Fill the sun_max_deg column for every row (Earth sites and targets)."""
     rows["sun_max_deg"] = [highest_sun(lat, kind) for lat, kind in zip(rows["lat"], rows["type"])]
     return rows
+
+
+def gap_card(sites):
+    """Gap page card: no Earth site can get the Sun as low as the Moon's south pole does."""
+    moon = sites[sites["type"] == "moon_target"].iloc[0]
+    earth = sites[sites["type"] == "earth"].sort_values("sun_max_deg").iloc[0]  # lowest Earth site
+    return (f'<section class="card"><h2>Lowest Sun</h2><p>At {moon["name"]} the Sun never climbs '
+            f'higher than about {moon["sun_max_deg"]:.1f}° above the horizon: it skims along the edge of '
+            f'the sky, casting very long shadows. On Earth, even at the poles, the Sun reaches 23.4° in '
+            f'summer, because Earth is tilted 23.44° but the Moon only 1.5°. Our lowest site, '
+            f'{earth["name"]}, gets {earth["sun_max_deg"]:.1f}°. Low-Sun lighting for cameras, solar panels '
+            f'and shadow navigation has to be tested in a lab or simulated.</p><p class="meta">Calculated '
+            f'from latitude and axial tilt (NASA planetary fact sheets); flat horizon assumed.</p></section>')
