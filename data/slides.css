@@ -1,0 +1,35 @@
+/* slides.css: the 7-slide demo (docs/slides.html). Uses the colours from style.css.
+   Each slide fills the screen; scrolling snaps from one slide to the next. */
+html { scroll-snap-type: y mandatory; }
+body.deck { background-attachment: fixed; }
+.slide { min-height: 100vh; scroll-snap-align: start; display: flex; align-items: center;
+         justify-content: center; position: relative; padding: 48px 6vw; border-bottom: 1px solid var(--line); }
+.inner { width: min(1100px, 100%); }
+.slide h1 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.08; max-width: 18ch; margin: 0 0 24px; }
+.slide h2 { font-size: clamp(1.4rem, 2.8vw, 2.3rem); line-height: 1.2; max-width: 30ch; margin: 0 0 28px; }
+.slide h3 { font-size: 1.25rem; margin: 0 0 10px; }
+.slide p { font-size: clamp(1rem, 1.5vw, 1.3rem); max-width: 60ch; color: var(--ink); }
+.kicker { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.9rem !important; color: var(--accent) !important; }
+.big-lead { color: var(--muted) !important; font-size: clamp(1.1rem, 2vw, 1.6rem) !important; }
+.link { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--accent) !important; font-size: 1.2rem !important; }
+.small { color: var(--muted) !important; font-size: 1rem !important; margin-top: 14px; }
+.count { position: absolute; right: 24px; bottom: 18px; color: var(--muted); font-size: 0.9rem; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; margin: 8px 0 20px; }
+.target { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+.target.moon { border-top: 4px solid var(--moon); }
+.target.mars { border-top: 4px solid var(--mars); }
+.slide img { width: 100%; max-height: 58vh; object-fit: cover; object-position: center 30%;
+             border-radius: 14px; border: 1px solid var(--line); }
+.formula { font-family: ui-monospace, Menlo, monospace; font-size: clamp(1rem, 2vw, 1.5rem) !important;
+           background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; max-width: none !important; }
+.moon-t { color: #9cc0ef; } .mars-t { color: #f0a07c; }
+.result { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.result .cond { grid-column: 1 / -1; color: var(--muted); font-size: 0.95rem; }
+.result .site { font-family: "Space Grotesk", system-ui, sans-serif; font-size: 1.5rem; font-weight: 700; }
+.result .vals { color: var(--muted); align-self: end; }
+.result .sbar { grid-column: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; align-self: center; }
+.result .sbar span { display: block; height: 100%; background: var(--accent); }
+.result .score { font-family: "Space Grotesk", system-ui, sans-serif; font-size: 1.6rem; font-weight: 700; }
+.fact { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+.fact .num { font-family: "Space Grotesk", system-ui, sans-serif; font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 700; color: #fff; }
+.col-moon .sbar span { background: var(--moon); } .col-mars .sbar span { background: var(--mars); }

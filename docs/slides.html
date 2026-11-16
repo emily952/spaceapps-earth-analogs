@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project JES: 7-slide demo</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="slides.css"></head><body class="deck"><section class="slide" id="s1"><div class="inner"><p class="kicker">Project JES · NASA Space Apps 2026</p>
+<h1>Where on Earth can we rehearse the Moon and Mars?</h1>
+<p class="big-lead">We compared 12 places on Earth with a landing region at the Moon's south pole
+and an icy plain on Mars, one condition at a time.</p>
+<p class="link">https://emily952.github.io/spaceapps-earth-analogs/</p></div><div class="count">1 / 7</div></section><section class="slide" id="s2"><div class="inner"><p class="kicker">The question</p>
+<h2>Crews and rovers practise on Earth first. But which site is like the target, and in what way?</h2>
+<div class="two"><div class="target moon"><h3>Malapert Massif, Moon</h3>
+<p>Artemis candidate landing region near the south pole. The Sun never climbs above
+5.5°. Ridge-top ground reaches 47 °C.</p></div>
+<div class="target mars"><h3>Arcadia Planitia, Mars</h3>
+<p>Flat, ice-rich plain at 47.2°N, proposed for future landings. Average slope 0.36°.</p></div></div></div><div class="count">2 / 7</div></section><section class="slide" id="s3"><div class="inner"><p class="kicker">12 sites</p>
+<h2>Ten of our sites are lesser-known analogs, from Kamil Crater in Egypt to the Qaidam Basin in China.</h2>
+<img src="slides_map.png" alt="Map of our 12 Earth analog sites"></div><div class="count">3 / 7</div></section><section class="slide" id="s4"><div class="inner"><p class="kicker">How we score</p>
+<h2>Each condition gets its own score from 0 to 1, and a site is only compared with the body it stands in for.</h2>
+<p class="formula">score = 1 − |Earth − target| / (largest − smallest in our data)</p>
+<p>Data: NASA POWER, MOLA and LRO Diviner, the NASA planetary fact sheets, ESA's Copernicus elevation model
+and the LMD Mars dust maps. If we have no comparable number, the site says "no data". We never add scores up.</p></div><div class="count">4 / 7</div></section><section class="slide" id="s5"><div class="inner"><p class="kicker">What we found</p>
+<h2>There is no single best analog. It depends on the test.</h2>
+<div class="two"><div class="col-moon"><h3 class="moon-t">vs Malapert Massif</h3><div class="result"><div class="cond">Hottest ground</div><div class="site">Kamil Crater</div><div class="vals">53.92 °C vs 47 °C</div><div class="sbar"><span style="width:92%"></span></div><div class="score">0.92</div></div><div class="result"><div class="cond">Slope</div><div class="site">Harrat Khaybar</div><div class="vals">3.78° vs 5.6°</div><div class="sbar"><span style="width:83%"></span></div><div class="score">0.83</div></div></div>
+<div class="col-mars"><h3 class="mars-t">vs Arcadia Planitia</h3><div class="result"><div class="cond">Slope</div><div class="site">Lut Desert</div><div class="vals">0.44° vs 0.36°</div><div class="sbar"><span style="width:98%"></span></div><div class="score">0.98</div></div><div class="result"><div class="cond">Dusty air</div><div class="site">Dallol</div><div class="vals">0.4 vs 0.377</div><div class="sbar"><span style="width:96%"></span></div><div class="score">0.96</div></div></div></div></div><div class="count">5 / 7</div></section><section class="slide" id="s6"><div class="inner"><p class="kicker">Where Earth falls short</p>
+<h2>Some tests can't happen outdoors anywhere on Earth.</h2>
+<div class="two"><div class="fact"><div class="num">23.4°</div><p>is the lowest the Sun's highest point of
+the year gets anywhere on Earth. At Malapert it never rises above 5.5°.</p></div>
+<div class="fact"><div class="num">135 °C</div>
+<p>warmer: Earth's coldest surface (-98 °C) vs the Moon's shadowed craters
+(-233 °C).</p></div></div>
+<p>Low gravity, vacuum, thin air and space radiation need chambers and other methods.</p></div><div class="count">6 / 7</div></section><section class="slide" id="s7"><div class="inner"><p class="kicker">Try it</p>
+<h2>Every number on the site links back to its source, and the data can be downloaded.</h2>
+<p class="link">https://emily952.github.io/spaceapps-earth-analogs/</p><p class="small">Code and data: https://github.com/emily952/spaceapps-earth-analogs</p>
+<p class="small">Next: ground brightness (albedo), a measured Mars ground temperature, more sites.</p>
+<p class="small">AI tools (Claude, Claude Code, Cursor) helped with research and code. Our team chose the sites
+and sources and made the method decisions. No AI-generated images are used.</p></div><div class="count">7 / 7</div></section></body></html>

@@ -25,6 +25,7 @@ import analog        # our own data/analog.py (Moon or Mars analog?)
 import compare_page  # our own data/compare_page.py
 import downloads     # our own data/downloads.py
 import findings_page # our own data/findings_page.py (home page)
+import slides_page   # our own data/slides_page.py (7-slide demo)
 
 # Where the website goes.
 DOCS = Path(__file__).resolve().parent.parent / "docs"
@@ -118,6 +119,8 @@ def main():
     build_map(earth_sites, targets)
     print(f"  Wrote docs/map.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
     write(DOCS / "index.html", findings_page.findings_page(sites, scores))  # home page: Key findings
+    write(DOCS / "slides.html", slides_page.slides_page(sites, scores, DOCS))  # 7-slide demo
+    shutil.copy(Path(__file__).parent / "slides.css", DOCS / "slides.css")
 
     # Step 5: remind us of anything that breaks the challenge rules.
     warnings = score.check_sites(sites) + topic_pages.check_chart_values(limits) + analog.warnings(sites)

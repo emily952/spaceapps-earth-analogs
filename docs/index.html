@@ -12,10 +12,9 @@
 practise in similar places on Earth. We compared 12 Earth sites with two targets, one condition at a
 time, so mission planners and field-test teams can see <strong>which site to use for which test</strong>, and
 where no place on Earth can help.</p><a class="button" href="map.html">Explore the map</a><a class="button ghost" href="compare.html">Compare all sites</a><a class="button ghost" href="gap.html">Where Earth falls short</a><a class="button ghost" href="about.html">How we score &amp; sources</a></section>
-
 <div class="grid"><section class="card moon-card"><h2>Moon: Malapert Massif</h2>
 <p class="meta">An Artemis candidate landing region near the lunar south pole.</p>
-<p>Closest Earth site for each condition:</p><ul><li><strong>Slope:</strong> <a href="sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html">Harrat Khaybar and Umm Jirsan lava tube</a> (3.78°) vs 5.6°; score 0.83</li><li><strong>Max temperature:</strong> <a href="sites/lonar-crater-india.html">Lonar Crater</a> (51.95 °C) vs 47 °C; score 0.95</li><li><strong>Highest Sun angle:</strong> <a href="sites/east-antarctic-plateau-cold-spots.html">East Antarctic Plateau cold spots</a> (33.07°) vs 5.54°; score 0.67</li></ul></section>
+<p>Closest Earth site for each condition:</p><ul><li><strong>Slope:</strong> <a href="sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html">Harrat Khaybar and Umm Jirsan lava tube</a> (3.78°) vs 5.6°; score 0.83</li><li><strong>Max temperature:</strong> <a href="sites/kamil-crater-egypt.html">Kamil Crater</a> (53.92 °C) vs 47 °C; score 0.92</li><li><strong>Highest Sun angle:</strong> <a href="sites/east-antarctic-plateau-cold-spots.html">East Antarctic Plateau cold spots</a> (33.07°) vs 5.54°; score 0.67</li></ul></section>
 <section class="card mars-card"><h2>Mars: Arcadia Planitia</h2>
 <p class="meta">A flat, ice-rich plain proposed for future landings.</p>
 <p>Closest Earth site for each condition:</p><ul><li><strong>Slope (463 m pixels):</strong> <a href="sites/lut-desert-dasht-e-lut-iran.html">Lut Desert (Dasht-e Lut)</a> (0.44°) vs 0.36°; score 0.98</li><li><strong>Dust (AOD):</strong> <a href="sites/dallol-danakil-depression-ethiopia.html">Dallol</a> (0.4) vs 0.377; score 0.96</li><li><strong>Highest Sun angle:</strong> <a href="sites/western-qaidam-basin-china.html">Western Qaidam Basin</a> (75.4°) and <a href="sites/rio-tinto-pena-de-hierro-spain.html">Río Tinto (Peña de Hierro)</a> (75.72°) vs 67.99°; score 0.91</li></ul></section></div>
@@ -32,85 +31,4 @@ warmer than the Moon's shadowed craters (-233 °C).</li>
 <p class="meta">Each condition is scored from 0 (as different as anything in our data) to 1 (same as the
 target), using NASA data (MODIS, LRO Diviner, MOLA, POWER, planetary fact sheets), ESA's Copernicus DEM and
 the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored only against the target they are an analog for.
-<a href="about.html">Method, sources and downloads.</a></p></main>
-
-<style>
-  #chat-toggle{position:fixed;right:20px;bottom:20px;z-index:1000;border:0;border-radius:999px;padding:12px 18px;background:#4a8cf0;color:#fff;font:600 15px system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
-  #chat-panel{position:fixed;right:20px;bottom:80px;z-index:1000;width:320px;max-width:calc(100vw - 40px);height:420px;max-height:calc(100vh - 110px);display:none;flex-direction:column;background:#1a2540;color:#eef2ff;border:1px solid #34476e;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.5);font:14px/1.4 system-ui,sans-serif;overflow:hidden}
-  #chat-panel.open{display:flex}
-  #chat-head{padding:10px 14px;background:#22305a;font-weight:600}
-  #chat-log{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-  .msg{padding:8px 11px;border-radius:10px;max-width:85%}
-  .msg.bot{background:#2b3a66;align-self:flex-start}
-  .msg.me{background:#4a8cf0;color:#fff;align-self:flex-end}
-  .msg a{color:#9cc4ff;font-weight:600}
-  #chat-form{display:flex;gap:6px;padding:10px;border-top:1px solid #34476e}
-  #chat-input{flex:1;min-width:0;padding:8px 10px;border-radius:8px;border:1px solid #34476e;background:#111a30;color:#eef2ff}
-  #chat-send{border:0;border-radius:8px;padding:8px 12px;background:#4a8cf0;color:#fff;font-weight:600;cursor:pointer}
-</style>
-
-<button id="chat-toggle" type="button">💬 Find a site</button>
-<div id="chat-panel">
-  <div id="chat-head">Site finder</div>
-  <div id="chat-log"></div>
-  <form id="chat-form" autocomplete="off">
-    <input id="chat-input" placeholder="e.g. hot and flat">
-    <button id="chat-send" type="submit">Send</button>
-  </form>
-</div>
-
-<script type="module">
-  import { findMatches } from "./match.js";
-
-  // site name -> its page in the sites/ folder
-  const pages = {
-    "Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia": "harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia",
-    "Kamil Crater, Egypt": "kamil-crater-egypt",
-    "Lonar Crater, India": "lonar-crater-india",
-    "East Antarctic Plateau cold spots": "east-antarctic-plateau-cold-spots",
-    "Lut Desert (Dasht-e Lut), Iran": "lut-desert-dasht-e-lut-iran",
-    "Kharga yardangs (Western Desert), Egypt": "kharga-yardangs-western-desert-egypt",
-    "Western Qaidam Basin, China": "western-qaidam-basin-china",
-    "Bodélé Depression, Chad": "bodele-depression-chad",
-    "Dallol, Danakil Depression, Ethiopia": "dallol-danakil-depression-ethiopia",
-    "Río Tinto (Peña de Hierro), Spain": "rio-tinto-pena-de-hierro-spain",
-    "Atacama Desert (Yungay), Chile": "atacama-desert-yungay-chile",
-    "Haughton Crater, Devon Island, Canada": "haughton-crater-devon-island-canada",
-  };
-  const link = (m) => `<a href="sites/${pages[m.name]}.html">${m.name}</a>`;
-
-  const panel = document.getElementById("chat-panel");
-  const log = document.getElementById("chat-log");
-  const input = document.getElementById("chat-input");
-
-  function add(who, html) {
-    const d = document.createElement("div");
-    d.className = "msg " + who;
-    d.innerHTML = html;
-    log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
-  }
-
-  add("bot", "Hi! Tell me what conditions you want, like <em>hot and flat</em> or <em>cold, low dust</em>, and I'll point you to the best site.");
-
-  document.getElementById("chat-toggle").onclick = () => {
-    panel.classList.toggle("open");
-    if (panel.classList.contains("open")) input.focus();
-  };
-
-  document.getElementById("chat-form").onsubmit = (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = "";
-    add("me", text.replace(/</g, "&lt;"));
-    const [best, second] = findMatches(text, 2);
-    if (!best || best.score === 0) {
-      add("bot", "I didn't catch a condition there. Try words like hot, cold, flat, steep, dusty, low dust, high sun or low sun.");
-      return;
-    }
-    add("bot", `Best match: ${link(best)} (slope ${best.slope}°, max ${best.maxTemp} °C, dust ${best.dust}).` +
-      (second ? `<br>Runner-up: ${link(second)}.` : ""));
-  };
-</script>
-</body></html>
+<a href="about.html">Method, sources and downloads.</a></p></main></body></html>

@@ -29,6 +29,7 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature → `data/modis_daily_lst.csv`, reference only; MCD43A3 albedo → `data/modis_albedo.csv`, not scored yet). Sites are matched by coordinates. AppEEARS request record and citations: `data/appeears/`.
 - `data/fetch_tes_albedo.py`: Mars target albedo from the MGS TES bolometric albedo map (PDS) into `data/mars_albedo.csv`.
 - `data/analog.py`: reads each site's "Analog for" text: Moon analogs are compared only with the Moon target, Mars analogs only with Mars, "both"/both-named with both. Unrecognised text shows both targets and build.py warns.
+- `data/slides_page.py` (+ `slides.css`, `slides_map.png`): the 7-slide demo, `docs/slides.html` (the submission's demo link).
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
 - `data/style.css`: the look of all pages, including the map page (dark "mission control" theme); build.py copies it to `docs/style.css`.
 - `data/build.py`: runs everything, writes `docs/index.html` (home page: Key findings, from `data/findings_page.py`), `docs/map.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
