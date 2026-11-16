@@ -1,50 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap");
 /* style.css: the shared look of every page, including the map page.
    build.py copies this file to docs/style.css. Edit it here, not in docs/.
    Theme: a dark "mission control" look, inspired by NASA's Solar System Treks portals:
    deep space navy, slightly lighter panels, Moon in cool blue and Mars in rust.
    The chart colours (#5a8fd8, #d9693a, #3aa676) passed the dataviz palette check on --card. */
 :root {
-  --bg: #1e2a47; --card: #26334f; --card-2: #2b3a5a; --ink: #eef2f9; --muted: #aeb9cf;
-  --line: #3b4a70; --accent: #7db4ff; --moon: #5a8fd8; --mars: #d9693a;
-  --match: #4cc38a; --break: #f0884a; --note-bg: #3a2f2c;
+  --bg: #0b1324; --card: #131d34; --card-2: #18243f; --ink: #eef2f9; --muted: #a3b2cc;
+  --line: #263759; --accent: #8ab8ff; --moon: #5a8fd8; --mars: #d9693a;
+  --match: #4cc38a; --break: #f0884a; --note-bg: #2a211f;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); }
 /* Faint "star field" made of tiny dots, plus a soft glow at the top (CSS only, no images). */
 body { margin: 0; color: var(--ink); min-height: 100vh;
-       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+       font: 16px/1.65 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
        background:
-         radial-gradient(1px 1px at 20px 30px, #ffffff55, transparent),
-         radial-gradient(1px 1px at 90px 120px, #ffffff40, transparent),
-         radial-gradient(1px 1px at 160px 60px, #ffffff33, transparent),
-         radial-gradient(1.5px 1.5px at 230px 170px, #ffffff44, transparent),
-         radial-gradient(ellipse 80% 50% at 50% -10%, #3a5a9466, transparent 70%),
+         radial-gradient(1px 1px at 20px 30px, #ffffff66, transparent),
+         radial-gradient(1px 1px at 90px 120px, #ffffff44, transparent),
+         radial-gradient(1px 1px at 160px 60px, #ffffff38, transparent),
+         radial-gradient(1.5px 1.5px at 230px 170px, #ffffff55, transparent),
+         radial-gradient(ellipse 80% 50% at 50% -10%, #3a5a9477, transparent 70%),
+         radial-gradient(ellipse 45% 35% at 100% 100%, #d9693a1f, transparent 70%),
          var(--bg);
-       background-size: 260px 220px, 260px 220px, 260px 220px, 260px 220px, 100% 100%, auto;
+       background-size: 260px 220px, 260px 220px, 260px 220px, 260px 220px, 100% 100%, 100% 100%, auto;
        background-attachment: fixed; }
 a { color: var(--accent); overflow-wrap: anywhere; }
 a:hover { color: #a9cdff; }
 
 /* Navigation bar: stays at the top while scrolling, slightly see-through. */
-nav { position: sticky; top: 0; z-index: 10; background: #1e2a47e6; backdrop-filter: blur(6px);
+nav { position: sticky; top: 0; z-index: 10; background: #0b1324d9; backdrop-filter: blur(6px);
       border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap;
       gap: 4px 22px; font-size: 15px; }
 nav a { color: var(--muted); text-decoration: none; }
 nav a:hover { color: var(--ink); }
 
-main { max-width: 960px; margin: 0 auto; padding: 28px 16px 64px; }
+main { max-width: 1040px; margin: 0 auto; padding: 40px 24px 96px; }
 h1, h2, h3 { font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif; }
-h1 { font-size: 2.1rem; line-height: 1.15; margin: 8px 0 12px; letter-spacing: -0.01em; }
-h2 { font-size: 1.15rem; margin: 0 0 8px; }
+h1 { font-size: 2.4rem; line-height: 1.1; margin: 8px 0 14px; letter-spacing: -0.02em; font-weight: 700; }
+h2 { font-size: 1.25rem; margin: 0 0 10px; letter-spacing: -0.01em; font-weight: 600; }
 h3 { font-size: 1rem; margin: 18px 0 4px; }
 p { margin: 0 0 10px; }
-.lead { font-size: 1.08rem; color: var(--muted); max-width: 70ch; }
+.lead { font-size: 1.18rem; color: var(--muted); max-width: 66ch; }
 .meta { color: var(--muted); font-size: 15px; }
 strong { color: #f3f6fc; }
 
 /* Cards and two-column grid (one column on narrow screens). */
-.card { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line);
-        border-radius: 14px; padding: 18px 20px; margin: 16px 0; box-shadow: 0 8px 24px #00000033; }
+.card { background: linear-gradient(180deg, #ffffff0a, #ffffff03), var(--card); border: 1px solid var(--line);
+        border-radius: 18px; padding: 24px 26px; margin: 18px 0;
+        box-shadow: inset 0 1px 0 #ffffff0d, 0 18px 40px -20px #000000cc;
+        transition: transform .25s ease, box-shadow .25s ease; }
 .card > :last-child { margin-bottom: 0; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin: 16px 0; }
 .grid > .card { margin: 0; }
@@ -72,8 +76,9 @@ dd { margin: 0; }
 /* Tables (gap page, task page, score table). */
 .scroll { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 15px; }
-th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--line); }
-td, th { padding: 8px 10px; vertical-align: top; }
+th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--line);
+     font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+td, th { padding: 11px 12px; vertical-align: top; }
 tr + tr td { border-top: 1px solid var(--line); }
 tbody tr:hover td, table tr:hover td { background: #ffffff06; }
 
@@ -96,19 +101,23 @@ details summary { cursor: pointer; color: var(--accent); }
 /* Compare page: a small bar behind each score (width = score), and greyed "no data". */
 .bar { display: inline-block; width: 60px; height: 8px; background: var(--line); border-radius: 4px;
        margin-right: 8px; vertical-align: middle; overflow: hidden; }
-.bar span { display: block; height: 100%; background: var(--moon); border-radius: 4px; }
+.bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--moon), #9cc0ef); border-radius: 4px; }
 td.muted { color: var(--muted); }
 table.compare td:nth-last-child(-n+2) { white-space: nowrap; }
 
 /* Home page (Key findings): big intro and buttons into the site. */
-.hero { padding: 36px 0 12px; }
-.hero h1 { font-size: 2.8rem; max-width: 20ch;
+.hero { padding: 64px 0 24px; position: relative; }
+.hero::before { content: ""; position: absolute; inset: -40px -10% auto -10%; height: 340px; z-index: -1;
+                background: radial-gradient(ellipse 60% 70% at 30% 30%, #5a8fd833, transparent 70%),
+                            radial-gradient(ellipse 40% 60% at 80% 40%, #d9693a22, transparent 70%); }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 3.9rem); max-width: 18ch; line-height: 1.04; letter-spacing: -0.03em;
            background: linear-gradient(90deg, #ffffff, #b9d4ff 60%, #f2b08d); -webkit-background-clip: text;
            background-clip: text; color: transparent; }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 13px; color: var(--accent); margin: 0; }
-.button { display: inline-block; margin: 6px 8px 6px 0; padding: 10px 18px; border-radius: 999px;
-          background: var(--accent); color: #0f1a30; text-decoration: none; font-weight: 700; }
-.button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.button { display: inline-block; margin: 8px 10px 6px 0; padding: 12px 22px; border-radius: 999px;
+          background: linear-gradient(135deg, #b4d3ff, #6f9fee); color: #0a1428; text-decoration: none; font-weight: 600;
+          box-shadow: 0 10px 28px -10px #6f9fee; transition: transform .2s ease, box-shadow .2s ease; }
+.button.ghost { background: #ffffff08; color: var(--ink); border: 1px solid #ffffff22; box-shadow: none; }
 .button:hover { filter: brightness(1.1); color: #08101f; }
 .button.ghost:hover { color: var(--ink); border-color: var(--accent); }
 .card ul { padding-left: 20px; margin: 6px 0 10px; }
@@ -129,15 +138,66 @@ body:has(.folium-map) nav a { flex: none; }
 .folium-map { position: absolute !important; top: 49px !important; bottom: 0; left: 0; right: 0;
               height: auto !important; width: 100% !important; }
 .map-info { position: fixed; bottom: 24px; left: 16px; z-index: 9999; max-width: 300px; font-size: 14px;
-            background: #26334ff2; color: var(--ink); border: 1px solid var(--line); border-radius: 12px;
+            background: #131d34f2; color: var(--ink); border: 1px solid var(--line); border-radius: 12px;
             padding: 10px 14px; box-shadow: 0 8px 24px #00000055; }
 .map-info ul { margin: 4px 0; padding-left: 18px; }
 .map-info small { color: var(--muted); }
-.leaflet-control-layers { background: #26334ff2 !important; color: var(--ink); border: 1px solid var(--line) !important;
+.leaflet-control-layers { background: #131d34f2 !important; color: var(--ink); border: 1px solid var(--line) !important;
                           border-radius: 10px !important; }
 .leaflet-bar { border: 1px solid var(--line) !important; border-radius: 10px !important; overflow: hidden; }
-.leaflet-bar a { background: #26334ff2 !important; color: var(--ink) !important; border-color: var(--line) !important; }
+.leaflet-bar a { background: #131d34f2 !important; color: var(--ink) !important; border-color: var(--line) !important; }
 .leaflet-bar a:hover { background: var(--card-2) !important; }
 .leaflet-control-attribution { color: #333; }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--card); color: var(--ink); }
 .leaflet-popup-content a { color: var(--accent); }
+
+
+/* ---- Polish layer ---- */
+html { scroll-behavior: smooth; }
+* { scrollbar-width: thin; scrollbar-color: #2d3f66 transparent; }
+::selection { background: #8ab8ff44; color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* Menu: roomier, with a blue-to-rust underline on hover (map page keeps its own compact bar) */
+body:not(:has(.folium-map)) nav { padding: 15px 28px; gap: 6px 28px; box-shadow: 0 10px 30px -12px #000000aa; }
+nav a { position: relative; font-weight: 500; letter-spacing: .01em; transition: color .2s ease; }
+nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 2px; border-radius: 2px;
+               background: linear-gradient(90deg, var(--moon), var(--mars)); transform: scaleX(0);
+               transform-origin: left; transition: transform .25s ease; }
+nav a:hover::after { transform: scaleX(1); }
+@media (max-width: 640px) { body:not(:has(.folium-map)) nav { flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; } }
+
+/* Hover lift on cards and tiles */
+.card:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff12, 0 26px 50px -22px #000000e6; }
+#globes:hover { transform: none; }
+.tile { transition: border-color .2s ease, transform .2s ease; }
+.tile:hover { border-color: #8ab8ff55; transform: translateY(-2px); }
+.button:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -10px #6f9fee; }
+.button.ghost:hover { box-shadow: none; background: #ffffff12; }
+.badge { backdrop-filter: blur(4px); }
+.note { border-radius: 12px; }
+.eyebrow::before { content: ""; display: inline-block; width: 28px; height: 1px; background: var(--accent);
+                   vertical-align: middle; margin-right: 12px; }
+
+/* Gentle entrance for page sections */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+main > * { animation: rise .6s ease backwards; }
+main > *:nth-child(2) { animation-delay: .08s; } main > *:nth-child(3) { animation-delay: .16s; }
+main > *:nth-child(4) { animation-delay: .24s; } main > *:nth-child(5) { animation-delay: .32s; }
+
+/* Chat button and panel (defined on the home page) restyled to match; !important beats the page's inline style */
+#chat-toggle { background: linear-gradient(135deg, #b4d3ff, #6f9fee) !important; color: #0a1428 !important;
+               box-shadow: 0 12px 30px -8px #6f9fee99 !important; transition: transform .2s ease; }
+#chat-toggle:hover { transform: translateY(-2px); }
+#chat-panel { background: #0f182d !important; border-color: #ffffff1a !important; border-radius: 18px !important;
+              box-shadow: 0 30px 60px -20px #000000d9 !important; }
+#chat-head { background: linear-gradient(90deg, #17264a, #2a2340) !important; }
+.msg.bot { background: #1a2745 !important; }
+.msg.me { background: linear-gradient(135deg, #b4d3ff, #6f9fee) !important; color: #0a1428 !important; }
+#chat-input { background: #0b1324 !important; }
+#chat-send { background: linear-gradient(135deg, #b4d3ff, #6f9fee) !important; color: #0a1428 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
