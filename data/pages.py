@@ -11,10 +11,16 @@ from urllib.parse import urlparse
 
 import pandas as pd
 
+import analog       # our own data/analog.py (Moon or Mars analog?)
 import score        # our own data/score.py
 import scores_html  # our own data/scores_html.py (the "Similarity scores" section)
 
 # Shown on every site page and the About page, as required by the project rules.
+# Site pages use the version for their own body (limits_note); "both" sites get LIMITS_NOTE.
+LIMITS_BY_BODY = {
+    "moon_target": "No place on Earth can reproduce the Moon's low gravity, its vacuum or its radiation environment.",
+    "mars_target": "No place on Earth can reproduce Mars' low gravity, its thin atmosphere or its radiation environment.",
+}
 LIMITS_NOTE = ("No place on Earth can reproduce lunar or Martian gravity, the Moon's vacuum "
                "or Mars' thin atmosphere, or their radiation environment.")
 
@@ -68,6 +74,12 @@ def page(title, body, root=""):
 <main>{body}</main></body></html>"""
 
 
+def limits_note(analog_for):
+    """The fixed limits note, naming only the body (Moon / Mars) this site is an analog for."""
+    compared = analog.compared_targets(analog_for)
+    return LIMITS_BY_BODY[compared[0]] if len(compared) == 1 else LIMITS_NOTE
+
+
 def category_badge(category):
     """Pill showing the site's category, with a dot in its map-marker colour."""
     colour = next((dot for start, _, dot, _ in CATEGORIES if str(category).startswith(start)), "#888")
@@ -92,7 +104,7 @@ def site_page(site, site_scores, sites):
 <p class="meta">Lat {show(site['lat'])}, lon {show(site['lon'])}</p>
 <div class="grid"><section class="card match"><h2>What matches</h2><p>{show(site['matches'])}</p></section>
 <section class="card break"><h2>Where it breaks</h2><p>{show(site['breaks'])}</p></section></div>
-<p class="note"><strong>Limits of any Earth analog:</strong> {LIMITS_NOTE}</p>
+<p class="note"><strong>Limits of any Earth analog:</strong> {limits_note(site['analog_for'])}</p>
 <section class="card"><h2>Key facts</h2><p>{show(site['key_facts'])}</p></section>
 <div class="grid"><section class="card"><h2>Climate and conditions</h2>{notes_list(site['climate_notes'])}</section>
 <section class="card"><h2>Geology and minerals</h2><p>{show(site['geology'])}</p>

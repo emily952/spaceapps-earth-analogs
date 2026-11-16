@@ -52,7 +52,7 @@ name, type (earth / moon_target / mars_target), lat, lon, slope_deg, temp_max_c,
 - A blank cell means "no data": skip it and show "no data" in charts. Never invent, estimate or fill in values.
 - Show a radar chart only for sites with at least one real score; otherwise show a clear "not scored yet" note.
 - The main content is the site pages, the gap page ("Where Earth falls short") and the task table. The task table is team judgment, not computed, and must say so.
-- Every site page must show the "matches" and "breaks" text, plus a fixed note that Earth cannot reproduce lunar or Martian gravity, vacuum or thin atmosphere, or radiation.
+- Every site page must show the "matches" and "breaks" text, plus a fixed note that Earth cannot reproduce lunar or Martian gravity, vacuum or thin atmosphere, or radiation. The note names only the site's own body (Moon: gravity, vacuum, radiation; Mars: gravity, thin atmosphere, radiation; both: the full note), and Moon-only / Mars-only pages show nothing about the other body (`pages.limits_note`, `scores_html.source_for`).
 
 ## How to work
 - Always run `git pull` before changing anything.

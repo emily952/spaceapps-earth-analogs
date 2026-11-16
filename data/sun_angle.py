@@ -27,10 +27,11 @@ TILT_DEG = {"earth": 23.44, "moon_target": 1.54, "mars_target": 25.19}
 WHY = ("Why it matters: at the Moon's south pole the Sun stays near the horizon, so shadows are very "
        "long and crews and cameras look almost straight into the Sun. Glare and deep shadow make "
        "landing, driving and finding hazards harder: a real problem for Artemis astronauts and rovers.")
-SOURCE = ("Calculated from each site's latitude (one point) and axial tilt (Earth 23.44°, Moon 1.54°, "
-          "Mars 25.19°; NASA planetary fact sheets). Flat horizon assumed: hills and slopes are "
-          "ignored. Nowhere on Earth is the highest "
-          "Sun lower than 23.44° (the poles), so no Earth site can match the Moon's south pole.")
+# Written as "Earth: / Moon: / Mars:" parts: a Moon-analog page drops the Mars part and vice versa.
+SOURCE = ("Calculated from each place's latitude (one point) and axial tilt (NASA planetary fact sheets); "
+          "flat horizon assumed, hills and slopes ignored. Earth: tilt 23.44°, so even at the poles the "
+          "highest Sun is 23.44°. Moon: tilt 1.54°, so no Earth site can match Malapert's low Sun. "
+          "Mars: tilt 25.19°.")
 
 
 def highest_sun(lat, row_type):

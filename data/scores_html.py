@@ -6,6 +6,7 @@ values it compares) and says who measured what. A radar chart is drawn only
 when a site has at least 3 scored conditions: with 1 or 2 points it can't be read.
 """
 import html
+import re
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -38,6 +39,14 @@ DIMENSION_SOURCES = {
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
          "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°"}
 COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}  # radar chart colour per target type
+
+
+def source_for(col, compared):
+    """The data label for one condition, without the Moon or Mars part if this site isn't compared with it."""
+    parts = re.split(r"\s(?=(?:Moon|Mars): )", DIMENSION_SOURCES.get(col, ""))
+    drop = {"Moon: ": "moon_target", "Mars: ": "mars_target"}
+    return " ".join(p for p in parts if not any(p.startswith(w) and kind not in compared
+                                                for w, kind in drop.items()))
 
 
 def fmt(value, col):
@@ -87,10 +96,14 @@ def scores_section(site, site_scores, sites):
     for col in scored:
         cards = "".join(score_card(col, site, sites[sites["name"] == row["target"]].iloc[0], row[col])
                         for _, row in site_scores.iterrows())
-        value_range = f"{sites[col].min():g} to {sites[col].max():g}{UNITS[col]}"
+        # Show the range's numbers only if neither end comes from a target this page hides.
+        shown = sites[(sites["type"] == "earth") | sites["type"].isin(site_scores["target_type"])]
+        lo, hi = sites[col].min(), sites[col].max()
+        value_range = (f" ({lo:g} to {hi:g}{UNITS[col]})" if (shown[col].min(), shown[col].max()) == (lo, hi)
+                       else "")
         parts.append(f'<div class="tiles">{cards}</div><p class="meta"><strong>Data:</strong> '
-                     f'{DIMENSION_SOURCES.get(col, "")} <strong>Scale:</strong> 1 = same value as the '
-                     f'target, 0 = as different as anything in our dataset ({value_range}).</p>')
+                     f'{source_for(col, list(site_scores["target_type"]))} <strong>Scale:</strong> 1 = same value as the '
+                     f'target, 0 = as different as anything in our dataset{value_range}.</p>')
     if len(scored) >= 3:
         parts.append(radar_chart(site_scores, scored))
     parts.append('<p class="meta">Other conditions are not scored yet: we have no exact, '
