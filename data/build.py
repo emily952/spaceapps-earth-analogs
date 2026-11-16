@@ -118,7 +118,7 @@ def main():
     # Step 4: the map.
     build_map(earth_sites, targets)
     print(f"  Wrote docs/map.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
-    write(DOCS / "index.html", findings_page.findings_page(sites, scores))  # home page: Key findings
+    write(DOCS / "index.html", findings_page.findings_page(sites, scores, DOCS))  # home page: Key findings
     write(DOCS / "slides.html", slides_page.slides_page(sites, scores, DOCS))  # 7-slide demo
     shutil.copy(Path(__file__).parent / "slides.css", DOCS / "slides.css")
 

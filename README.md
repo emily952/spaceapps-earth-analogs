@@ -40,6 +40,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/fetch_tes_albedo.py` | Arcadia's ground brightness (albedo 0.236) from NASA's TES map (one ~7.4 km pixel; dust in the air not removed) → `data/mars_albedo.csv` (not scored until Earth albedo, 500 m MODIS pixels, arrives) |
 | `data/analog.py` | Decides which target(s) each site is compared with, from its "Analog for" text (Moon / Mars / both); a typo shows both and triggers a build warning |
 | `data/slides_page.py`, `data/slides.css`, `data/slides_map.png` | The 7-slide demo (`docs/slides.html`), numbers from the live data; the map image is a screenshot of our own map page |
+| `data/site_finder.html` | The team's "Find a site" chat widget for the home page. Switched on automatically once `data/match.js` exists. **Don't edit `docs/index.html` directly: the build overwrites it** |
 | `data/findings_page.py` | The home page: the problem, who it's for and the best match per condition, computed from the live scores |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |

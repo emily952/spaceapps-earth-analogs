@@ -83,7 +83,7 @@ def nav(root=""):
 <a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>"""
 
 
-def page(title, body, root=""):
+def page(title, body, root="", extra=""):
     """Wrap a page body in the shared header, stylesheet and navigation bar.
     root is "" for pages in docs/ and "../" for pages in docs/sites/."""
     return f"""<!doctype html>
@@ -91,7 +91,7 @@ def page(title, body, root=""):
 <title>{show(title)}</title>
 {head_links(root)}</head>
 <body>{nav(root)}
-<main>{body}</main></body></html>"""
+<main>{body}</main>{extra}</body></html>"""
 
 
 def limits_note(analog_for):

@@ -7,6 +7,7 @@ page can't go out of date when the data changes. Scores are never combined: each
 finding is about one condition and one target.
 """
 import html
+import shutil
 
 import pages        # our own data/pages.py
 import score        # our own data/score.py
@@ -31,7 +32,17 @@ def best_matches(sites, scores, target_name):
     return "".join(lines)
 
 
-def findings_page(sites, scores):
+def site_finder(docs):
+    """The team's "Find a site" chat widget (data/site_finder.html). It needs data/match.js,
+    so it is only added once that file exists; otherwise the button would do nothing."""
+    if not (score.DATA_DIR / "match.js").exists():
+        print("  Site finder widget skipped: data/match.js not found (add it to switch the widget on).")
+        return ""
+    shutil.copy(score.DATA_DIR / "match.js", docs / "match.js")
+    return (score.DATA_DIR / "site_finder.html").read_text(encoding="utf-8")
+
+
+def findings_page(sites, scores, docs):
     """HTML for docs/index.html."""
     earth = sites[sites["type"] == "earth"]
     moon = sites[sites["type"] == "moon_target"].iloc[0]
@@ -70,4 +81,4 @@ warmer than the Moon's shadowed craters ({moon_cold} °C).</li>
 <p class="meta">Each condition is scored from 0 (as different as anything in our data) to 1 (same as the
 target), using NASA data (MODIS, LRO Diviner, MOLA, POWER, planetary fact sheets), ESA's Copernicus DEM and
 the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored only against the target they are an analog for.
-<a href="about.html">Method, sources and downloads.</a></p>""")
+<a href="about.html">Method, sources and downloads.</a></p>""", extra=site_finder(docs))
