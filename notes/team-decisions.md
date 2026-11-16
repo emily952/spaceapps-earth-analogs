@@ -41,7 +41,7 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   kept word for word in the site pages' "Climate and conditions" notes.
 - [x] **Max/min meaning**: the most extreme value ever recorded, or the average daily
   max/min? Over which years?
-  Decision: use average max/min
+  Decision: use average max/min, since the temperates are more likely to be those values
 - [ ] **`temp_range_c`**: always calculate it as max − min in the sheet, so it can't
   disagree with the other two columns?
   Recommended: yes. Decision:
