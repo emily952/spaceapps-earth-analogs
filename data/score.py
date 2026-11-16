@@ -27,6 +27,7 @@ SCORES_CSV = DATA_DIR / "scores.csv"
 # The columns we score, mapped to the label shown in charts and tables.
 DIMENSIONS = {
     "slope_deg": "Slope",
+    "slope_463m_deg": "Slope (463 m pixels)",  # same pixel size as the Mars map
     "temp_max_c": "Max temperature",
     "temp_min_c": "Min temperature",
     "temp_range_c": "Temperature range",

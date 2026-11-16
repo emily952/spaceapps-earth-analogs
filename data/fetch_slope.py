@@ -1,28 +1,22 @@
 """
 fetch_slope.py: average ground slope around each Earth site, from Copernicus DEM GLO-30.
 
-Why this DEM: it covers all 12 sites (SRTM stops at 60°N/56°S, missing Haughton and
-Antarctica). Heights every 1 arcsecond north-south (~30 m); east-west spacing widens
-near the poles (e.g. 3" at 75°N, 5" at 80°S). It is a surface model: it includes
-buildings and plants, which hardly matters in our deserts and ice.
+Why this DEM: covers all 12 sites (SRTM misses Haughton and Antarctica). ~30 m pixels
+(wider east-west near the poles). A surface model: includes buildings/plants (rare here).
 
-Area: a 15 km x 15 km box centred on each site. Malapert's 5.6° ± 2.0° is for a
-candidate landing AREA with about 1,250 m of relief (Wueller et al. 2025). 1,250 m of
-relief at a ~5.6° average slope needs a span of roughly 13 km, and NASA's release 22-089
-(Aug 2022) says "Each region is approximately ... 15 by 15 kilometers" (a landing SITE
-inside it is ~100 m radius: far too small for 1,250 m of relief). One 30 m pixel is noise.
+Area: a 15 km x 15 km box. Malapert's 5.6° ± 2.0° is for a landing AREA with ~1,250 m of
+relief (Wueller et al. 2025), which needs ~13 km at 5.6°; NASA release 22-089 (Aug 2022):
+"Each region is approximately ... 15 by 15 kilometers" (a landing SITE is ~100 m radius).
 We also save 1 km and 5 km boxes so the team can see how much the size matters.
 
-Data: free on AWS (no login), as Cloud-Optimised GeoTIFF files. Each file is split
-into 1024 x 1024 blocks; we download only the blocks we need (HTTP "Range" requests)
-and unpack them ourselves (zlib + the "floating point predictor", TIFF tag 317 = 3).
-numpy comes with pandas; no extra libraries.
+Data: free on AWS (no login), Cloud-Optimised GeoTIFFs. We download only the 1024 x 1024
+blocks we need and unpack them ourselves (zlib + "floating point predictor"; numpy only).
 
-Cite: Copernicus DEM GLO-30, ESA / European Union, doi:10.5270/ESA-c5d3d65.
-Output: data/copernicus_slope.csv.   Run:  python3 data/fetch_slope.py  (a few minutes)
+Cite: Copernicus DEM GLO-30, ESA/EU, doi:10.5270/ESA-c5d3d65. Output: data/copernicus_slope.csv.
 """
 import math
 import struct
+import time
 import urllib.request
 import zlib
 from datetime import date
@@ -41,11 +35,17 @@ OUTPUT = score.DATA_DIR / "copernicus_slope.csv"
 _tiles, _blocks = {}, {}  # downloaded tile headers and blocks, so nothing is fetched twice
 
 
-def get(url, start, end):
-    """Download bytes start..end of a file (an HTTP Range request)."""
+def get(url, start, end, tries=4):
+    """Download bytes start..end of a file (an HTTP Range request). Retries if the connection drops."""
     req = urllib.request.Request(url, headers={"Range": f"bytes={start}-{end}", "User-Agent": "earth-analogs-script"})
-    with urllib.request.urlopen(req, timeout=120) as response:
-        return response.read()
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as response:
+                return response.read()
+        except OSError:
+            if attempt == tries - 1:
+                raise
+            time.sleep(5 * (attempt + 1))  # wait a little longer each time
 
 
 def tile_url(lat_floor, lon_floor):

@@ -31,13 +31,22 @@ DIMENSION_SOURCES = {
                  "Moon: Wueller et al. 2025, Malapert candidate landing area, 5.6° ± 2.0° (their map "
                  "resolution is not given in the table we used, so the two may not be measured at the "
                  "same pixel size).",
+    "slope_463m_deg": "Earth: Copernicus DEM GLO-30 heights averaged into ~463 m blocks, mean slope over a "
+                      "15 × 15 km box. Mars: MOLA laser-altimeter map (MEGDR, 128 pixels per degree, ~463 m), "
+                      "same box; between laser tracks the map is filled in, so it is smoother than the ground. "
+                      "Both sides use the same pixel size, because bigger pixels make slopes look gentler.",
+    "dust_aod": "Earth: NASA POWER aerosol optical depth at 0.55 µm (all aerosols: dust, smoke, salt), "
+                "2001–2025 average, ~1° (~100 km) grid. Mars: LMD Mars dust climatology from orbiter "
+                "measurements (Montabone et al. 2015), Mars Years 24–36 average, 3° (~180 km) grid, 9.3 µm "
+                "dust optical depth × 2.6 for the visible-light equivalent (LMD's conversion). Different "
+                "wavelengths and grid sizes, so treat the match as approximate.",
     # Ready for when Earth albedo arrives from AppEEARS (not scored yet):
     "albedo": "Earth: MODIS MCD43A3 white-sky shortwave albedo, 2025 average, one 500 m pixel. "
               "Mars: MGS TES bolometric albedo map, one ~7.4 km pixel (8 per degree); dust in the "
               "air was not removed, which can make dark areas look brighter. Moon: no value yet.",
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
-         "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°"}
+         "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°", "slope_463m_deg": "°"}
 COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}  # radar chart colour per target type
 
 
@@ -109,36 +118,3 @@ def scores_section(site, site_scores, sites):
     parts.append('<p class="meta">Other conditions are not scored yet: we have no exact, '
                  'comparable values for them.</p>')
     return "".join(parts)
-
-
-# MODIS citations, word for word from AppEEARS' README (data/appeears/README.md).
-MODIS_CSV = score.DATA_DIR / "modis_daily_lst.csv"
-MODIS_REFERENCES = [
-    "Wan, Z., Hook, S., & Hulley, G. (2021). MODIS/Aqua Land Surface Temperature/Emissivity Daily L3 Global "
-    "1km SIN Grid V061. NASA Land Processes Distributed Active Archive Center. "
-    "https://doi.org/10.5067/MODIS/MYD11A1.061. Accessed November 16, 2026.",
-    "AppEEARS Team. (2026). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). "
-    "Ver. 3.137. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources "
-    "Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed November 16, 2026. "
-    "https://appeears.earthdatacloud.nasa.gov",
-]
-
-
-def modis_credit():
-    """About page section: MODIS citations, method, and days kept vs dropped at each site."""
-    if not MODIS_CSV.exists():
-        return ""
-    modis = pd.read_csv(MODIS_CSV)
-    rows = "".join(f"<tr><td>{html.escape(r.site)}</td><td>{r.LST_day_max_c:g} °C</td><td>{r.date_of_max}</td>"
-                   f"<td>{r.usable_days}</td><td>{r.dropped_days}</td></tr>" for r in modis.itertuples())
-    refs = "".join(f"<li>{html.escape(ref)}</li>" for ref in MODIS_REFERENCES)
-    return (f'<section class="card"><h2>Ground temperatures: MODIS daily (1 km)</h2><ul>{refs}</ul>'
-            f'<p>Product MYD11A1 v6.1 (MODIS Aqua, daily land surface temperature, band LST_Day_1km), '
-            f'every day of 2025, extracted with NASA AppEEARS at each site\'s coordinates (one 1 km pixel). '
-            f'Aqua passes over at about 1:30 pm local time. We keep a day only if it has a reading (not cloud) '
-            f'and its quality flags say "good" or "other" quality with an average error of 2 K or less; '
-            f'the score uses the hottest kept day.</p>'
-            f'<div class="scroll"><table><tr><th>Site</th><th>Hottest kept day</th><th>Date</th>'
-            f'<th>Days kept</th><th>Days dropped</th></tr>{rows}</table></div>'
-            f'<p class="meta">Earlier versions used NASA POWER (~50 km grid) and then MODIS 8-day averages '
-            f'(MYD11A2, ORNL DAAC). Both are kept in our repository for reference; neither is scored.</p></section>')

@@ -1,0 +1,14 @@
+name,slope_463m_deg,source,box_km,pixel_m,accessed
+"Kamil Crater, Egypt",1.24,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Kharga yardangs (Western Desert), Egypt",0.68,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Lut Desert (Dasht-e Lut), Iran",0.44,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Western Qaidam Basin, China",1.81,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Bodélé Depression, Chad",0.15,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia",1.89,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Lonar Crater, India",0.9,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Dallol, Danakil Depression, Ethiopia",0.15,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Río Tinto (Peña de Hierro), Spain",3.93,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+East Antarctic Plateau cold spots,0.06,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Atacama Desert (Yungay), Chile",3.29,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+"Haughton Crater, Devon Island, Canada",2.64,"Copernicus DEM GLO-30, averaged to ~463 m",15,463.1,2026-11-15
+Arcadia Planitia,0.36,https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/megt88n180hb.img,15,463.1,2026-11-15

@@ -1,0 +1,15 @@
+target,mars_year,dust_visible_mean,grid_lat,grid_lon,sols,file
+Arcadia Planitia,MY24,0.494,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY24_v2-0.nc
+Arcadia Planitia,MY25,0.608,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY25_v2-0.nc
+Arcadia Planitia,MY26,0.525,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY26_v2-0.nc
+Arcadia Planitia,MY27,0.317,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY27_v2-0.nc
+Arcadia Planitia,MY28,0.302,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY28_v2-0.nc
+Arcadia Planitia,MY29,0.355,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY29_v2-0.nc
+Arcadia Planitia,MY30,0.293,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY30_v2-0.nc
+Arcadia Planitia,MY31,0.296,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY31_v2-0.nc
+Arcadia Planitia,MY32,0.299,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY32_v2-0.nc
+Arcadia Planitia,MY33,0.295,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY33_v2-1.nc
+Arcadia Planitia,MY34,0.433,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY34_v2-5.nc
+Arcadia Planitia,MY35,0.341,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY35_v2-5.nc
+Arcadia Planitia,MY36,0.348,46.5,-177.0,669.0,https://www-mars.lmd.jussieu.fr/mars/dust_climatology/dataset_v2/dustscenario_MY36_v2-5.nc
+Arcadia Planitia,ALL,0.377,,,,average of the Mars Years above

@@ -40,12 +40,16 @@ TARGET_COLUMNS = {
 # Each must be the same kind of number as the column: max ground (skin) temperature.
 TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)",  # LRO Diviner, entered by the team
                         "slope_deg": "Landing-area slope (°)"}         # Wueller et al. 2025, entered by the team
-# Earth temp_max_c: hottest good-quality DAILY MODIS reading (MYD11A1, 1 km), made by
-# read_appeears.py from the AppEEARS file. Kept for reference only, not scored: the 8-day
-# values (fetch_modis.py -> modis_lst.csv) and NASA POWER (fetch_power.py, ~50 km grid).
-MODIS_CSV = score.DATA_DIR / "modis_daily_lst.csv"
-# Earth slope_deg: mean slope in a 15 km box, Copernicus DEM GLO-30 (made by fetch_slope.py).
-SLOPE_CSV, SLOPE_COLUMN = score.DATA_DIR / "copernicus_slope.csv", "slope_mean_15km"
+# Scoring values made by our download scripts: (our column, file in data/, name column,
+# value column, script that makes the file). Rows not in a file stay blank ("no data").
+# Not scored, kept for reference: modis_lst.csv (8-day MODIS) and power_skin_temps.csv (POWER).
+DOWNLOADED = [
+    ("temp_max_c", "modis_daily_lst.csv", "site", "LST_day_max_c", "read_appeears.py MYD11A1"),  # daily MODIS, 1 km
+    ("slope_deg", "copernicus_slope.csv", "site", "slope_mean_15km", "fetch_slope.py"),       # Copernicus 30 m, 15 km box
+    ("slope_463m_deg", "slope_463m.csv", "name", "slope_463m_deg", "fetch_mars_slope.py"),     # Earth + Mars at 463 m
+    ("dust_aod", "dust_aod.csv", "site", "aod_55_annual", "fetch_dust.py"),                     # Earth: NASA POWER AOD_55
+    ("dust_aod", "mars_dust.csv", "target", "dust_visible_mean", "fetch_dust.py"),              # Mars: LMD climatology
+]
 
 # Sheet columns shown together as "Climate and conditions" notes, word for word.
 SITE_NOTES = ["Elevation (m)", "Mean annual temp (°C)", "Extreme temp (°C)", "Precip (mm/yr)"]
@@ -97,33 +101,25 @@ def reference_rows():
     return targets[targets["Target"].str.contains("(reference)", regex=False)]
 
 
-def add_modis_temps(sites):
-    """Earth temp_max_c = MODIS Aqua MYD11A1 LST_Day_1km: hottest good-quality daily reading in 2025."""
-    if not MODIS_CSV.exists():
-        print("  No data/modis_daily_lst.csv: run data/read_appeears.py MYD11A1 to score max temperature.")
-        return
-    modis = pd.read_csv(MODIS_CSV).set_index("site")["LST_day_max_c"]
-    sites["temp_max_c"] = sites["name"].map(modis)  # sites missing from the file stay blank
-    missing = sites.loc[sites["temp_max_c"].isna(), "name"].tolist()
-    if missing:
-        print(f"  No MODIS value for {missing}: check the AppEEARS file and run data/read_appeears.py.")
-
-
-
-def add_slopes(sites):
-    """Earth slope_deg = mean slope over a 15 km x 15 km box (Copernicus DEM GLO-30)."""
-    if not SLOPE_CSV.exists():
-        print("  No data/copernicus_slope.csv: run data/fetch_slope.py to score slope.")
-        return
-    sites["slope_deg"] = sites["name"].map(pd.read_csv(SLOPE_CSV).set_index("site")[SLOPE_COLUMN])
+def add_downloaded(rows):
+    """Fill scoring columns from the files our download scripts made (see DOWNLOADED)."""
+    for column, file_name, key, value, script in DOWNLOADED:
+        path = score.DATA_DIR / file_name
+        if not path.exists():
+            print(f"  No data/{file_name}: run data/{script} to score {column}.")
+            continue
+        table = pd.read_csv(path)
+        if "mars_year" in table:  # mars_dust.csv: use the average of all Mars Years
+            table = table[table["mars_year"] == "ALL"]
+        found = rows["name"].map(table.set_index(key)[value])
+        rows[column] = found.where(found.notna(), rows.get(column))  # keep Sheet values where a file has none
+    return rows
 
 
 def main():
     sites = convert(read_tab(SITE_OPTIONS, list(SITE_COLUMNS.values()) + SITE_NOTES),
                     SITE_COLUMNS, SITE_NOTES)
     sites["type"] = "earth"
-    add_modis_temps(sites)
-    add_slopes(sites)
 
     targets = read_targets()
     targets = targets[~targets["Target"].str.contains("(reference)", regex=False)]
@@ -134,7 +130,7 @@ def main():
     target_rows["type"] = targets["Body"].str.strip().str.lower() + "_target"
     target_rows["category"] = "Target"
 
-    combined = pd.concat([sites, target_rows], ignore_index=True)
+    combined = add_downloaded(pd.concat([sites, target_rows], ignore_index=True))
     combined = sun_angle.add_column(combined)[OUTPUT_COLUMNS]  # highest Sun angle, from latitude
     combined.to_csv(score.SITES_CSV, index=False)
     print(f"  Wrote data/sites.csv ({len(sites)} Earth sites, {len(target_rows)} targets)")

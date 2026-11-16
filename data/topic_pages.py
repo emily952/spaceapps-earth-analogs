@@ -14,7 +14,6 @@ import import_sheet  # our own data/import_sheet.py (reads the tab exports)
 import pages         # our own data/pages.py (shared HTML helpers)
 import score         # our own data/score.py
 import downloads     # our own data/downloads.py (How we score, Download our data)
-import scores_html   # our own data/scores_html.py (MODIS citation)
 import sun_angle     # our own data/sun_angle.py (Lowest Sun card)
 
 LIMITS_CSV = score.DATA_DIR / "earths_limits.csv"
@@ -144,5 +143,5 @@ Missing data shows as "no data"; we never estimate.</p></section>
 <section class="card"><h2>Use of AI</h2><p>{pages.AI_NOTE}</p></section>
 <section class="card"><h2>Tools and imagery</h2><ul>{tools}</ul></section>
 {downloads.section(sites, scores)}
-{scores_html.modis_credit()}
+{downloads.modis_credit()}
 <section class="card"><h2>Data sources</h2>{data_sources}</section>""")
