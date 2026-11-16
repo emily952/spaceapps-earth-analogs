@@ -40,7 +40,8 @@ no place on Earth can reproduce.
 **Targets.**
 - **Moon: Malapert Massif** (−86°, 0.3°), one of the regions on NASA's "Artemis III
   candidate regions" list (Oct 2024). We call it an Artemis candidate landing region:
-  NASA has since moved the first crewed landing to a later Artemis mission.
+  NASA has since moved the first crewed landing to Artemis IV; Artemis III now stays in
+  Earth orbit (The Planetary Society, see References).
 - **Mars: Arcadia Planitia** (47.2°N, 175.7°W), an ice-rich plain proposed for future landings.
 
 **How it works.** The team keeps its research in a spreadsheet. Python scripts (pandas,
@@ -52,8 +53,9 @@ the website as static HTML, published with GitHub Pages. No servers or databases
 between 0 and 1. 1 = same as the target; 0 = as different as anything in our data.
 - We never add conditions into one overall score: a site can suit one test and not another.
 - A condition with no exact, comparable value shows "no data". We never estimate.
-- Each site is compared only with the body it is an analog for (Moon, Mars or both),
-  taken from the team's "Analog for" column.
+- Each Earth site is scored only against the target it's an analog for (Moon sites vs
+  Malapert, Mars sites vs Arcadia). Sites the team lists as analogs for both are scored
+  against both. This comes from each site's "Analog for" column.
 
 **What is scored.**
 
@@ -71,8 +73,7 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 - **Sun angle (Mars):** Western Qaidam Basin, China and Río Tinto, Spain match Arcadia
   best (about 75° vs 68°; 0.91), because they lie at a similar latitude.
 - **Where Earth falls short:**
-  - Nowhere on Earth is the highest Sun lower than 23.4°, so Malapert's 5.5° Sun (long
-    shadows, glare) can't be found on Earth.
+  - Nowhere on Earth does the Sun's highest point of the year stay below 23.4°; at Malapert it never rises above 5.5°. So Malapert's long shadows and glare can't be found on Earth.
   - Earth's coldest surface (about −98 °C) is about 135 °C warmer than the Moon's shadowed craters.
   - Gravity, vacuum or thin atmosphere, and radiation can't be reproduced anywhere on Earth.
 
@@ -129,6 +130,7 @@ Nov 15 (see [link-check.md](link-check.md)); fix them in the Sheet before submit
 - ORNL DAAC (2018), MODIS and VIIRS Land Product Subsets RESTful Web Service, doi:10.3334/ORNLDAAC/1600 (8-day data, reference only)
 - Copernicus DEM GLO-30, ESA / European Union, doi:10.5270/ESA-c5d3d65
 - NASA (2022), release 22-089; NASA (2024), "NASA Provides Update on Artemis III Moon Landing Regions"
+- The Planetary Society, "Artemis, NASA's Moon landing program" (Artemis III in Earth orbit; first landing on Artemis IV): https://www.planetary.org/space-missions/artemis
 - NASA POWER: "The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth Science Division." (reference only)
 
 **Per site and target** (from the research sheet)
@@ -161,11 +163,11 @@ AI tools helped with research and coding; the team made the decisions and checke
   - checked links;
   - suggested methods, such as the 15 km slope box and the sun-angle formula check;
   - flagged problems, such as a dead source link and a temperature citation to clarify.
-- **AI also helped with research:** finding candidate sites, facts and sources.
+- **Research:** Claude (chat) did background research and compiled the research spreadsheet, research doc and source list; the team reviewed them, chose the targets and sites, and made the method decisions.
 - **What the team decided:**
-  - the targets, the 12 sites and everything in the research sheet;
+  - the targets and the 12 sites, and which sites and sources to keep;
   - which data to trust: MODIS 1 km daily readings with a quality filter, ground-surface values only, never estimating;
-  - comparing each site only with its own body;
+  - scoring each site only against the target it stands in for (Moon, Mars or both);
   - which conditions to score.
 - **What the team checked:** the source links before numbers were used, and the code.
 - **No AI-generated images are used.** Any that appear in the demo must carry a visible watermark.
@@ -177,7 +179,7 @@ AI tools helped with research and coding; the team made the decisions and checke
 3. **12 Earth sites on one map,** including 10 lesser-known ones, filterable by Moon / Mars analogs.
 4. **How we score:** one condition at a time, 0 to 1, from NASA MODIS, LRO Diviner, NASA fact sheets and ESA Copernicus data.
 5. **Findings:** Lonar matches Malapert's hottest ground; Qaidam and Río Tinto match Arcadia's Sun; no single best site.
-6. **Where Earth falls short:** no Sun below 23.4°, no −233 °C cold, no low gravity, vacuum or Mars radiation.
+6. **Where Earth falls short:** nowhere on Earth does the Sun's highest point of the year stay below 23.4° (Malapert: never above 5.5°); no −233 °C cold; no low gravity, vacuum or Mars radiation.
 7. **Use it:** live site + open data and code; AI disclosure; next steps (albedo, Mars temperatures, more sites).
 
 ## Rule check (before submitting)

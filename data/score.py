@@ -132,8 +132,11 @@ def compute_scores(sites):
 
 
 if __name__ == "__main__":
-    # Only runs when you call "python3 data/score.py" directly.
-    scores = compute_scores(load_sites())
+    # Only runs when you call "python3 data/score.py" directly. Same rule as build.py:
+    # each site only against the target(s) its "Analog for" names (analog.py).
+    import analog
+    sites = load_sites()
+    scores = analog.keep_matching(compute_scores(sites), sites)
     scores.to_csv(SCORES_CSV, index=False)
     print(f"Wrote {len(scores)} score rows to {SCORES_CSV}")
     print(scores.to_string(index=False, na_rep="no data"))

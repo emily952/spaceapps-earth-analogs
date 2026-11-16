@@ -25,8 +25,9 @@ LIMITS_NOTE = ("No place on Earth can reproduce lunar or Martian gravity, the Mo
                "or Mars' thin atmosphere, or their radiation environment.")
 
 # AI disclosure (a challenge rule). Keep in step with the README's "Use of AI" section.
-AI_NOTE = ("AI tools helped with this project's research and coding (coding: Claude Code and "
-           "Cursor). Team members verified the sources and reviewed the code.")
+AI_NOTE = ("AI tools helped with this project's research and coding. Claude (chat) did background research and compiled the research spreadsheet, research doc and source list; the team reviewed them, chose the targets and sites, and made the method decisions. "
+           "Coding: Claude Code and Cursor wrote the scripts and website; the team reviewed the code "
+           "and verified the sources.")
 
 # Things we use that are not in the sheet, so they still get credited.
 TOOL_CREDITS = [

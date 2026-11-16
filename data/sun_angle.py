@@ -29,8 +29,8 @@ WHY = ("Why it matters: at the Moon's south pole the Sun stays near the horizon,
        "landing, driving and finding hazards harder: a real problem for Artemis astronauts and rovers.")
 # Written as "Earth: / Moon: / Mars:" parts: a Moon-analog page drops the Mars part and vice versa.
 SOURCE = ("Calculated from each place's latitude (one point) and axial tilt (NASA planetary fact sheets); "
-          "flat horizon assumed, hills and slopes ignored. Earth: tilt 23.44°, so even at the poles the "
-          "highest Sun is 23.44°. Moon: tilt 1.54°, so no Earth site can match Malapert's low Sun. "
+          "flat horizon assumed, hills and slopes ignored. Earth: tilt 23.44°, so nowhere on Earth does the "
+          "Sun's highest point of the year stay below 23.4°. Moon: tilt 1.54°, so no Earth site can match Malapert's low Sun. "
           "Mars: tilt 25.19°.")
 
 
@@ -54,8 +54,8 @@ def gap_card(sites):
     earth = sites[sites["type"] == "earth"].sort_values("sun_max_elev_deg").iloc[0]  # lowest Earth site
     return (f'<section class="card"><h2>Lowest Sun</h2><p>At {moon["name"]} the Sun never climbs '
             f'higher than about {moon["sun_max_elev_deg"]:.1f}° above the horizon: it skims along the edge of '
-            f'the sky, casting very long shadows. On Earth, even at the poles, the Sun reaches 23.4° in '
-            f'summer, because Earth is tilted 23.44° but the Moon only 1.5°. Our lowest site, '
+            f'the sky, casting very long shadows. Nowhere on Earth does the Sun\'s highest point of the year '
+            f'stay below 23.4°, because Earth is tilted 23.44° but the Moon only 1.5°. Our lowest site, '
             f'{earth["name"]}, gets {earth["sun_max_elev_deg"]:.1f}°. Low-Sun lighting for cameras, solar panels '
             f'and shadow navigation has to be tested in a lab or simulated.</p><p class="meta">Calculated '
             f'from each place\'s latitude (one point; no map pixels involved) and axial tilt (NASA '

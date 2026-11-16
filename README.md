@@ -107,7 +107,7 @@ the sources and reviewed the code.
 - **Coding:** Claude Code wrote the first versions of `data/score.py`,
   `data/build.py`, `data/pages.py`, the notes in `notes/` and this README.
   Cursor was also used. The team reviewed the code.
-- **Research:** AI helped find candidate sites, facts and sources for the research
-  sheet. Team members checked the source links before the numbers were used.
+- **Research:** Claude (chat) did background research and compiled the research spreadsheet, research doc and source list; the team reviewed them, chose the targets and sites, and made the method decisions.
+  Team members checked the source links before the numbers were used.
 - The website's About page (`docs/about.html`) repeats this disclosure. If you
   change one, change the `AI_NOTE` text in `data/pages.py` too.
