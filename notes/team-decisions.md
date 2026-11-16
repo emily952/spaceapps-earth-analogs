@@ -10,9 +10,9 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   reference row only, used on the gap page.
 - [x] **Which Mars ice landing zone** is our Mars target, and its lat/lon?
   Decision: Arcadia Planitia (47.2, −175.7).
-- [ ] **Point or area?** Is a target (and each Earth site) one point, or an average
+- [x] **Point or area?** Is a target (and each Earth site) one point, or an average
   over an area? If an area, how big?
-  Decision:
+  Decision: Point. Each Earth site and Moon/Mars target is represented by one named location and a representative point (coordinate). The coordinate is used for mapping and point-based data requests.
 
 ## 2. How to measure each column (so all rows compare like with like)
 
