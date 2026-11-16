@@ -29,6 +29,8 @@ no place on Earth can reproduce.
 ## Project details
 
 **What it does.** A static website with:
+- a Key findings home page: the problem, who it's for, and the closest Earth site for each
+  condition and target;
 - a world map of 12 Earth analog sites, filterable by Moon analogs, Mars analogs or both;
 - a page per site (what matches, where it breaks, key facts, geology, suggested mission
   tests, similarity scores, sources);
