@@ -80,7 +80,7 @@ def head_links(root=""):
 def nav(root=""):
     """The navigation bar at the top of every page, including the map."""
     return f"""<nav><a href="{root}index.html">Key findings</a><a href="{root}map.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
-<a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>"""
+<a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}models.html">Mars/Moon Models</a><a href="{root}about.html">About &amp; credits</a></nav>"""
 
 
 def page(title, body, root="", extra=""):
