@@ -12,6 +12,13 @@
 practise in similar places on Earth. We compared 12 Earth sites with two targets, one condition at a
 time, so mission planners and field-test teams can see <strong>which site to use for which test</strong>, and
 where no place on Earth can help.</p><a class="button" href="map.html">Explore the map</a><a class="button ghost" href="compare.html">Compare all sites</a><a class="button ghost" href="gap.html">Where Earth falls short</a><a class="button ghost" href="about.html">How we score &amp; sources</a></section>
+
+<section class="card" id="matcher"><h2>Find a site for your test</h2>
+<p class="meta">Describe what you need, like "hot and flat" or "cold and low dust".</p>
+<p><input id="specs" placeholder="e.g. hot and flat" style="padding:8px 12px;min-width:220px;max-width:100%">
+<button class="button" id="go" type="button">Find</button></p>
+<ul id="results"></ul></section>
+
 <div class="grid"><section class="card moon-card"><h2>Moon: Malapert Massif</h2>
 <p class="meta">An Artemis candidate landing region near the lunar south pole.</p>
 <p>Closest Earth site for each condition:</p><ul><li><strong>Slope:</strong> <a href="sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html">Harrat Khaybar and Umm Jirsan lava tube</a> (3.78°) vs 5.6°; score 0.83</li><li><strong>Max temperature:</strong> <a href="sites/lonar-crater-india.html">Lonar Crater</a> (51.95 °C) vs 47 °C; score 0.95</li><li><strong>Highest Sun angle:</strong> <a href="sites/east-antarctic-plateau-cold-spots.html">East Antarctic Plateau cold spots</a> (33.07°) vs 5.54°; score 0.67</li></ul></section>
@@ -31,4 +38,17 @@ warmer than the Moon's shadowed craters (-233 °C).</li>
 <p class="meta">Each condition is scored from 0 (as different as anything in our data) to 1 (same as the
 target), using NASA data (MODIS, LRO Diviner, MOLA, POWER, planetary fact sheets), ESA's Copernicus DEM and
 the LMD Mars dust climatology (built from NASA orbiter data). Sites are scored only against the target they are an analog for.
-<a href="about.html">Method, sources and downloads.</a></p></main></body></html>
+<a href="about.html">Method, sources and downloads.</a></p></main>
+
+<script type="module">
+  import { findMatches } from "./match.js";
+  const run = () => {
+    const matches = findMatches(document.getElementById("specs").value);
+    document.getElementById("results").innerHTML = matches
+      .map((m) => `<li><strong>${m.name}</strong> (slope ${m.slope}°, max ${m.maxTemp} °C, dust ${m.dust}, Sun ${m.sunAngle}°)</li>`)
+      .join("");
+  };
+  document.getElementById("go").onclick = run;
+  document.getElementById("specs").onkeydown = (e) => { if (e.key === "Enter") run(); };
+</script>
+</body></html>
