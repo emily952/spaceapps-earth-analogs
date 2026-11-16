@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import import_sheet  # our own data/import_sheet.py (reads the tab exports)
 import pages         # our own data/pages.py (shared HTML helpers)
 import score         # our own data/score.py
+import downloads     # our own data/downloads.py (How we score, Download our data)
 import scores_html   # our own data/scores_html.py (MODIS citation)
 
 LIMITS_CSV = score.DATA_DIR / "earths_limits.csv"
@@ -120,7 +121,7 @@ team's judgment</strong>, based on each site's features; they are not computed f
 <th>Candidate sites</th><th>Moon, Mars or both</th></tr>{rows}</table></div></section>""")
 
 
-def about_page(sites, limits):
+def about_page(sites, limits, scores):
     """Full HTML for docs/about.html: method, limits, every source, AI use."""
     # One entry per site/target, then per row of the Earth's limits table.
     rows = [(r["name"], r["source_links"]) for _, r in sites.iterrows()]
@@ -140,5 +141,6 @@ Missing data shows as "no data"; we never estimate.</p></section>
 <p class="note"><strong>Limits of any Earth analog:</strong> {pages.LIMITS_NOTE}</p>
 <section class="card"><h2>Use of AI</h2><p>{pages.AI_NOTE}</p></section>
 <section class="card"><h2>Tools and imagery</h2><ul>{tools}</ul></section>
+{downloads.section(sites, scores)}
 {scores_html.modis_credit()}
 <section class="card"><h2>Data sources</h2>{data_sources}</section>""")

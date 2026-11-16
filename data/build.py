@@ -22,6 +22,7 @@ import pages         # our own data/pages.py
 import score         # our own data/score.py
 import topic_pages   # our own data/topic_pages.py
 import compare_page  # our own data/compare_page.py
+import downloads     # our own data/downloads.py
 
 # Where the website goes.
 DOCS = Path(__file__).resolve().parent.parent / "docs"
@@ -116,7 +117,8 @@ def main():
     write(DOCS / "gap.html", topic_pages.gap_page(limits))
     write(DOCS / "compare.html", compare_page.compare_page(sites, scores))
     write(DOCS / "tasks.html", topic_pages.tasks_page(tasks, sites))
-    write(DOCS / "about.html", topic_pages.about_page(sites, limits))
+    write(DOCS / "about.html", topic_pages.about_page(sites, limits, scores))
+    downloads.copy_files(DOCS)  # data CSVs for the About page's download links
     shutil.copy(Path(__file__).parent / "style.css", DOCS / "style.css")  # shared look of all pages
 
     # Step 4: the map.

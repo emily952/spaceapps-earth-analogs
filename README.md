@@ -30,6 +30,8 @@ scores; until then its page says "Not scored yet" and why.
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
+| `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
+| `data/read_appeears.py` | Reads an AppEEARS daily MODIS results file into `data/modis_daily_lst.csv` (not scored yet) |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
 | `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |
