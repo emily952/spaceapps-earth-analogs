@@ -2,11 +2,11 @@
 
 ## What this project is
 Our team's entry for the NASA Space Apps Challenge 2026 challenge "Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars."
-We score Earth sites against Moon and Mars targets (an Artemis III south pole region and a Mars ice landing zone) on several dimensions, then show the results as an interactive map and a radar chart per site.
+We score Earth sites against Moon and Mars targets (an Artemis candidate landing region at the lunar south pole, from NASA's "Artemis III candidate regions" list, and a Mars ice landing zone) on several dimensions, then show the results as an interactive map and a radar chart per site.
 Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious and broken.
 
 ## Stack (do not add anything else)
-- Python 3 with pandas, folium, plotly only.
+- Python 3 with pandas (and numpy, which ships with pandas), folium, plotly only.
 - No JavaScript frameworks, no servers, no databases.
 - The output is static HTML files in `docs/`, published by GitHub Pages.
 

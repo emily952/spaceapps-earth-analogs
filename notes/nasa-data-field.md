@@ -40,8 +40,8 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
 - **ESA Mars Express:** dust devils at Arcadia Planitia.
 - **Copernicus DEM GLO-30 (ESA / European Union), doi:10.5270/ESA-c5d3d65,** via AWS open
   data: average slope in a 15 × 15 km box at each Earth site, scored against Malapert's
-  landing-area slope (5.6° ± 2.0°, Wueller et al. 2025). Box size = NASA's Artemis III
-  landing-region size (NASA release 22-089, Aug 2022).
+  landing-area slope (5.6° ± 2.0°, Wueller et al. 2025). Box size = the size of a NASA
+  Artemis candidate landing region (NASA release 22-089, Aug 2022).
 
 ## Notes
 

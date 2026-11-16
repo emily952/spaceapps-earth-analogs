@@ -17,6 +17,20 @@ FILES = [("sites.csv", "Every Earth site and target: coordinates, scored values 
          ("scores.csv", "Every score shown on the site: one row per Earth site and the target it is compared with"),
          ("modis_lst.csv", "MODIS temperature per site, with the exact request we sent")]
 
+# Sources used in scoring that are not in the Sheet's source columns, so they are credited here.
+SCORE_SOURCES = [
+    ("Slope (Earth): Copernicus DEM GLO-30, ESA / European Union, doi:10.5270/ESA-c5d3d65, via AWS open data",
+     "https://copernicus-dem-30m.s3.amazonaws.com/readme.html"),
+    ("Slope box size: NASA release 22-089 (Aug 2022): Artemis candidate landing regions about 15 × 15 km",
+     "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"),
+    ("Sun angle: axial tilts from the NASA planetary fact sheets (Earth)",
+     "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"),
+    ("Sun angle: NASA Moon fact sheet", "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"),
+    ("Sun angle: NASA Mars fact sheet", "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"),
+    ("Max temperature (Earth): MODIS MYD11A2 v6.1 via ORNL DAAC, doi:10.3334/ORNLDAAC/1600",
+     "https://modis.ornl.gov"),
+]
+
 
 def copy_files(docs):
     """Copy the data files into docs/data/ (only those that exist)."""
@@ -58,5 +72,8 @@ def section(sites, scores):
             f'<p class="meta">Scores are never added into one overall number. Adding or removing a site '
             f"can shift every score a little, because the spread comes from our own data. A condition "
             f'without exact, comparable values on both sides shows "no data": we never estimate.</p></section>'
+            f'<section class="card"><h2>Data behind the scores</h2><ul>'
+            + "".join(f'<li>{html.escape(label)}: <a href="{url}">{url}</a></li>' for label, url in SCORE_SOURCES)
+            + "</ul></section>"
             f'<section class="card"><h2>Download our data</h2><p>The exact numbers behind every score '
             f"(CSV files; open in any spreadsheet):</p><ul>{links}</ul></section>")

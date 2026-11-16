@@ -1,7 +1,7 @@
 # Earth Analogs for Moon and Mars
 
 NASA Space Apps Challenge 2026 entry. We compare 12 Earth sites with a Moon target
-(Malapert Massif, an Artemis III candidate region) and a Mars target (Arcadia Planitia,
+(Malapert Massif, an Artemis candidate landing region from NASA's "Artemis III candidate regions" list) and a Mars target (Arcadia Planitia,
 an ice-rich plain): what matches, where each falls short, which mission tests each
 could support, and which Moon/Mars conditions no place on Earth can match.
 
@@ -43,6 +43,8 @@ scores; until then its page says "Not scored yet" and why.
 | `notes/` | Site write-ups and citations (markdown) |
 | `notes/data-sources.md` | Where to get data for each CSV column |
 | `notes/nasa-data-field.md` | Text for the submission form's NASA Data field |
+| `notes/submission.md` | Draft of every Space Apps submission field, the 7-slide outline and the rule check |
+| `notes/link-check.md` | Results of checking every external link, with suggested replacements |
 | `notes/team-decisions.md` | Open questions and decisions the team still needs to make |
 
 ## Run it
@@ -63,8 +65,8 @@ open docs/index.html               # macOS; or double-click the file
    in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
-4. **Scores so far:** **slope** vs Malapert (Copernicus DEM GLO-30, 15 × 15 km box = an Artemis III
-   landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
+4. **Scores so far:** **slope** vs Malapert (Copernicus DEM GLO-30, 15 × 15 km box = the size of a NASA Artemis
+   candidate landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
    `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
    (b) max ground temperature vs Malapert. Earth values come from
    MODIS Aqua land surface temperature, MYD11A2: the hottest 8-day average of clear-sky

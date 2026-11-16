@@ -26,7 +26,7 @@ DIMENSION_SOURCES = {
                   "Moon: LRO Diviner, Malapert ridge top.",
     "sun_max_elev_deg": sun_angle.SOURCE,
     "slope_deg": "Earth: Copernicus DEM GLO-30 (~30 m pixels; wider east-west near the poles), mean "
-                 "slope over a 15 × 15 km box around the site, the size of an Artemis III landing region. "
+                 "slope over a 15 × 15 km box around the site, the size of a NASA Artemis candidate landing region. "
                  "At this pixel size, measurement noise adds about 0.5–1° on flat ground. "
                  "Moon: Wueller et al. 2025, Malapert candidate landing area, 5.6° ± 2.0° (their map "
                  "resolution is not given in the table we used, so the two may not be measured at the "
