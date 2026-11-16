@@ -59,13 +59,13 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 
 | Condition | Earth side | Target side |
 |---|---|---|
-| Hottest ground temperature | MODIS Aqua MYD11A2: hottest 8-day average of clear-sky ~1:30 pm readings in 2025, one 1 km pixel | Malapert 47 °C, LRO Diviner (McClanahan et al.) |
+| Hottest ground temperature | MODIS Aqua MYD11A1 (daily, via NASA AppEEARS): hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel | Malapert 47 °C, LRO Diviner (McClanahan et al.) |
 | Slope | Copernicus DEM GLO-30 (~30 m): mean slope over a 15 × 15 km box (the size of a NASA Artemis candidate landing region) | Malapert 5.6° ± 2.0° (Wueller et al. 2025) |
 | Highest Sun angle | Calculated: 90° − max(0, \|latitude\| − axial tilt) | Malapert 5.54°, Arcadia 67.99° (tilts from NASA fact sheets) |
 
 **Key findings.**
-- **Hottest ground (Moon):** Lonar Crater, India comes closest to Malapert (48.1 vs 47 °C;
-  score 0.99). The East Antarctic Plateau is the furthest (0.20).
+- **Hottest ground (Moon):** Lonar Crater, India comes closest to Malapert (52.0 vs 47 °C;
+  score 0.95). The East Antarctic Plateau is the furthest (0.27).
 - **Slope (Moon):** Harrat Khaybar, Saudi Arabia is the closest of the Moon-analog sites
   (3.8° vs 5.6°; 0.83).
 - **Sun angle (Mars):** Western Qaidam Basin, China and Río Tinto, Spain match Arcadia
@@ -79,8 +79,9 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 **Limitations.**
 - **Only a few conditions are scored.** Arcadia is scored on Sun angle only: we found no
   comparable Mars ground temperature or slope for it.
-- **The temperatures aren't quite the same kind.** Earth is an 8-day average; Malapert is
-  a single maximum. So Earth values run a few °C low.
+- **Temperatures are measured differently.** Earth is the hottest reading at one fixed
+  time of day (~1:30 pm), averaged over a 1 km pixel; Malapert is Diviner's maximum.
+  Cloudy and low-quality days are dropped (about half the year at Lonar: 185 of 365 days, mostly monsoon cloud).
 - **Slope depends on the box and pixel size.** At 30 m, measurement noise adds about
   0.5–1° on flat ground, and Malapert's source doesn't state its map resolution.
 - **Sun angle is calculated, not measured.** It assumes a flat horizon.
@@ -88,7 +89,6 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 - **Each place is one point.** Three Earth coordinates are approximate.
 
 **Future work.**
-- Daily MODIS temperatures via NASA AppEEARS (true maximum). The reader is already written.
 - Ground brightness (albedo): Arcadia's value (0.236, MGS TES) is ready; Earth's needs MODIS MCD43A3.
 - A Mars ground temperature for Arcadia, and minimum temperatures for both targets.
 - More sites, and a global "analog finder" that scores every place on Earth.
@@ -97,7 +97,8 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 
 | Dataset | What for | Link |
 |---|---|---|
-| MODIS Aqua land surface temperature, MYD11A2 v6.1, via ORNL DAAC subsets service (doi:10.3334/ORNLDAAC/1600) | Earth hottest ground temperature (scored) | https://modis.ornl.gov |
+| MODIS Aqua daily land surface temperature, MYD11A1 v6.1 (doi:10.5067/MODIS/MYD11A1.061), via NASA AppEEARS (LP DAAC) | Earth hottest ground temperature (scored) | https://appeears.earthdatacloud.nasa.gov |
+| MODIS 8-day MYD11A2 via ORNL DAAC | Earlier temperature source; reference only, not scored | https://modis.ornl.gov |
 | LRO Diviner surface temperatures (via McClanahan et al., arXiv 2303.03911) | Malapert 47 °C maximum (scored); shadowed-crater cold (gap page) | https://arxiv.org/abs/2303.03911 |
 | NASA planetary fact sheets (NSSDC) | Axial tilts for Sun angle (scored); gravity and pressure (text) | https://nssdc.gsfc.nasa.gov/planetary/factsheet/ |
 | NASA release 22-089 (Artemis candidate regions, ~15 × 15 km) | Size of the slope box | https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/ |
@@ -123,7 +124,9 @@ Nov 15 (see [link-check.md](link-check.md)); fix them in the Sheet before submit
 - Christensen, P. R. et al. (2001), MGS Thermal Emission Spectrometer experiment, *JGR* 106(E10), doi:10.1029/2000JE001370
 - McClanahan, T. P. et al., Evidence for widespread hydrogen sequestration within the Moon's south polar cold traps, arXiv:2303.03911
 - Wueller et al. (2025), *JGR Planets*, doi:10.1029/2025JE009127
-- ORNL DAAC (2018), MODIS and VIIRS Land Product Subsets RESTful Web Service, doi:10.3334/ORNLDAAC/1600; Wan, Hook & Hulley, MYD11A2 v6.1
+- Wan, Z., Hook, S., & Hulley, G. (2021), MODIS/Aqua Land Surface Temperature/Emissivity Daily L3 Global 1km SIN Grid V061, NASA LP DAAC, doi:10.5067/MODIS/MYD11A1.061
+- AppEEARS Team (2026), Application for Extracting and Exploring Analysis Ready Samples (AppEEARS), Ver. 3.137, NASA EOSDIS LP DAAC, https://appeears.earthdatacloud.nasa.gov
+- ORNL DAAC (2018), MODIS and VIIRS Land Product Subsets RESTful Web Service, doi:10.3334/ORNLDAAC/1600 (8-day data, reference only)
 - Copernicus DEM GLO-30, ESA / European Union, doi:10.5270/ESA-c5d3d65
 - NASA (2022), release 22-089; NASA (2024), "NASA Provides Update on Artemis III Moon Landing Regions"
 - NASA POWER: "The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth Science Division." (reference only)
@@ -154,14 +157,14 @@ AI tools helped with research and coding; the team made the decisions and checke
 
 - **What AI did (Claude Code; Cursor also used):**
   - wrote the Python scripts and the website code, and the project notes;
-  - wrote the scripts that download data (MODIS, Copernicus DEM, TES);
+  - wrote the scripts that download or read data (MODIS, AppEEARS, Copernicus DEM, TES);
   - checked links;
   - suggested methods, such as the 15 km slope box and the sun-angle formula check;
   - flagged problems, such as a dead source link and a temperature citation to clarify.
 - **AI also helped with research:** finding candidate sites, facts and sources.
 - **What the team decided:**
   - the targets, the 12 sites and everything in the research sheet;
-  - which data to trust: switching to MODIS 1 km, using only ground-surface values, never estimating;
+  - which data to trust: MODIS 1 km daily readings with a quality filter, ground-surface values only, never estimating;
   - comparing each site only with its own body;
   - which conditions to score.
 - **What the team checked:** the source links before numbers were used, and the code.
@@ -175,7 +178,7 @@ AI tools helped with research and coding; the team made the decisions and checke
 4. **How we score:** one condition at a time, 0 to 1, from NASA MODIS, LRO Diviner, NASA fact sheets and ESA Copernicus data.
 5. **Findings:** Lonar matches Malapert's hottest ground; Qaidam and Río Tinto match Arcadia's Sun; no single best site.
 6. **Where Earth falls short:** no Sun below 23.4°, no −233 °C cold, no low gravity, vacuum or Mars radiation.
-7. **Use it:** live site + open data and code; AI disclosure; next steps (daily MODIS, albedo, Mars temperatures).
+7. **Use it:** live site + open data and code; AI disclosure; next steps (albedo, Mars temperatures, more sites).
 
 ## Rule check (before submitting)
 

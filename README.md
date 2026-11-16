@@ -22,7 +22,7 @@ scores; until then its page says "Not scored yet" and why.
 |---|---|
 | `data/site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`, `datasets.csv` | The research sheet's tabs, exported as CSV. **These are the inputs.** |
 | `data/import_sheet.py` | Turns `site_options.csv` + `targets.csv` into `data/sites.csv` |
-| `data/fetch_modis.py` | Downloads MODIS 1 km land surface temperatures per site into `data/modis_lst.csv`: **the scored Earth max temperature** (needs internet; run when sites change) |
+| `data/fetch_modis.py` | MODIS 8-day (MYD11A2) temperatures into `data/modis_lst.csv`. Reference only: replaced by the daily AppEEARS data |
 | `data/fetch_power.py` | NASA POWER (~50 km) skin temperatures into `data/power_skin_temps.csv`. Kept for reference only: no longer scored |
 | `data/appeears_points.csv` | Our 12 sites as a point file for NASA AppEEARS (ID, Category, Latitude, Longitude) |
 | `data/scores_html.py` | The score cards on site pages and the MODIS citation |
@@ -32,7 +32,8 @@ scores; until then its page says "Not scored yet" and why.
 | `data/fetch_slope.py` | Average slope in a 15 × 15 km box per site from Copernicus DEM GLO-30 → `data/copernicus_slope.csv` (scored vs Malapert's 5.6°; also saves 1 km and 5 km boxes) |
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
-| `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1) or ground brightness (MCD43A3) per site (not scored yet) |
+| `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1 → `modis_daily_lst.csv`, **the scored Earth max temperature**) or ground brightness (MCD43A3, not scored yet) |
+| `data/appeears/` | AppEEARS request record, metadata and README (citations) for the daily MODIS file |
 | `data/fetch_tes_albedo.py` | Arcadia's ground brightness (albedo 0.236) from NASA's TES map (one ~7.4 km pixel; dust in the air not removed) → `data/mars_albedo.csv` (not scored until Earth albedo, 500 m MODIS pixels, arrives) |
 | `data/analog.py` | Decides which target(s) each site is compared with, from its "Analog for" text (Moon / Mars / both); a typo shows both and triggers a build warning |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
@@ -69,11 +70,12 @@ open docs/index.html               # macOS; or double-click the file
    candidate landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
    `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
    (b) max ground temperature vs Malapert. Earth values come from
-   MODIS Aqua land surface temperature, MYD11A2: the hottest 8-day average of clear-sky
-   ~1:30 pm readings in 2025, in the one 1 km pixel at the site (`data/fetch_modis.py` →
-   `data/modis_lst.csv`; re-run it if sites are added or moved). We first used NASA POWER,
-   but we switched from NASA POWER (~50 km grid cell) to MODIS (1 km pixel) because it is the smallest Earth temperature data on the challenge Resources list that covers all 12 sites without a login. Daily MODIS (MYD11A1) isn't offered by that no-login service, so
-   we use the 8-day product. Malapert's value comes from the Targets tab column
+   MODIS Aqua daily land surface temperature, MYD11A1 v6.1: the hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel,
+   extracted with NASA AppEEARS (`data/earth-analogs-lst-2025-MYD11A1-061-results.csv`,
+   request record in `data/appeears/`) and read by `data/read_appeears.py MYD11A1` →
+   `data/modis_daily_lst.csv`. Days are kept only if MODLAND quality is 00/01 and the LST
+   error is 2 K or less. History: NASA POWER (~50 km cell), then MODIS 8-day averages
+   (MYD11A2, `data/fetch_modis.py`); both kept for reference only. Malapert's value comes from the Targets tab column
    "Max ground surface temp (°C)" (LRO Diviner). Each score shows as a card; a
    radar chart appears once a site has 3 or more scored conditions.
    **To score more conditions:** add columns named exactly `slope_deg`, `temp_max_c`,

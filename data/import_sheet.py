@@ -40,9 +40,10 @@ TARGET_COLUMNS = {
 # Each must be the same kind of number as the column: max ground (skin) temperature.
 TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)",  # LRO Diviner, entered by the team
                         "slope_deg": "Landing-area slope (°)"}         # Wueller et al. 2025, entered by the team
-# Earth temp_max_c: hottest 8-day MODIS land surface temperature, 1 km pixel (made by fetch_modis.py).
-# (fetch_power.py / power_skin_temps.csv, ~50 km grid, are kept for reference but no longer scored.)
-MODIS_CSV = score.DATA_DIR / "modis_lst.csv"
+# Earth temp_max_c: hottest good-quality DAILY MODIS reading (MYD11A1, 1 km), made by
+# read_appeears.py from the AppEEARS file. Kept for reference only, not scored: the 8-day
+# values (fetch_modis.py -> modis_lst.csv) and NASA POWER (fetch_power.py, ~50 km grid).
+MODIS_CSV = score.DATA_DIR / "modis_daily_lst.csv"
 # Earth slope_deg: mean slope in a 15 km box, Copernicus DEM GLO-30 (made by fetch_slope.py).
 SLOPE_CSV, SLOPE_COLUMN = score.DATA_DIR / "copernicus_slope.csv", "slope_mean_15km"
 
@@ -97,15 +98,15 @@ def reference_rows():
 
 
 def add_modis_temps(sites):
-    """Earth temp_max_c = MODIS Aqua MYD11A2 LST_Day_1km: hottest 8-day average in the year."""
+    """Earth temp_max_c = MODIS Aqua MYD11A1 LST_Day_1km: hottest good-quality daily reading in 2025."""
     if not MODIS_CSV.exists():
-        print("  No data/modis_lst.csv: run data/fetch_modis.py to score max temperature.")
+        print("  No data/modis_daily_lst.csv: run data/read_appeears.py MYD11A1 to score max temperature.")
         return
     modis = pd.read_csv(MODIS_CSV).set_index("site")["LST_day_max_c"]
     sites["temp_max_c"] = sites["name"].map(modis)  # sites missing from the file stay blank
     missing = sites.loc[sites["temp_max_c"].isna(), "name"].tolist()
     if missing:
-        print(f"  No MODIS value for {missing}: run data/fetch_modis.py again.")
+        print(f"  No MODIS value for {missing}: check the AppEEARS file and run data/read_appeears.py.")
 
 
 

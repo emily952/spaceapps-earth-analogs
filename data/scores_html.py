@@ -21,8 +21,8 @@ NOT_SCORED_NOTE = ("Not scored yet. We only score a condition when we have an ex
 
 # Who measured what, shown under each scored condition. Keep in step with import_sheet.py.
 DIMENSION_SOURCES = {
-    "temp_max_c": "Earth: MODIS Aqua land surface temperature (MYD11A2), hottest 8-day average "
-                  "of clear-sky ~1:30 pm readings in 2025, one 1 km pixel. "
+    "temp_max_c": "Earth: MODIS Aqua land surface temperature (MYD11A1 v6.1, via NASA AppEEARS), "
+                  "hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel. "
                   "Moon: LRO Diviner, Malapert ridge top.",
     "sun_max_elev_deg": sun_angle.SOURCE,
     "slope_deg": "Earth: Copernicus DEM GLO-30 (~30 m pixels; wider east-west near the poles), mean "
@@ -111,26 +111,34 @@ def scores_section(site, site_scores, sites):
     return "".join(parts)
 
 
-# MODIS citation (from the top of fetch_modis.py). One example request per site is in modis_lst.csv.
-MODIS_CSV = score.DATA_DIR / "modis_lst.csv"
-MODIS_REFERENCE = ("ORNL DAAC. 2018. MODIS and VIIRS Land Product Subsets RESTful Web Service. "
-                   "https://doi.org/10.3334/ORNLDAAC/1600 . Product MYD11A2 v6.1 (Wan, Hook, Hulley).")
+# MODIS citations, word for word from AppEEARS' README (data/appeears/README.md).
+MODIS_CSV = score.DATA_DIR / "modis_daily_lst.csv"
+MODIS_REFERENCES = [
+    "Wan, Z., Hook, S., & Hulley, G. (2021). MODIS/Aqua Land Surface Temperature/Emissivity Daily L3 Global "
+    "1km SIN Grid V061. NASA Land Processes Distributed Active Archive Center. "
+    "https://doi.org/10.5067/MODIS/MYD11A1.061. Accessed November 16, 2026.",
+    "AppEEARS Team. (2026). Application for Extracting and Exploring Analysis Ready Samples (AppEEARS). "
+    "Ver. 3.137. NASA EOSDIS Land Processes Distributed Active Archive Center (LP DAAC), USGS/Earth Resources "
+    "Observation and Science (EROS) Center, Sioux Falls, South Dakota, USA. Accessed November 16, 2026. "
+    "https://appeears.earthdatacloud.nasa.gov",
+]
 
 
 def modis_credit():
-    """About page section: MODIS citation, product, year, access date and each site's example request."""
+    """About page section: MODIS citations, method, and days kept vs dropped at each site."""
     if not MODIS_CSV.exists():
         return ""
     modis = pd.read_csv(MODIS_CSV)
-    first = modis.iloc[0]
-    requests = "".join(f'<li>{html.escape(r.site)}: <a href="{html.escape(r.example_request_url)}">'
-                       f'{html.escape(r.example_request_url)}</a></li>' for r in modis.itertuples())
-    return (f'<section class="card"><h2>Ground temperatures: MODIS (1 km)</h2><p>{html.escape(MODIS_REFERENCE)}</p>'
-            f'<p>Product MYD11A2 v6.1 (MODIS Aqua, 8-day land surface temperature, band LST_Day_1km), '
-            f'year 2025, accessed {html.escape(first["accessed"])}. For each site we keep the hottest '
-            f'8-day average of clear-sky daytime readings (Aqua passes about 1:30 pm local time) in the '
-            f'one 1 km pixel at its coordinates. Service: <a href="https://modis.ornl.gov">modis.ornl.gov</a></p>'
-            f'<p class="meta">We first used NASA POWER (~50 km grid cell) and switched to MODIS because it is the '
-            f'smallest Earth temperature data on the challenge Resources list that covers all 12 sites without '
-            f'a login. The POWER download is kept in our repository for reference; it is not scored.</p>'
-            f'<details><summary>Example request for each site</summary><ul>{requests}</ul></details></section>')
+    rows = "".join(f"<tr><td>{html.escape(r.site)}</td><td>{r.LST_day_max_c:g} °C</td><td>{r.date_of_max}</td>"
+                   f"<td>{r.usable_days}</td><td>{r.dropped_days}</td></tr>" for r in modis.itertuples())
+    refs = "".join(f"<li>{html.escape(ref)}</li>" for ref in MODIS_REFERENCES)
+    return (f'<section class="card"><h2>Ground temperatures: MODIS daily (1 km)</h2><ul>{refs}</ul>'
+            f'<p>Product MYD11A1 v6.1 (MODIS Aqua, daily land surface temperature, band LST_Day_1km), '
+            f'every day of 2025, extracted with NASA AppEEARS at each site\'s coordinates (one 1 km pixel). '
+            f'Aqua passes over at about 1:30 pm local time. We keep a day only if it has a reading (not cloud) '
+            f'and its quality flags say "good" or "other" quality with an average error of 2 K or less; '
+            f'the score uses the hottest kept day.</p>'
+            f'<div class="scroll"><table><tr><th>Site</th><th>Hottest kept day</th><th>Date</th>'
+            f'<th>Days kept</th><th>Days dropped</th></tr>{rows}</table></div>'
+            f'<p class="meta">Earlier versions used NASA POWER (~50 km grid) and then MODIS 8-day averages '
+            f'(MYD11A2, ORNL DAAC). Both are kept in our repository for reference; neither is scored.</p></section>')

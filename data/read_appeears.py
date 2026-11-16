@@ -12,9 +12,14 @@ dates 2025-01-01 to 2025-12-31, layers listed in PRODUCTS below. Save each resul
 in data/ (names end in "MYD11A1-061-results.csv" / "MCD43A3-061-results.csv").
 
 Quality: we keep only readings whose quality number (QC) passes the check below.
-MYD11A1 QC_Day: lowest 2 bits 00 = good, or 01 = produced with average error of 2 K or
-less (bits 6-7 = 00 or 01). MCD43A3: 0 = full model fit, 1 = simpler fit; others dropped.
+MYD11A1 QC_Day: "MODLAND" bits 0-1 = 00 (good) or 01 (other quality), AND "LST error"
+bits 6-7 = 00 (1 K or less) or 01 (2 K or less). Cloudy days (LST 0) are dropped.
+MCD43A3: 0 = full model fit, 1 = simpler fit; others dropped.
 AppEEARS already applies the scale (kelvin / albedo 0-1).
+Sites are matched by their coordinates (AppEEARS IDs can be anything).
+
+Cite: AppEEARS Team (2026), AppEEARS Ver. 3.137, NASA EOSDIS LP DAAC; Wan, Hook & Hulley
+(2021), MYD11A1 V061, doi:10.5067/MODIS/MYD11A1.061 (see data/appeears/README.md).
 
 Run:  python3 data/read_appeears.py MYD11A1     or     python3 data/read_appeears.py MCD43A3
 """
@@ -27,15 +32,15 @@ import score         # our own data/score.py (paths)
 
 
 def lst_ok(qc):
-    produced, error = qc % 4, (qc // 64) % 4  # bits 0-1, and bits 6-7
-    return (produced == 0) | ((produced == 1) & (error <= 1))
+    modland, error = qc % 4, (qc // 64) % 4  # bits 0-1, and bits 6-7
+    return (modland <= 1) & (error <= 1)
 
 
 PRODUCTS = {
     "MYD11A1": {"value": "_LST_Day_1km", "qc": "_QC_Day", "qc_ok": lst_ok,
                 "valid": lambda v: v > 0, "convert": lambda v: (v - 273.15).round(2), "keep": "max",
                 "column": "LST_day_max_c", "output": "modis_daily_lst.csv",
-                "about": "MYD11A1.061 LST_Day_1km (daily, 1 km), hottest usable day of 2025"},
+                "about": "MYD11A1.061 LST_Day_1km (daily, 1 km), hottest good-quality day of 2025"},
     "MCD43A3": {"value": "_Albedo_WSA_shortwave", "qc": "_BRDF_Albedo_Band_Mandatory_Quality_shortwave",
                 "qc_ok": lambda qc: qc <= 1, "valid": lambda v: (v >= 0) & (v <= 1),
                 "convert": lambda v: v, "keep": "mean",
@@ -65,24 +70,27 @@ def main(product):
     table = pd.read_csv(path)
     values, qc = column(table, spec["value"]), column(table, spec["qc"]).fillna(255).astype(int)
     table["value"] = spec["convert"](values)
-    table = table[spec["valid"](values) & spec["qc_ok"](qc)]  # drop clouds, fill values, low quality
+    table["usable"] = spec["valid"](values) & spec["qc_ok"](qc)  # not cloudy, not fill, good quality
 
-    # AppEEARS IDs are site names with commas and spaces removed (see appeears_points.csv).
-    sites = import_sheet.read_tab(import_sheet.SITE_OPTIONS, ["Site"])["Site"]
+    # Match AppEEARS rows to our sites by coordinates (rounded to 3 decimals, as in the Sheet).
+    sites = import_sheet.read_tab(import_sheet.SITE_OPTIONS, ["Site", "Lat", "Lon"])
+    place = lambda lat, lon: (round(float(lat), 3), round(float(lon), 3))
+    table["place"] = [place(a, b) for a, b in zip(table["Latitude"], table["Longitude"])]
     rows = []
-    for site in sites:
-        days = table[table["ID"] == site.replace(",", "").replace(" ", "")]
+    for _, s in sites.iterrows():
+        site, here = s["Site"], table[table["place"] == place(s["Lat"], s["Lon"])]
+        days = here[here["usable"]]
         row = {"site": site, spec["column"]: None, "date_of_max": None, "usable_days": len(days),
-               "product": spec["about"], "source_file": path.name}
+               "dropped_days": len(here) - len(days), "product": spec["about"], "source_file": path.name}
         if len(days) and spec["keep"] == "max":
             best = days.loc[days["value"].idxmax()]
             row[spec["column"]], row["date_of_max"] = best["value"], best["Date"]
         elif len(days):
             row[spec["column"]] = round(days["value"].mean(), 4)
         rows.append(row)
-        print(f"  {site}: {row[spec['column']]} ({len(days)} usable days)")
+        print(f"  {site}: {row[spec['column']]} ({len(days)} usable days, {row['dropped_days']} dropped)")
     pd.DataFrame(rows).to_csv(score.DATA_DIR / spec["output"], index=False)
-    print(f"Wrote {spec['output']}. Not scored until import_sheet.py is switched over.")
+    print(f"Wrote {spec['output']}. (import_sheet.py scores max temperature from modis_daily_lst.csv.)")
 
 
 if __name__ == "__main__":

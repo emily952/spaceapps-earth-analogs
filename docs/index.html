@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_9292c09e281a40dfb783f0987196eb3f {
+                #map_6f7e77cc65c349986ca4e0d10a4fc7ac {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -55,14 +55,14 @@
     
     <div style='position:fixed;bottom:20px;left:20px;z-index:9999;background:white;padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;max-width:300px;font-size:14px'><b>Earth analogs for Moon and Mars</b><br>Click a marker for the site. Compared with:<ul style='margin:4px 0;padding-left:18px'><li>Malapert Massif</li><li>Arcadia Planitia</li></ul><small>Markers: blue: new finds · gray: well-known baselines · purple: limit site (shows Earth's gap)</small><br><a href='compare.html'>Compare sites</a> · <a href='gap.html'>Where Earth falls short</a> · <a href='tasks.html'>Sites by mission task</a> · <a href='about.html'>About &amp; credits</a></div>
     
-            <div class="folium-map" id="map_9292c09e281a40dfb783f0987196eb3f" ></div>
+            <div class="folium-map" id="map_6f7e77cc65c349986ca4e0d10a4fc7ac" ></div>
         
 </body>
 <script>
     
     
-            var map_9292c09e281a40dfb783f0987196eb3f = L.map(
-                "map_9292c09e281a40dfb783f0987196eb3f",
+            var map_6f7e77cc65c349986ca4e0d10a4fc7ac = L.map(
+                "map_6f7e77cc65c349986ca4e0d10a4fc7ac",
                 {
                     center: [20.0, 0.0],
                     crs: L.CRS.EPSG3857,
@@ -89,7 +89,7 @@
 
         
     
-            var tile_layer_90c2ce332e19e1a3eed47c69ffedf747 = L.tileLayer(
+            var tile_layer_18dd2f91ff7e689eef7aa5b56e8ca2e6 = L.tileLayer(
                 "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg",
                 {
   "minZoom": 1,
@@ -106,23 +106,23 @@
             );
         
     
-            tile_layer_90c2ce332e19e1a3eed47c69ffedf747.addTo(map_9292c09e281a40dfb783f0987196eb3f);
+            tile_layer_18dd2f91ff7e689eef7aa5b56e8ca2e6.addTo(map_6f7e77cc65c349986ca4e0d10a4fc7ac);
         
     
-            var feature_group_684ac55dbebc3cb0cd074f2f66de6a18 = L.featureGroup(
+            var feature_group_67f2fcb595fa21098b92c5e3cb980abc = L.featureGroup(
                 {
 }
             );
         
     
-            var marker_89b71fad42bfaf26b11ed5030e8d77b8 = L.marker(
+            var marker_3bc6bd662ace52afee2d1cf34914a027 = L.marker(
                 [22.018, 26.088],
                 {
 }
-            ).addTo(feature_group_684ac55dbebc3cb0cd074f2f66de6a18);
+            ).addTo(feature_group_67f2fcb595fa21098b92c5e3cb980abc);
         
     
-            var icon_4f39adc7964bcc632ac78cb159e0dc11 = L.AwesomeMarkers.icon(
+            var icon_b8d3a4b5523a35856f4f7e8571903d9f = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -133,24 +133,24 @@
             );
         
     
-        var popup_82ede4493c357dd84c3ac678c0b9206e = L.popup({
+        var popup_99513a726aeb8498b9f87fefb61ca693 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_7c256d9724ed1d17b5c46fc29274eca2 = $(`<div id="html_7c256d9724ed1d17b5c46fc29274eca2" style="width: 100.0%; height: 100.0%;"><b>Kamil Crater, Egypt</b><br>New find<br>Analog for: Moon (small fresh craters)<br><a href='sites/kamil-crater-egypt.html'>Open site page</a></div>`)[0];
-                popup_82ede4493c357dd84c3ac678c0b9206e.setContent(html_7c256d9724ed1d17b5c46fc29274eca2);
+                var html_92718526c26a2d1a281ef614bfeda435 = $(`<div id="html_92718526c26a2d1a281ef614bfeda435" style="width: 100.0%; height: 100.0%;"><b>Kamil Crater, Egypt</b><br>New find<br>Analog for: Moon (small fresh craters)<br><a href='sites/kamil-crater-egypt.html'>Open site page</a></div>`)[0];
+                popup_99513a726aeb8498b9f87fefb61ca693.setContent(html_92718526c26a2d1a281ef614bfeda435);
             
         
 
-        marker_89b71fad42bfaf26b11ed5030e8d77b8.bindPopup(popup_82ede4493c357dd84c3ac678c0b9206e)
+        marker_3bc6bd662ace52afee2d1cf34914a027.bindPopup(popup_99513a726aeb8498b9f87fefb61ca693)
         ;
 
         
     
     
-            marker_89b71fad42bfaf26b11ed5030e8d77b8.bindTooltip(
+            marker_3bc6bd662ace52afee2d1cf34914a027.bindTooltip(
                 `<div>
                      Kamil Crater, Egypt
                  </div>`,
@@ -160,26 +160,26 @@
             );
         
     
-                marker_89b71fad42bfaf26b11ed5030e8d77b8.setIcon(icon_4f39adc7964bcc632ac78cb159e0dc11);
+                marker_3bc6bd662ace52afee2d1cf34914a027.setIcon(icon_b8d3a4b5523a35856f4f7e8571903d9f);
             
     
-            feature_group_684ac55dbebc3cb0cd074f2f66de6a18.addTo(map_9292c09e281a40dfb783f0987196eb3f);
+            feature_group_67f2fcb595fa21098b92c5e3cb980abc.addTo(map_6f7e77cc65c349986ca4e0d10a4fc7ac);
         
     
-            var feature_group_db79ed816f0f8cb2cdfdbad79e47869b = L.featureGroup(
+            var feature_group_cbae3d97732d31d7873f9f5d7e1796f2 = L.featureGroup(
                 {
 }
             );
         
     
-            var marker_8e31b69ebc6698390e93c866b96aa053 = L.marker(
+            var marker_e02bb29e3d4c290398d0ba778d02adb5 = L.marker(
                 [25.449, 30.54],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_64998992ff77a830f2777258d07b6596 = L.AwesomeMarkers.icon(
+            var icon_74993d85fd537d9fbf1757b3e238edf6 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -190,24 +190,24 @@
             );
         
     
-        var popup_77e0c8b34914340ce01d895b26e3e8d1 = L.popup({
+        var popup_0e598f5e183635252a40ec9fdf0ebee9 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_b2470df96eb5a14b03ed996274317bff = $(`<div id="html_b2470df96eb5a14b03ed996274317bff" style="width: 100.0%; height: 100.0%;"><b>Kharga yardangs (Western Desert), Egypt</b><br>New find<br>Analog for: Mars (wind-shaped terrain)<br><a href='sites/kharga-yardangs-western-desert-egypt.html'>Open site page</a></div>`)[0];
-                popup_77e0c8b34914340ce01d895b26e3e8d1.setContent(html_b2470df96eb5a14b03ed996274317bff);
+                var html_b7e3b3e9c640d4b40b3aeabb7a1bd06e = $(`<div id="html_b7e3b3e9c640d4b40b3aeabb7a1bd06e" style="width: 100.0%; height: 100.0%;"><b>Kharga yardangs (Western Desert), Egypt</b><br>New find<br>Analog for: Mars (wind-shaped terrain)<br><a href='sites/kharga-yardangs-western-desert-egypt.html'>Open site page</a></div>`)[0];
+                popup_0e598f5e183635252a40ec9fdf0ebee9.setContent(html_b7e3b3e9c640d4b40b3aeabb7a1bd06e);
             
         
 
-        marker_8e31b69ebc6698390e93c866b96aa053.bindPopup(popup_77e0c8b34914340ce01d895b26e3e8d1)
+        marker_e02bb29e3d4c290398d0ba778d02adb5.bindPopup(popup_0e598f5e183635252a40ec9fdf0ebee9)
         ;
 
         
     
     
-            marker_8e31b69ebc6698390e93c866b96aa053.bindTooltip(
+            marker_e02bb29e3d4c290398d0ba778d02adb5.bindTooltip(
                 `<div>
                      Kharga yardangs (Western Desert), Egypt
                  </div>`,
@@ -217,17 +217,17 @@
             );
         
     
-                marker_8e31b69ebc6698390e93c866b96aa053.setIcon(icon_64998992ff77a830f2777258d07b6596);
+                marker_e02bb29e3d4c290398d0ba778d02adb5.setIcon(icon_74993d85fd537d9fbf1757b3e238edf6);
             
     
-            var marker_7f7571bb2c6a7b07decc655277e542d6 = L.marker(
+            var marker_0183f6ef6b04367a18ac4782b94b821f = L.marker(
                 [38.035, 91.852],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_ab6a71c2b5f243b9e9cbf5b6011ce749 = L.AwesomeMarkers.icon(
+            var icon_199f742ef95786469fdef150db5c554c = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -238,24 +238,24 @@
             );
         
     
-        var popup_d4f5dd3531ad8a947cef120f54c01063 = L.popup({
+        var popup_5ed4325708af4a1c924838fdaa80007d = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_827b7f8091460a703864166a8e0f208b = $(`<div id="html_827b7f8091460a703864166a8e0f208b" style="width: 100.0%; height: 100.0%;"><b>Western Qaidam Basin, China</b><br>New find (studied mainly in China)<br>Analog for: Mars (Gale crater and Medusae Fossae yardangs; salt playas)<br><a href='sites/western-qaidam-basin-china.html'>Open site page</a></div>`)[0];
-                popup_d4f5dd3531ad8a947cef120f54c01063.setContent(html_827b7f8091460a703864166a8e0f208b);
+                var html_878d76221e7e4f634824ceaeea67333f = $(`<div id="html_878d76221e7e4f634824ceaeea67333f" style="width: 100.0%; height: 100.0%;"><b>Western Qaidam Basin, China</b><br>New find (studied mainly in China)<br>Analog for: Mars (Gale crater and Medusae Fossae yardangs; salt playas)<br><a href='sites/western-qaidam-basin-china.html'>Open site page</a></div>`)[0];
+                popup_5ed4325708af4a1c924838fdaa80007d.setContent(html_878d76221e7e4f634824ceaeea67333f);
             
         
 
-        marker_7f7571bb2c6a7b07decc655277e542d6.bindPopup(popup_d4f5dd3531ad8a947cef120f54c01063)
+        marker_0183f6ef6b04367a18ac4782b94b821f.bindPopup(popup_5ed4325708af4a1c924838fdaa80007d)
         ;
 
         
     
     
-            marker_7f7571bb2c6a7b07decc655277e542d6.bindTooltip(
+            marker_0183f6ef6b04367a18ac4782b94b821f.bindTooltip(
                 `<div>
                      Western Qaidam Basin, China
                  </div>`,
@@ -265,17 +265,17 @@
             );
         
     
-                marker_7f7571bb2c6a7b07decc655277e542d6.setIcon(icon_ab6a71c2b5f243b9e9cbf5b6011ce749);
+                marker_0183f6ef6b04367a18ac4782b94b821f.setIcon(icon_199f742ef95786469fdef150db5c554c);
             
     
-            var marker_065839f78f44c43cdaba8126287edb13 = L.marker(
+            var marker_524d52d6bc113bac3a3b59f56cfe662f = L.marker(
                 [16.956, 17.781],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_d2a2e93d304755afac27769da527351b = L.AwesomeMarkers.icon(
+            var icon_d0e99224b92d3e9a207822c351946fb4 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -286,24 +286,24 @@
             );
         
     
-        var popup_b6315e3a46031f082b8a41e8a64abcc3 = L.popup({
+        var popup_a0c70f528975e57c1c58d76adf8799b3 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_7f5be87f9b32ba9f19330d3479ff186b = $(`<div id="html_7f5be87f9b32ba9f19330d3479ff186b" style="width: 100.0%; height: 100.0%;"><b>Bodélé Depression, Chad</b><br>New find (process analog)<br>Analog for: Mars (dust lifting and dust storms)<br><a href='sites/bodele-depression-chad.html'>Open site page</a></div>`)[0];
-                popup_b6315e3a46031f082b8a41e8a64abcc3.setContent(html_7f5be87f9b32ba9f19330d3479ff186b);
+                var html_91cc55bdf97ac7d3176875d17f3697af = $(`<div id="html_91cc55bdf97ac7d3176875d17f3697af" style="width: 100.0%; height: 100.0%;"><b>Bodélé Depression, Chad</b><br>New find (process analog)<br>Analog for: Mars (dust lifting and dust storms)<br><a href='sites/bodele-depression-chad.html'>Open site page</a></div>`)[0];
+                popup_a0c70f528975e57c1c58d76adf8799b3.setContent(html_91cc55bdf97ac7d3176875d17f3697af);
             
         
 
-        marker_065839f78f44c43cdaba8126287edb13.bindPopup(popup_b6315e3a46031f082b8a41e8a64abcc3)
+        marker_524d52d6bc113bac3a3b59f56cfe662f.bindPopup(popup_a0c70f528975e57c1c58d76adf8799b3)
         ;
 
         
     
     
-            marker_065839f78f44c43cdaba8126287edb13.bindTooltip(
+            marker_524d52d6bc113bac3a3b59f56cfe662f.bindTooltip(
                 `<div>
                      Bodélé Depression, Chad
                  </div>`,
@@ -313,17 +313,17 @@
             );
         
     
-                marker_065839f78f44c43cdaba8126287edb13.setIcon(icon_d2a2e93d304755afac27769da527351b);
+                marker_524d52d6bc113bac3a3b59f56cfe662f.setIcon(icon_d0e99224b92d3e9a207822c351946fb4);
             
     
-            var marker_1b86c0ddb7433794fb699fd3284fc2f8 = L.marker(
+            var marker_0491bdebf681a2aa5a03b5fcc411f65d = L.marker(
                 [14.242, 40.3],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_e2eb4cffc0753a8f44af57d5bb8144e2 = L.AwesomeMarkers.icon(
+            var icon_399d8caa32e2cd236f0f5dde7b335189 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -334,24 +334,24 @@
             );
         
     
-        var popup_d71eb4270c357ec40d241ef2026ec071 = L.popup({
+        var popup_6f65fa2ec929c7e1bec2482e07515ca8 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_b36c7bdeac96b7960c6e56d4df076399 = $(`<div id="html_b36c7bdeac96b7960c6e56d4df076399" style="width: 100.0%; height: 100.0%;"><b>Dallol, Danakil Depression, Ethiopia</b><br>New find<br>Analog for: Mars (salts, acid brines, limits of life)<br><a href='sites/dallol-danakil-depression-ethiopia.html'>Open site page</a></div>`)[0];
-                popup_d71eb4270c357ec40d241ef2026ec071.setContent(html_b36c7bdeac96b7960c6e56d4df076399);
+                var html_a370149bda221488cfa945c80988b24a = $(`<div id="html_a370149bda221488cfa945c80988b24a" style="width: 100.0%; height: 100.0%;"><b>Dallol, Danakil Depression, Ethiopia</b><br>New find<br>Analog for: Mars (salts, acid brines, limits of life)<br><a href='sites/dallol-danakil-depression-ethiopia.html'>Open site page</a></div>`)[0];
+                popup_6f65fa2ec929c7e1bec2482e07515ca8.setContent(html_a370149bda221488cfa945c80988b24a);
             
         
 
-        marker_1b86c0ddb7433794fb699fd3284fc2f8.bindPopup(popup_d71eb4270c357ec40d241ef2026ec071)
+        marker_0491bdebf681a2aa5a03b5fcc411f65d.bindPopup(popup_6f65fa2ec929c7e1bec2482e07515ca8)
         ;
 
         
     
     
-            marker_1b86c0ddb7433794fb699fd3284fc2f8.bindTooltip(
+            marker_0491bdebf681a2aa5a03b5fcc411f65d.bindTooltip(
                 `<div>
                      Dallol, Danakil Depression, Ethiopia
                  </div>`,
@@ -361,17 +361,17 @@
             );
         
     
-                marker_1b86c0ddb7433794fb699fd3284fc2f8.setIcon(icon_e2eb4cffc0753a8f44af57d5bb8144e2);
+                marker_0491bdebf681a2aa5a03b5fcc411f65d.setIcon(icon_399d8caa32e2cd236f0f5dde7b335189);
             
     
-            var marker_8e27b0db0fe5f10e0f9899d7d986c992 = L.marker(
+            var marker_1e902db361406dd5ddb677e6dba450fd = L.marker(
                 [37.724, -6.556],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_db5ddd2bda8a2a5bf218645c9c75ecf0 = L.AwesomeMarkers.icon(
+            var icon_eb426ae1e1188a85ff3fae26797db618 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -382,24 +382,24 @@
             );
         
     
-        var popup_d6b37fafdcb3f62dd7c13c4bf129d1f5 = L.popup({
+        var popup_de15b43fcdbf19dbf6e9d94c8e13e320 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_c30283d629074e61979a6ab4fdaeab93 = $(`<div id="html_c30283d629074e61979a6ab4fdaeab93" style="width: 100.0%; height: 100.0%;"><b>Río Tinto (Peña de Hierro), Spain</b><br>New find (known to astrobiologists)<br>Analog for: Mars (Meridiani Planum minerals)<br><a href='sites/rio-tinto-pena-de-hierro-spain.html'>Open site page</a></div>`)[0];
-                popup_d6b37fafdcb3f62dd7c13c4bf129d1f5.setContent(html_c30283d629074e61979a6ab4fdaeab93);
+                var html_02234cb461c872571d471f293d03b4c0 = $(`<div id="html_02234cb461c872571d471f293d03b4c0" style="width: 100.0%; height: 100.0%;"><b>Río Tinto (Peña de Hierro), Spain</b><br>New find (known to astrobiologists)<br>Analog for: Mars (Meridiani Planum minerals)<br><a href='sites/rio-tinto-pena-de-hierro-spain.html'>Open site page</a></div>`)[0];
+                popup_de15b43fcdbf19dbf6e9d94c8e13e320.setContent(html_02234cb461c872571d471f293d03b4c0);
             
         
 
-        marker_8e27b0db0fe5f10e0f9899d7d986c992.bindPopup(popup_d6b37fafdcb3f62dd7c13c4bf129d1f5)
+        marker_1e902db361406dd5ddb677e6dba450fd.bindPopup(popup_de15b43fcdbf19dbf6e9d94c8e13e320)
         ;
 
         
     
     
-            marker_8e27b0db0fe5f10e0f9899d7d986c992.bindTooltip(
+            marker_1e902db361406dd5ddb677e6dba450fd.bindTooltip(
                 `<div>
                      Río Tinto (Peña de Hierro), Spain
                  </div>`,
@@ -409,17 +409,17 @@
             );
         
     
-                marker_8e27b0db0fe5f10e0f9899d7d986c992.setIcon(icon_db5ddd2bda8a2a5bf218645c9c75ecf0);
+                marker_1e902db361406dd5ddb677e6dba450fd.setIcon(icon_eb426ae1e1188a85ff3fae26797db618);
             
     
-            var marker_172c14132550eb8cd6b1fc4a7441a68a = L.marker(
+            var marker_b806fd7dbf53303099961bd4decf53ea = L.marker(
                 [-24.066, -69.864],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_d8b67b575168240871a2ca1bac3ae67e = L.AwesomeMarkers.icon(
+            var icon_7333f398c7d5a7d753f9f122fa5ac4aa = L.AwesomeMarkers.icon(
                 {
   "markerColor": "gray",
   "iconColor": "white",
@@ -430,24 +430,24 @@
             );
         
     
-        var popup_95b503b9ac8893ea037460580c320e00 = L.popup({
+        var popup_0cc11e700ec40a4568c71a3c1265d8b6 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_85cefc67ddefffba0a0a6b1687881ceb = $(`<div id="html_85cefc67ddefffba0a0a6b1687881ceb" style="width: 100.0%; height: 100.0%;"><b>Atacama Desert (Yungay), Chile</b><br>Baseline (well known)<br>Analog for: Mars (dryness, soils, UV)<br><a href='sites/atacama-desert-yungay-chile.html'>Open site page</a></div>`)[0];
-                popup_95b503b9ac8893ea037460580c320e00.setContent(html_85cefc67ddefffba0a0a6b1687881ceb);
+                var html_32a7527778871d561d75481f75f9fc75 = $(`<div id="html_32a7527778871d561d75481f75f9fc75" style="width: 100.0%; height: 100.0%;"><b>Atacama Desert (Yungay), Chile</b><br>Baseline (well known)<br>Analog for: Mars (dryness, soils, UV)<br><a href='sites/atacama-desert-yungay-chile.html'>Open site page</a></div>`)[0];
+                popup_0cc11e700ec40a4568c71a3c1265d8b6.setContent(html_32a7527778871d561d75481f75f9fc75);
             
         
 
-        marker_172c14132550eb8cd6b1fc4a7441a68a.bindPopup(popup_95b503b9ac8893ea037460580c320e00)
+        marker_b806fd7dbf53303099961bd4decf53ea.bindPopup(popup_0cc11e700ec40a4568c71a3c1265d8b6)
         ;
 
         
     
     
-            marker_172c14132550eb8cd6b1fc4a7441a68a.bindTooltip(
+            marker_b806fd7dbf53303099961bd4decf53ea.bindTooltip(
                 `<div>
                      Atacama Desert (Yungay), Chile
                  </div>`,
@@ -457,17 +457,17 @@
             );
         
     
-                marker_172c14132550eb8cd6b1fc4a7441a68a.setIcon(icon_d8b67b575168240871a2ca1bac3ae67e);
+                marker_b806fd7dbf53303099961bd4decf53ea.setIcon(icon_7333f398c7d5a7d753f9f122fa5ac4aa);
             
     
-            var marker_c7d71b05431297f4c95d8f1b5b65e3db = L.marker(
+            var marker_985b2f2b7d420818cac452c3d8ce6fc5 = L.marker(
                 [75.383, -89.667],
                 {
 }
-            ).addTo(feature_group_db79ed816f0f8cb2cdfdbad79e47869b);
+            ).addTo(feature_group_cbae3d97732d31d7873f9f5d7e1796f2);
         
     
-            var icon_5b6be11db7e15e006dc5ae98c18de10a = L.AwesomeMarkers.icon(
+            var icon_60dbdc19b28d0672bb8702f92fee18bc = L.AwesomeMarkers.icon(
                 {
   "markerColor": "gray",
   "iconColor": "white",
@@ -478,24 +478,24 @@
             );
         
     
-        var popup_f21cc8756ab1b0a4cd09c9acab07baa0 = L.popup({
+        var popup_e3a25e5c02871c3c2fed05ba19a4b096 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_f789216ab9615e1c03246b240b118085 = $(`<div id="html_f789216ab9615e1c03246b240b118085" style="width: 100.0%; height: 100.0%;"><b>Haughton Crater, Devon Island, Canada</b><br>Baseline (well known)<br>Analog for: Mars (cold desert crater, permafrost)<br><a href='sites/haughton-crater-devon-island-canada.html'>Open site page</a></div>`)[0];
-                popup_f21cc8756ab1b0a4cd09c9acab07baa0.setContent(html_f789216ab9615e1c03246b240b118085);
+                var html_6cfd8ba7f7359ba3c5fc38c8e6a4f662 = $(`<div id="html_6cfd8ba7f7359ba3c5fc38c8e6a4f662" style="width: 100.0%; height: 100.0%;"><b>Haughton Crater, Devon Island, Canada</b><br>Baseline (well known)<br>Analog for: Mars (cold desert crater, permafrost)<br><a href='sites/haughton-crater-devon-island-canada.html'>Open site page</a></div>`)[0];
+                popup_e3a25e5c02871c3c2fed05ba19a4b096.setContent(html_6cfd8ba7f7359ba3c5fc38c8e6a4f662);
             
         
 
-        marker_c7d71b05431297f4c95d8f1b5b65e3db.bindPopup(popup_f21cc8756ab1b0a4cd09c9acab07baa0)
+        marker_985b2f2b7d420818cac452c3d8ce6fc5.bindPopup(popup_e3a25e5c02871c3c2fed05ba19a4b096)
         ;
 
         
     
     
-            marker_c7d71b05431297f4c95d8f1b5b65e3db.bindTooltip(
+            marker_985b2f2b7d420818cac452c3d8ce6fc5.bindTooltip(
                 `<div>
                      Haughton Crater, Devon Island, Canada
                  </div>`,
@@ -505,26 +505,26 @@
             );
         
     
-                marker_c7d71b05431297f4c95d8f1b5b65e3db.setIcon(icon_5b6be11db7e15e006dc5ae98c18de10a);
+                marker_985b2f2b7d420818cac452c3d8ce6fc5.setIcon(icon_60dbdc19b28d0672bb8702f92fee18bc);
             
     
-            feature_group_db79ed816f0f8cb2cdfdbad79e47869b.addTo(map_9292c09e281a40dfb783f0987196eb3f);
+            feature_group_cbae3d97732d31d7873f9f5d7e1796f2.addTo(map_6f7e77cc65c349986ca4e0d10a4fc7ac);
         
     
-            var feature_group_dfddeca7a348b43cd1382229548f43c9 = L.featureGroup(
+            var feature_group_463a6fee45666534bfec72abb8bc4ec2 = L.featureGroup(
                 {
 }
             );
         
     
-            var marker_dedbe5ae07148f555ad509e017fa7486 = L.marker(
+            var marker_1b6acba7834ebc330d43507031c5146f = L.marker(
                 [30.605, 59.068],
                 {
 }
-            ).addTo(feature_group_dfddeca7a348b43cd1382229548f43c9);
+            ).addTo(feature_group_463a6fee45666534bfec72abb8bc4ec2);
         
     
-            var icon_99d6a5fd389a277b2eef906fd058ed94 = L.AwesomeMarkers.icon(
+            var icon_d6902a5a086f8f8d105cd4ef370a632d = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -535,24 +535,24 @@
             );
         
     
-        var popup_82f93f68b9f40e5980f1c103b631d809 = L.popup({
+        var popup_672f2b9e42a70b9d08b1a6f9092cd60f = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_ec8c4ee805937fe245944a3b2e17dcf1 = $(`<div id="html_ec8c4ee805937fe245944a3b2e17dcf1" style="width: 100.0%; height: 100.0%;"><b>Lut Desert (Dasht-e Lut), Iran</b><br>New find<br>Analog for: Mars (yardangs); thermal extremes for both<br><a href='sites/lut-desert-dasht-e-lut-iran.html'>Open site page</a></div>`)[0];
-                popup_82f93f68b9f40e5980f1c103b631d809.setContent(html_ec8c4ee805937fe245944a3b2e17dcf1);
+                var html_51deca3dbf49fc8332f598ecd9dece48 = $(`<div id="html_51deca3dbf49fc8332f598ecd9dece48" style="width: 100.0%; height: 100.0%;"><b>Lut Desert (Dasht-e Lut), Iran</b><br>New find<br>Analog for: Mars (yardangs); thermal extremes for both<br><a href='sites/lut-desert-dasht-e-lut-iran.html'>Open site page</a></div>`)[0];
+                popup_672f2b9e42a70b9d08b1a6f9092cd60f.setContent(html_51deca3dbf49fc8332f598ecd9dece48);
             
         
 
-        marker_dedbe5ae07148f555ad509e017fa7486.bindPopup(popup_82f93f68b9f40e5980f1c103b631d809)
+        marker_1b6acba7834ebc330d43507031c5146f.bindPopup(popup_672f2b9e42a70b9d08b1a6f9092cd60f)
         ;
 
         
     
     
-            marker_dedbe5ae07148f555ad509e017fa7486.bindTooltip(
+            marker_1b6acba7834ebc330d43507031c5146f.bindTooltip(
                 `<div>
                      Lut Desert (Dasht-e Lut), Iran
                  </div>`,
@@ -562,17 +562,17 @@
             );
         
     
-                marker_dedbe5ae07148f555ad509e017fa7486.setIcon(icon_99d6a5fd389a277b2eef906fd058ed94);
+                marker_1b6acba7834ebc330d43507031c5146f.setIcon(icon_d6902a5a086f8f8d105cd4ef370a632d);
             
     
-            var marker_53b9f9861a79631d0557172f717950ec = L.marker(
+            var marker_f2433cad06f87e61ecfbc0d4cf7e0eab = L.marker(
                 [25.5, 40.0],
                 {
 }
-            ).addTo(feature_group_dfddeca7a348b43cd1382229548f43c9);
+            ).addTo(feature_group_463a6fee45666534bfec72abb8bc4ec2);
         
     
-            var icon_2218c3e64a73d09484ed81d861e4fd49 = L.AwesomeMarkers.icon(
+            var icon_c454223e2182159907ef4e3bdc0838da = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -583,24 +583,24 @@
             );
         
     
-        var popup_91aff0a2557baa9503733d590ee475f4 = L.popup({
+        var popup_d4f0d35518396348209111e8058dcf32 = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_5fea428e9ca2be1e88eb24d97609ed05 = $(`<div id="html_5fea428e9ca2be1e88eb24d97609ed05" style="width: 100.0%; height: 100.0%;"><b>Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia</b><br>New find<br>Analog for: Moon and Mars (lava tube shelters); Moon (basalt)<br><a href='sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html'>Open site page</a></div>`)[0];
-                popup_91aff0a2557baa9503733d590ee475f4.setContent(html_5fea428e9ca2be1e88eb24d97609ed05);
+                var html_ab75f5aa80122a215e3469f111a2bfd1 = $(`<div id="html_ab75f5aa80122a215e3469f111a2bfd1" style="width: 100.0%; height: 100.0%;"><b>Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia</b><br>New find<br>Analog for: Moon and Mars (lava tube shelters); Moon (basalt)<br><a href='sites/harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia.html'>Open site page</a></div>`)[0];
+                popup_d4f0d35518396348209111e8058dcf32.setContent(html_ab75f5aa80122a215e3469f111a2bfd1);
             
         
 
-        marker_53b9f9861a79631d0557172f717950ec.bindPopup(popup_91aff0a2557baa9503733d590ee475f4)
+        marker_f2433cad06f87e61ecfbc0d4cf7e0eab.bindPopup(popup_d4f0d35518396348209111e8058dcf32)
         ;
 
         
     
     
-            marker_53b9f9861a79631d0557172f717950ec.bindTooltip(
+            marker_f2433cad06f87e61ecfbc0d4cf7e0eab.bindTooltip(
                 `<div>
                      Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia
                  </div>`,
@@ -610,17 +610,17 @@
             );
         
     
-                marker_53b9f9861a79631d0557172f717950ec.setIcon(icon_2218c3e64a73d09484ed81d861e4fd49);
+                marker_f2433cad06f87e61ecfbc0d4cf7e0eab.setIcon(icon_c454223e2182159907ef4e3bdc0838da);
             
     
-            var marker_9593c67f2b4a63f743d69ec42e2019fc = L.marker(
+            var marker_e3c23cc09374374f8f02d317466590ea = L.marker(
                 [19.967, 76.517],
                 {
 }
-            ).addTo(feature_group_dfddeca7a348b43cd1382229548f43c9);
+            ).addTo(feature_group_463a6fee45666534bfec72abb8bc4ec2);
         
     
-            var icon_cab488217871cb9eda440b6de9133454 = L.AwesomeMarkers.icon(
+            var icon_df95e4b889ed6e3dba1c3c24f4aed53a = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
   "iconColor": "white",
@@ -631,24 +631,24 @@
             );
         
     
-        var popup_d8fa6a1246aa97d524739b6fe41248ad = L.popup({
+        var popup_9b6405247a3121ea78c04549b2ac9e4f = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_3cef886ae5c6649ff9cbccc504958890 = $(`<div id="html_3cef886ae5c6649ff9cbccc504958890" style="width: 100.0%; height: 100.0%;"><b>Lonar Crater, India</b><br>New find<br>Analog for: Mars and Moon (small craters in basalt)<br><a href='sites/lonar-crater-india.html'>Open site page</a></div>`)[0];
-                popup_d8fa6a1246aa97d524739b6fe41248ad.setContent(html_3cef886ae5c6649ff9cbccc504958890);
+                var html_def5ae3a54f87874f7924c0c8856f6f6 = $(`<div id="html_def5ae3a54f87874f7924c0c8856f6f6" style="width: 100.0%; height: 100.0%;"><b>Lonar Crater, India</b><br>New find<br>Analog for: Mars and Moon (small craters in basalt)<br><a href='sites/lonar-crater-india.html'>Open site page</a></div>`)[0];
+                popup_9b6405247a3121ea78c04549b2ac9e4f.setContent(html_def5ae3a54f87874f7924c0c8856f6f6);
             
         
 
-        marker_9593c67f2b4a63f743d69ec42e2019fc.bindPopup(popup_d8fa6a1246aa97d524739b6fe41248ad)
+        marker_e3c23cc09374374f8f02d317466590ea.bindPopup(popup_9b6405247a3121ea78c04549b2ac9e4f)
         ;
 
         
     
     
-            marker_9593c67f2b4a63f743d69ec42e2019fc.bindTooltip(
+            marker_e3c23cc09374374f8f02d317466590ea.bindTooltip(
                 `<div>
                      Lonar Crater, India
                  </div>`,
@@ -658,17 +658,17 @@
             );
         
     
-                marker_9593c67f2b4a63f743d69ec42e2019fc.setIcon(icon_cab488217871cb9eda440b6de9133454);
+                marker_e3c23cc09374374f8f02d317466590ea.setIcon(icon_df95e4b889ed6e3dba1c3c24f4aed53a);
             
     
-            var marker_8592917cd4fd28e073e757d9e1469b62 = L.marker(
+            var marker_cf868b5b86cf2b4547498d501bd4aa7b = L.marker(
                 [-80.367, 77.35],
                 {
 }
-            ).addTo(feature_group_dfddeca7a348b43cd1382229548f43c9);
+            ).addTo(feature_group_463a6fee45666534bfec72abb8bc4ec2);
         
     
-            var icon_55b50240d65facb5f1248d1763e6250f = L.AwesomeMarkers.icon(
+            var icon_e8197adb3b9ba94c61e82228f74bde3d = L.AwesomeMarkers.icon(
                 {
   "markerColor": "purple",
   "iconColor": "white",
@@ -679,24 +679,24 @@
             );
         
     
-        var popup_158cccdacd6f159cdeac07ed567e012f = L.popup({
+        var popup_e30f8074e3cb393e8afe6f196e57962f = L.popup({
   "maxWidth": 260,
 });
 
         
             
-                var html_bbdce797be4e2377d79279df91277222 = $(`<div id="html_bbdce797be4e2377d79279df91277222" style="width: 100.0%; height: 100.0%;"><b>East Antarctic Plateau cold spots</b><br>Limit site (shows Earth&#x27;s gap)<br>Analog for: Moon and Mars (cold)<br><a href='sites/east-antarctic-plateau-cold-spots.html'>Open site page</a></div>`)[0];
-                popup_158cccdacd6f159cdeac07ed567e012f.setContent(html_bbdce797be4e2377d79279df91277222);
+                var html_e754c97fc7a58c18d33ccaf861262691 = $(`<div id="html_e754c97fc7a58c18d33ccaf861262691" style="width: 100.0%; height: 100.0%;"><b>East Antarctic Plateau cold spots</b><br>Limit site (shows Earth&#x27;s gap)<br>Analog for: Moon and Mars (cold)<br><a href='sites/east-antarctic-plateau-cold-spots.html'>Open site page</a></div>`)[0];
+                popup_e30f8074e3cb393e8afe6f196e57962f.setContent(html_e754c97fc7a58c18d33ccaf861262691);
             
         
 
-        marker_8592917cd4fd28e073e757d9e1469b62.bindPopup(popup_158cccdacd6f159cdeac07ed567e012f)
+        marker_cf868b5b86cf2b4547498d501bd4aa7b.bindPopup(popup_e30f8074e3cb393e8afe6f196e57962f)
         ;
 
         
     
     
-            marker_8592917cd4fd28e073e757d9e1469b62.bindTooltip(
+            marker_cf868b5b86cf2b4547498d501bd4aa7b.bindTooltip(
                 `<div>
                      East Antarctic Plateau cold spots
                  </div>`,
@@ -706,30 +706,30 @@
             );
         
     
-                marker_8592917cd4fd28e073e757d9e1469b62.setIcon(icon_55b50240d65facb5f1248d1763e6250f);
+                marker_cf868b5b86cf2b4547498d501bd4aa7b.setIcon(icon_e8197adb3b9ba94c61e82228f74bde3d);
             
     
-            feature_group_dfddeca7a348b43cd1382229548f43c9.addTo(map_9292c09e281a40dfb783f0987196eb3f);
+            feature_group_463a6fee45666534bfec72abb8bc4ec2.addTo(map_6f7e77cc65c349986ca4e0d10a4fc7ac);
         
     
-            var layer_control_2f3f102a7185aa7a111d51ca9569d018_layers = {
+            var layer_control_3f6c1cb6913d709f67a27db53cb65e2a_layers = {
                 base_layers : {
                 },
                 overlays :  {
-                    "Moon analogs (1)" : feature_group_684ac55dbebc3cb0cd074f2f66de6a18,
-                    "Mars analogs (7)" : feature_group_db79ed816f0f8cb2cdfdbad79e47869b,
-                    "Moon and Mars analogs (4)" : feature_group_dfddeca7a348b43cd1382229548f43c9,
+                    "Moon analogs (1)" : feature_group_67f2fcb595fa21098b92c5e3cb980abc,
+                    "Mars analogs (7)" : feature_group_cbae3d97732d31d7873f9f5d7e1796f2,
+                    "Moon and Mars analogs (4)" : feature_group_463a6fee45666534bfec72abb8bc4ec2,
                 },
             };
-            let layer_control_2f3f102a7185aa7a111d51ca9569d018 = L.control.layers(
-                layer_control_2f3f102a7185aa7a111d51ca9569d018_layers.base_layers,
-                layer_control_2f3f102a7185aa7a111d51ca9569d018_layers.overlays,
+            let layer_control_3f6c1cb6913d709f67a27db53cb65e2a = L.control.layers(
+                layer_control_3f6c1cb6913d709f67a27db53cb65e2a_layers.base_layers,
+                layer_control_3f6c1cb6913d709f67a27db53cb65e2a_layers.overlays,
                 {
   "position": "topright",
   "collapsed": false,
   "autoZIndex": true,
 }
-            ).addTo(map_9292c09e281a40dfb783f0987196eb3f);
+            ).addTo(map_6f7e77cc65c349986ca4e0d10a4fc7ac);
 
         
 </script>

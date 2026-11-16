@@ -13,8 +13,8 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 ## Folder layout
 - `data/site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`, `datasets.csv`:
   the tabs of our research Google Sheet, exported as CSV. These are the real inputs.
-- `data/import_sheet.py`: turns `site_options.csv` + `targets.csv` (+ `modis_lst.csv`) into `data/sites.csv`.
-- `data/fetch_modis.py`: downloads MODIS 1 km land surface temperatures per site into `data/modis_lst.csv` (uses the internet; run only when sites change). This is the scored Earth max temperature.
+- `data/import_sheet.py`: turns `site_options.csv` + `targets.csv` (+ `modis_daily_lst.csv`, `copernicus_slope.csv`) into `data/sites.csv`.
+- `data/fetch_modis.py`: MODIS 8-day (MYD11A2) temperatures into `data/modis_lst.csv`. Reference only, not scored.
 - `data/fetch_power.py` / `power_skin_temps.csv`: NASA POWER (~50 km) temperatures, kept for reference only (not scored).
 - `data/appeears_points.csv`: the 12 sites in NASA AppEEARS point format (ID, Category, Latitude, Longitude).
 - `data/scores_html.py`: the "Similarity scores" cards on site pages, and the MODIS citation.
@@ -23,8 +23,8 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/pages.py`: shared HTML helpers and site pages. `data/topic_pages.py`: gap, task and About pages.
 - `data/fetch_slope.py`: downloads Copernicus DEM GLO-30 blocks (AWS, no login) and computes slope per site into `data/copernicus_slope.csv`.
 - `data/sun_angle.py`: calculates the highest Sun angle per row (scored as `sun_max_elev_deg`).
-- `data/downloads.py`: About page "How we score" + "Download our data"; build.py copies sites.csv, scores.csv, modis_lst.csv to `docs/data/`.
-- `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature, MCD43A3 albedo) into `data/modis_daily_lst.csv` / `data/modis_albedo.csv`; not scored until switched in import_sheet.py.
+- `data/downloads.py`: About page "How we score" + "Download our data"; build.py copies sites.csv, scores.csv, modis_daily_lst.csv, copernicus_slope.csv to `docs/data/`.
+- `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature → `data/modis_daily_lst.csv`, scored; MCD43A3 albedo → `data/modis_albedo.csv`, not scored yet). Sites are matched by coordinates. AppEEARS request record and citations: `data/appeears/`.
 - `data/fetch_tes_albedo.py`: Mars target albedo from the MGS TES bolometric albedo map (PDS) into `data/mars_albedo.csv`.
 - `data/analog.py`: reads each site's "Analog for" text: Moon analogs are compared only with the Moon target, Mars analogs only with Mars, "both"/both-named with both. Unrecognised text shows both targets and build.py warns.
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
@@ -38,7 +38,7 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 name, type (earth / moon_target / mars_target), lat, lon, slope_deg, temp_max_c, temp_min_c, temp_range_c, precip_mm_yr, dust_aod, sun_max_elev_deg, matches, breaks, source_links, category, analog_for, mission_tasks, key_facts, climate_notes, geology, how_well_studied
 - Text columns are copied word for word from the Sheet.
 - Scoring columns (slope_deg ... dust_aod) are only filled from Sheet columns with exactly those names, holding plain numbers, ground-surface values only. Never pull numbers out of text such as "<30" or "80.8 (surface, MODIS)".
-- Exceptions, listed in import_sheet.py: `temp_max_c` for Earth sites comes from `data/modis_lst.csv` (MODIS Aqua MYD11A2 LST_Day_1km: hottest 8-day average in 2025, one 1 km pixel, made by `data/fetch_modis.py`; NASA POWER in `power_skin_temps.csv` is kept for reference, not scored); for targets it comes from the Targets tab column "Max ground surface temp (°C)" (LRO Diviner). Any new source must be the same kind of number and be labelled in `DIMENSION_SOURCES` in `data/scores_html.py`.
+- Exceptions, listed in import_sheet.py: `temp_max_c` for Earth sites comes from `data/modis_daily_lst.csv` (MODIS Aqua MYD11A1 v6.1 LST_Day_1km via AppEEARS: hottest good-quality daily reading in 2025, one 1 km pixel, made by `data/read_appeears.py`; the 8-day `modis_lst.csv` and NASA POWER `power_skin_temps.csv` are kept for reference, not scored); for targets it comes from the Targets tab column "Max ground surface temp (°C)" (LRO Diviner). Any new source must be the same kind of number and be labelled in `DIMENSION_SOURCES` in `data/scores_html.py`.
 - `sun_max_elev_deg` (highest Sun angle) is calculated for every row in `data/sun_angle.py` from latitude and the axial tilts in the NASA planetary fact sheets (team-approved exception: geometry, not a measurement).
 - `slope_deg` for Earth sites comes from `data/copernicus_slope.csv` (mean slope in a 15 × 15 km box, Copernicus DEM GLO-30, made by `data/fetch_slope.py`); for Malapert from the Targets tab column "Landing-area slope (°)" (Wueller et al. 2025).
 - Scored so far: slope and max ground temperature vs Malapert, and highest Sun angle vs Malapert and Arcadia. Arcadia has no ground-temperature value, so that card says "no data".

@@ -15,7 +15,8 @@ import sun_angle    # our own data/sun_angle.py (why the Sun angle matters)
 # (file in data/, what it holds). Copied to docs/data/ so the website can link to them.
 FILES = [("sites.csv", "Every Earth site and target: coordinates, scored values and all text"),
          ("scores.csv", "Every score shown on the site: one row per Earth site and the target it is compared with"),
-         ("modis_lst.csv", "MODIS temperature per site, with the exact request we sent")]
+         ("modis_daily_lst.csv", "Hottest daily MODIS temperature per site, with days kept and dropped"),
+         ("copernicus_slope.csv", "Slope per site (1, 5 and 15 km boxes) from Copernicus DEM GLO-30")]
 
 # Sources used in scoring that are not in the Sheet's source columns, so they are credited here.
 SCORE_SOURCES = [
@@ -27,14 +28,16 @@ SCORE_SOURCES = [
      "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"),
     ("Sun angle: NASA Moon fact sheet", "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"),
     ("Sun angle: NASA Mars fact sheet", "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"),
-    ("Max temperature (Earth): MODIS MYD11A2 v6.1 via ORNL DAAC, doi:10.3334/ORNLDAAC/1600",
-     "https://modis.ornl.gov"),
+    ("Max temperature (Earth): MODIS MYD11A1 v6.1 (Wan, Hook & Hulley 2021), doi:10.5067/MODIS/MYD11A1.061, "
+     "via NASA AppEEARS (LP DAAC)", "https://appeears.earthdatacloud.nasa.gov"),
 ]
 
 
 def copy_files(docs):
     """Copy the data files into docs/data/ (only those that exist)."""
     (docs / "data").mkdir(exist_ok=True)
+    for old in (docs / "data").glob("*.csv"):  # remove files we no longer publish
+        old.unlink()
     for name, _ in FILES:
         if (score.DATA_DIR / name).exists():
             shutil.copy(score.DATA_DIR / name, docs / "data" / name)

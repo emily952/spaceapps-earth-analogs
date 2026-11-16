@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# AppEEARS request record with the account email: keep local only (a redacted *-public.json is committed)
+data/appeears/*-request.json

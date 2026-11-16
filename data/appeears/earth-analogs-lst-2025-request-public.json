@@ -1,0 +1,126 @@
+{
+  "tier": 1,
+  "error": null,
+  "params": {
+    "dates": [
+      {
+        "endDate": "12-31-2025",
+        "recurring": false,
+        "startDate": "01-01-2025",
+        "yearRange": [
+          1950,
+          2050
+        ]
+      }
+    ],
+    "layers": [
+      {
+        "layer": "QC_Day",
+        "product": "MYD11A1.061"
+      },
+      {
+        "layer": "LST_Day_1km",
+        "product": "MYD11A1.061"
+      }
+    ],
+    "output": {
+      "format": {
+        "type": "geotiff"
+      }
+    },
+    "coordinates": [
+      {
+        "id": "KamilCrater",
+        "category": "earth",
+        "latitude": 22.018,
+        "longitude": 26.088
+      },
+      {
+        "id": "Khargayardangs",
+        "category": "earth",
+        "latitude": 25.449,
+        "longitude": 30.54
+      },
+      {
+        "id": "LutDesert",
+        "category": "earth",
+        "latitude": 30.605,
+        "longitude": 59.068
+      },
+      {
+        "id": "WesternQaidamBasin",
+        "category": "earth",
+        "latitude": 38.035,
+        "longitude": 91.852
+      },
+      {
+        "id": "BodeleDepression",
+        "category": "earth",
+        "latitude": 16.956,
+        "longitude": 17.781
+      },
+      {
+        "id": "HarratKhaybar",
+        "category": "earth",
+        "latitude": 25.5,
+        "longitude": 40
+      },
+      {
+        "id": "LonarCrater",
+        "category": "earth",
+        "latitude": 19.967,
+        "longitude": 76.517
+      },
+      {
+        "id": "Dallol",
+        "category": "earth",
+        "latitude": 14.242,
+        "longitude": 40.3
+      },
+      {
+        "id": "RioTinto",
+        "category": "earth",
+        "latitude": 37.724,
+        "longitude": -6.556
+      },
+      {
+        "id": "EastAntarcticPlateau",
+        "category": "earth",
+        "latitude": -80.367,
+        "longitude": 77.35
+      },
+      {
+        "id": "AtacamaDesert",
+        "category": "earth",
+        "latitude": -24.066,
+        "longitude": -69.864
+      },
+      {
+        "id": "HaughtonCrater",
+        "category": "earth",
+        "latitude": 75.383,
+        "longitude": -89.667
+      }
+    ]
+  },
+  "status": "processing",
+  "created": "2026-11-16T00:41:35.272378",
+  "updated": "2026-11-16T00:44:09.822491",
+  "estimate": {
+    "request_size": 8760,
+    "request_tier": 0,
+    "request_memory": 1
+  },
+  "retry_at": null,
+  "has_swath": false,
+  "task_name": "earth-analogs-lst-2025",
+  "task_type": "point",
+  "api_version": null,
+  "svc_version": "3.137",
+  "web_version": "3.137",
+  "has_nsidc_daac": false,
+  "expires_on": "2026-12-16T00:44:09.822491",
+  "attempts": 1,
+  "cluster_processing": true,
+  "_note": "Public copy of the AppEEARS request record: user_id (account email) and task_id removed."
+}
