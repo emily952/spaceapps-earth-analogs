@@ -42,9 +42,9 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 - [x] **Max/min meaning**: the most extreme value ever recorded, or the average daily
   max/min? Over which years?
   Decision: Max/min mean the highest and lowest hourly ground-surface (skin) temperature reported by the cited dataset during its stated period not an all-time record and not an average of daily maxima or minima.
-- [ ] **`temp_range_c`**: always calculate it as max − min in the sheet, so it can't
+- [x] **`temp_range_c`**: always calculate it as max − min in the sheet, so it can't
   disagree with the other two columns?
-  Recommended: yes. Decision:
+  Recommended: yes. Decision: Yes
 - [ ] **Slope**: average slope over what area, at what map resolution?
   Decision:
 - [ ] **Precipitation on the Moon and Mars**: enter 0 (with a citation), or leave
