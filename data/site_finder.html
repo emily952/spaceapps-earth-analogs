@@ -19,7 +19,7 @@
   <div id="chat-head">Site finder</div>
   <div id="chat-log"></div>
   <form id="chat-form" autocomplete="off">
-    <input id="chat-input" placeholder="e.g. hot and flat">
+    <input id="chat-input" placeholder="e.g. flat for Mars or rover mobility">
     <button id="chat-send" type="submit">Send</button>
   </form>
 </div>
@@ -27,7 +27,6 @@
 <script type="module">
   import { findMatches } from "./match.js";
 
-  // site name -> its page in the sites/ folder
   const pages = {
     "Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia": "harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia",
     "Kamil Crater, Egypt": "kamil-crater-egypt",
@@ -42,39 +41,62 @@
     "Atacama Desert (Yungay), Chile": "atacama-desert-yungay-chile",
     "Haughton Crater, Devon Island, Canada": "haughton-crater-devon-island-canada",
   };
-  const link = (m) => `<a href="sites/${pages[m.name]}.html">${m.name}</a>`;
 
   const panel = document.getElementById("chat-panel");
   const log = document.getElementById("chat-log");
   const input = document.getElementById("chat-input");
 
-  function add(who, html) {
-    const d = document.createElement("div");
-    d.className = "msg " + who;
-    d.innerHTML = html;
-    log.appendChild(d);
+  function add(who, message) {
+    const item = document.createElement("div");
+    item.className = "msg " + who;
+    item.textContent = message;
+    log.appendChild(item);
     log.scrollTop = log.scrollHeight;
   }
 
-  add("bot", "Hi! Tell me what conditions you want, like <em>hot and flat</em> or <em>cold, low dust</em>, and I'll point you to the best site.");
+  function addMatches(matches) {
+    const item = document.createElement("div");
+    item.className = "msg bot";
+    if (matches.message) {
+      item.textContent = matches.message;
+    } else {
+      matches.forEach((match, index) => {
+        if (index) item.append(document.createElement("br"));
+        item.append(document.createTextNode(match.ranked ? (index ? "Runner-up: " : "Best match: ") : (index ? "Another draft suggestion: " : "Team suggestion: ")));
+        const anchor = document.createElement("a");
+        const fallbackSlug = match.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        anchor.href = "sites/" + (pages[match.name] || fallbackSlug) + ".html";
+        anchor.textContent = match.name;
+        item.append(anchor);
+        if (match.metric) {
+          item.append(document.createTextNode(` — ${match.metric.label}: ${match.metric.value}${match.metric.unit}.`));
+        } else {
+          item.append(document.createTextNode(` — ${match.reason}`));
+        }
+      });
+    }
+    log.appendChild(item);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  add("bot", "Ask about one measured condition (hot, flat for Moon, flat for Mars, dusty, low dust, high Sun) or a mission task (rover mobility, cave shelter, ground ice, impact sampling, life detection). Mission-task picks are the team's draft suggestions and remain unranked.");
 
   document.getElementById("chat-toggle").onclick = () => {
     panel.classList.toggle("open");
     if (panel.classList.contains("open")) input.focus();
   };
 
-  document.getElementById("chat-form").onsubmit = (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
+  document.getElementById("chat-form").onsubmit = async (event) => {
+    event.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
     input.value = "";
-    add("me", text.replace(/</g, "&lt;"));
-    const [best, second] = findMatches(text, 2);
-    if (!best || best.score === 0) {
-      add("bot", "I didn't catch a condition there. Try words like hot, cold, flat, steep, dusty, low dust, high sun or low sun.");
-      return;
+    add("me", query);
+    try {
+      const matches = await findMatches(query, 2);
+      addMatches(matches);
+    } catch (error) {
+      add("bot", error.message || "I couldn't load the site data. Please try again later.");
     }
-    add("bot", `Best match: ${link(best)} (slope ${best.slope}°, max ${best.maxTemp} °C, dust ${best.dust}).` +
-      (second ? `<br>Runner-up: ${link(second)}.` : ""));
   };
 </script>
