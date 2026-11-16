@@ -38,10 +38,13 @@ TARGET_COLUMNS = {
 }
 # Scoring values that come from somewhere other than an exact-name Sheet column.
 # Each must be the same kind of number as the column: max ground (skin) temperature.
-TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)"}  # LRO Diviner, entered by the team
+TARGET_SCORE_COLUMNS = {"temp_max_c": "Max ground surface temp (°C)",  # LRO Diviner, entered by the team
+                        "slope_deg": "Landing-area slope (°)"}         # Wueller et al. 2025, entered by the team
 # Earth temp_max_c: hottest 8-day MODIS land surface temperature, 1 km pixel (made by fetch_modis.py).
 # (fetch_power.py / power_skin_temps.csv, ~50 km grid, are kept for reference but no longer scored.)
 MODIS_CSV = score.DATA_DIR / "modis_lst.csv"
+# Earth slope_deg: mean slope in a 15 km box, Copernicus DEM GLO-30 (made by fetch_slope.py).
+SLOPE_CSV, SLOPE_COLUMN = score.DATA_DIR / "copernicus_slope.csv", "slope_mean_15km"
 
 # Sheet columns shown together as "Climate and conditions" notes, word for word.
 SITE_NOTES = ["Elevation (m)", "Mean annual temp (°C)", "Extreme temp (°C)", "Precip (mm/yr)"]
@@ -105,11 +108,21 @@ def add_modis_temps(sites):
         print(f"  No MODIS value for {missing}: run data/fetch_modis.py again.")
 
 
+
+def add_slopes(sites):
+    """Earth slope_deg = mean slope over a 15 km x 15 km box (Copernicus DEM GLO-30)."""
+    if not SLOPE_CSV.exists():
+        print("  No data/copernicus_slope.csv: run data/fetch_slope.py to score slope.")
+        return
+    sites["slope_deg"] = sites["name"].map(pd.read_csv(SLOPE_CSV).set_index("site")[SLOPE_COLUMN])
+
+
 def main():
     sites = convert(read_tab(SITE_OPTIONS, list(SITE_COLUMNS.values()) + SITE_NOTES),
                     SITE_COLUMNS, SITE_NOTES)
     sites["type"] = "earth"
     add_modis_temps(sites)
+    add_slopes(sites)
 
     targets = read_targets()
     targets = targets[~targets["Target"].str.contains("(reference)", regex=False)]

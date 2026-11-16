@@ -24,6 +24,10 @@ DIMENSION_SOURCES = {
                   "of clear-sky ~1:30 pm readings in 2025, one 1 km pixel. "
                   "Moon: LRO Diviner, Malapert ridge top.",
     "sun_max_elev_deg": sun_angle.SOURCE,
+    "slope_deg": "Earth: Copernicus DEM GLO-30 (~30 m pixels; wider east-west near the poles), mean "
+                 "slope over a 15 × 15 km box around the site, the size of an Artemis III landing region. "
+                 "At this pixel size, measurement noise adds about 0.5–1° on flat ground. "
+                 "Moon: Wueller et al. 2025, Malapert candidate landing area, 5.6° ± 2.0°.",
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
          "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°"}
@@ -47,12 +51,12 @@ def score_card(col, site, target, value):
             f'<p class="meta">This site {fmt(site[col], col)} · target {fmt(target[col], col)}</p></div>')
 
 
-def radar_chart(site_scores):
-    """Radar chart with one shape per target. Missing scores leave a gap."""
-    labels = list(score.DIMENSIONS.values())
+def radar_chart(site_scores, scored):
+    """Radar chart with one shape per target, on the scored conditions only. Missing scores leave a gap."""
+    labels = [score.DIMENSIONS[col] for col in scored]
     fig = go.Figure()
     for _, row in site_scores.iterrows():
-        values = [row[col] for col in score.DIMENSIONS]
+        values = [row[col] for col in scored]
         hover = ["no data" if pd.isna(v) else f"{v:.2f}" for v in values]
         # Repeat the first point at the end so the shape closes.
         fig.add_trace(go.Scatterpolar(
@@ -78,7 +82,7 @@ def scores_section(site, site_scores, sites):
                      f'{DIMENSION_SOURCES.get(col, "")} <strong>Scale:</strong> 1 = same value as the '
                      f'target, 0 = as different as anything in our dataset ({value_range}).</p>')
     if len(scored) >= 3:
-        parts.append(radar_chart(site_scores))
+        parts.append(radar_chart(site_scores, scored))
     parts.append('<p class="meta">Other conditions are not scored yet: we have no exact, '
                  'comparable values for them.</p>')
     return "".join(parts)

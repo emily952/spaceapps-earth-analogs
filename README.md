@@ -29,6 +29,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
+| `data/fetch_slope.py` | Average slope in a 15 × 15 km box per site from Copernicus DEM GLO-30 → `data/copernicus_slope.csv` (scored vs Malapert's 5.6°; also saves 1 km and 5 km boxes) |
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
 | `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1) or ground brightness (MCD43A3) per site (not scored yet) |
@@ -61,7 +62,8 @@ open docs/index.html               # macOS; or double-click the file
    in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
-4. **Scores so far:** (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
+4. **Scores so far:** **slope** vs Malapert (Copernicus DEM GLO-30, 15 × 15 km box = an Artemis III
+   landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
    `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
    (b) max ground temperature vs Malapert. Earth values come from
    MODIS Aqua land surface temperature, MYD11A2: the hottest 8-day average of clear-sky
