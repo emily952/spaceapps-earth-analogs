@@ -10,12 +10,12 @@
 <section class="hero"><p class="eyebrow">NASA Space Apps 2026 · Earth analogs</p><h1>Mars/Moon Models</h1>
 <p class="lead">Spin each world and click anywhere on it to see which Earth site is the most similar. Click the yellow dot to see the full comparison for that target region.</p></section>
 <section class="card" id="globes"><h2>Click a spot</h2>
-<p class="meta">Drag to rotate, and click anywhere on a globe to see the most similar Earth site. The yellow dot marks each target region (approximate position; the surface is a stylised model, not real imagery).</p>
+<p class="meta">Drag to rotate, and click anywhere on a globe to see the most similar Earth site. The yellow dot marks each target region (approximate position).</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
 <div><div id="globe-moon" style="height:380px;touch-action:none;cursor:grab;position:relative"></div><p><strong>Moon:</strong> Malapert Massif, near the south pole</p></div>
 <div><div id="globe-mars" style="height:380px;touch-action:none;cursor:grab;position:relative"></div><p><strong>Mars:</strong> Arcadia Planitia, an ice-rich northern plain</p></div>
 </div></section>
-<p class="meta">The surfaces are stylised models, not real imagery. Only the two target regions have full slope, temperature and dust comparisons. For any other spot, only the Sun angle (worked out from latitude) can be compared.
+<p class="meta"><strong>Image credits:</strong> Moon: NASA's Scientific Visualization Studio, CGI Moon Kit (made from Lunar Reconnaissance Orbiter data). Mars: NASA/JPL-Caltech, from Viking images processed at the USGS. Only the two target regions have full slope, temperature and dust comparisons. For any other spot, only the Sun angle (worked out from latitude) can be compared.
 <a href="compare.html">See every site compared.</a></p>
 </main>
 
@@ -120,16 +120,25 @@
     sun.position.set(3, 2, 4);
     scene.add(sun);
 
+    rend.outputEncoding = THREE.sRGBEncoding;
     const tex = makeTexture(kind);
+    tex.encoding = THREE.sRGBEncoding;
     const grp = new THREE.Group();
     scene.add(grp);
-    grp.add(new THREE.Mesh(
-      new THREE.SphereGeometry(1, 64, 48),
-      new THREE.MeshStandardMaterial({ map: tex, bumpMap: tex, bumpScale: 0.04, roughness: 1, metalness: 0 })
-    ));
+    const mat = new THREE.MeshStandardMaterial({ map: tex, bumpMap: tex, bumpScale: 0.03, roughness: 1, metalness: 0 });
+    grp.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 48), mat));
+
+    // Real NASA map: used if the image file is in the docs folder, otherwise the drawn surface stays
+    if (cfg.texture) {
+      new THREE.TextureLoader().load(cfg.texture, (t) => {
+        t.encoding = THREE.sRGBEncoding;
+        t.anisotropy = 4;
+        mat.map = t; mat.bumpMap = t; mat.needsUpdate = true;
+      }, undefined, () => console.warn("Texture not found, using drawn surface:", cfg.texture));
+    }
 
     // target marker at (lat, lon)
-    const la = lat * Math.PI / 180, lo = lon * Math.PI / 180, R = 1.02;
+    const la = lat * Math.PI / 180, lo = (lon + 180) * Math.PI / 180, R = 1.02; // maps are centred on 0\u00b0 longitude
     const px = -R * Math.cos(lo) * Math.cos(la), py = R * Math.sin(la), pz = R * Math.sin(lo) * Math.cos(la);
     const pin = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 16), new THREE.MeshBasicMaterial({ color: 0xffd23f }));
     pin.position.set(px, py, pz);
@@ -195,7 +204,7 @@
       if (!hit) return;
       const p = grp.worldToLocal(hit.point.clone()).normalize();
       const latD = Math.asin(p.y) * 180 / Math.PI;
-      const lonD = (((Math.atan2(p.z, -p.x) * 180) / Math.PI) % 360 + 360) % 360;
+      const lonD = ((((Math.atan2(p.z, -p.x) * 180) / Math.PI) - 180) % 360 + 360) % 360;
       mark.position.copy(p).multiplyScalar(1.02);
       mark.visible = true;
       showSpot(latD, lonD);
@@ -211,7 +220,7 @@
 
   try {
     globe("globe-moon", "moon", -85.9, 0, -0.9, {   // Malapert Massif (approx.)
-      name: "Malapert Massif", tilt: 1.54,
+      name: "Malapert Massif", tilt: 1.54, texture: "moon-texture.jpg",
       picks: [
         { label: "Slope", site: "Harrat Khaybar and Umm Jirsan lava tube", slug: "harrat-khaybar-and-umm-jirsan-lava-tube-saudi-arabia", val: "3.78\u00b0 vs 5.6\u00b0", score: "0.83" },
         { label: "Max temperature", site: "Kamil Crater", slug: "kamil-crater-egypt", val: "53.92 \u00b0C vs 47 \u00b0C", score: "0.92" },
@@ -219,7 +228,7 @@
       ],
     });
     globe("globe-mars", "mars", 47, 184, 0.5, {     // Arcadia Planitia (approx.)
-      name: "Arcadia Planitia", tilt: 25.19,
+      name: "Arcadia Planitia", tilt: 25.19, texture: "mars-texture.jpg",
       picks: [
         { label: "Slope", site: "Lut Desert (Dasht-e Lut)", slug: "lut-desert-dasht-e-lut-iran", val: "0.44\u00b0 vs 0.36\u00b0", score: "0.98" },
         { label: "Dust", site: "Dallol", slug: "dallol-danakil-depression-ethiopia", val: "0.4 vs 0.377", score: "0.96" },
