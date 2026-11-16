@@ -38,6 +38,11 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
   science team page): Lut's 80.8 °C record, shown in text only.
 - **Viking lander meteorology (Planetary Data System):** Mars air temperature proxy.
 
+- **NASA POWER AOD_55** (aerosol optical depth at 0.55 µm, CERES SYN1deg, 2001–2025
+  climatology): Earth dust/haze, scored against Arcadia.
+- **MOLA MEGDR** (Mars Global Surveyor laser altimeter, 128 pixels/degree, Smith et al.
+  2003, PDS): Arcadia slope (0.36°), scored against Earth slopes at the same pixel size.
+
 ## Partner space agency data
 
 - **ESA Mars Express:** dust devils at Arcadia Planitia.

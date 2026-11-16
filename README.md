@@ -30,6 +30,8 @@ scores; until then its page says "Not scored yet" and why.
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
 | `data/fetch_slope.py` | Average slope in a 15 × 15 km box per site from Copernicus DEM GLO-30 → `data/copernicus_slope.csv` (scored vs Malapert's 5.6°; also saves 1 km and 5 km boxes) |
+| `data/fetch_mars_slope.py` | Arcadia's slope from NASA MOLA (463 m pixels) and Earth slopes averaged to the same pixel size → `data/slope_463m.csv` (scored vs Arcadia) |
+| `data/fetch_dust.py` | Dust/haze optical depth: Earth from NASA POWER AOD_55, Mars from the LMD Mars dust climatology → `data/dust_aod.csv`, `data/mars_dust.csv` (scored vs Arcadia) |
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
 | `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1 → `modis_daily_lst.csv`, **the scored Earth max temperature**) or ground brightness (MCD43A3, not scored yet) |
@@ -66,7 +68,7 @@ open docs/index.html               # macOS; or double-click the file
    in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
-4. **Scores so far:** **slope** vs Malapert (Copernicus DEM GLO-30, 15 × 15 km box = the size of a NASA Artemis
+4. **Scores so far:** vs Arcadia: **slope at 463 m** (`data/fetch_mars_slope.py`) and **dust** (`data/fetch_dust.py`); **slope** vs Malapert (Copernicus DEM GLO-30, 15 × 15 km box = the size of a NASA Artemis
    candidate landing region; `data/fetch_slope.py`); (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
    `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
    (b) max ground temperature vs Malapert. Earth values come from

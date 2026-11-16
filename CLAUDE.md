@@ -22,6 +22,8 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/score.py`: computes the 0 to 1 similarity scores per dimension; checks the data.
 - `data/pages.py`: shared HTML helpers and site pages. `data/topic_pages.py`: gap, task and About pages.
 - `data/fetch_slope.py`: downloads Copernicus DEM GLO-30 blocks (AWS, no login) and computes slope per site into `data/copernicus_slope.csv`.
+- `data/fetch_mars_slope.py`: Arcadia slope from MOLA (PDS) and Earth slopes at the same ~463 m pixel size → `data/slope_463m.csv`.
+- `data/fetch_dust.py`: Earth NASA POWER AOD_55 and Mars LMD dust climatology → `data/dust_aod.csv`, `data/mars_dust.csv`.
 - `data/sun_angle.py`: calculates the highest Sun angle per row (scored as `sun_max_elev_deg`).
 - `data/downloads.py`: About page "How we score" + "Download our data"; build.py copies sites.csv, scores.csv, modis_daily_lst.csv, copernicus_slope.csv to `docs/data/`.
 - `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature → `data/modis_daily_lst.csv`, scored; MCD43A3 albedo → `data/modis_albedo.csv`, not scored yet). Sites are matched by coordinates. AppEEARS request record and citations: `data/appeears/`.
@@ -41,7 +43,8 @@ name, type (earth / moon_target / mars_target), lat, lon, slope_deg, temp_max_c,
 - Exceptions, listed in import_sheet.py: `temp_max_c` for Earth sites comes from `data/modis_daily_lst.csv` (MODIS Aqua MYD11A1 v6.1 LST_Day_1km via AppEEARS: hottest good-quality daily reading in 2025, one 1 km pixel, made by `data/read_appeears.py`; the 8-day `modis_lst.csv` and NASA POWER `power_skin_temps.csv` are kept for reference, not scored); for targets it comes from the Targets tab column "Max ground surface temp (°C)" (LRO Diviner). Any new source must be the same kind of number and be labelled in `DIMENSION_SOURCES` in `data/scores_html.py`.
 - `sun_max_elev_deg` (highest Sun angle) is calculated for every row in `data/sun_angle.py` from latitude and the axial tilts in the NASA planetary fact sheets (team-approved exception: geometry, not a measurement).
 - `slope_deg` for Earth sites comes from `data/copernicus_slope.csv` (mean slope in a 15 × 15 km box, Copernicus DEM GLO-30, made by `data/fetch_slope.py`); for Malapert from the Targets tab column "Landing-area slope (°)" (Wueller et al. 2025).
-- Scored so far: slope and max ground temperature vs Malapert, and highest Sun angle vs Malapert and Arcadia. Arcadia has no ground-temperature value, so that card says "no data".
+- `slope_463m_deg` (Earth: Copernicus averaged to ~463 m; Arcadia: MOLA MEGDR) and `dust_aod` (Earth: NASA POWER AOD_55; Arcadia: LMD Mars dust climatology, 9.3 µm × 2.6 visible equivalent) come from `data/fetch_mars_slope.py` and `data/fetch_dust.py`. All downloaded scoring files are listed in `DOWNLOADED` in `import_sheet.py`.
+- Scored so far: vs Malapert: slope (30 m), max ground temperature, Sun angle. vs Arcadia: slope (463 m), dust, Sun angle. Malapert has no dust (no air) and Arcadia no ground temperature: "no data".
 - Target rows with "(reference)" in the name are not scored; they appear on the gap page only.
 
 ## Scoring rules

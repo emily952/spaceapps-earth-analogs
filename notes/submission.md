@@ -17,7 +17,7 @@ Before astronauts work on the Moon or Mars, crews and machines practise in simil
 on Earth. We compared 12 Earth sites, including 10 lesser-known ones, with Malapert Massif
 (a candidate landing region near the Moon's south pole) and Arcadia Planitia (an ice-rich
 Mars plain). Using NASA and partner data, we score each site from 0 to 1 on slope, hottest
-ground temperature and highest Sun angle, one condition at a time. An interactive map,
+ground temperature, highest Sun angle and dust, one condition at a time. An interactive map,
 site pages and a "Where Earth falls short" page show what matches, what doesn't, and what
 no place on Earth can reproduce.
 
@@ -64,6 +64,8 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 | Hottest ground temperature | MODIS Aqua MYD11A1 (daily, via NASA AppEEARS): hottest good-quality daily reading in 2025 (Aqua, ~1:30 pm local), one 1 km pixel | Malapert 47 °C, LRO Diviner (McClanahan et al.) |
 | Slope | Copernicus DEM GLO-30 (~30 m): mean slope over a 15 × 15 km box (the size of a NASA Artemis candidate landing region) | Malapert 5.6° ± 2.0° (Wueller et al. 2025) |
 | Highest Sun angle | Calculated: 90° − max(0, \|latitude\| − axial tilt) | Malapert 5.54°, Arcadia 67.99° (tilts from NASA fact sheets) |
+| Slope at 463 m pixels (Mars) | Copernicus DEM heights averaged into ~463 m blocks, mean slope over 15 × 15 km | Arcadia 0.36°, NASA MOLA map (same pixel size, same box) |
+| Dust (Mars) | NASA POWER aerosol optical depth at 0.55 µm, 2001–2025 average (~100 km grid) | Arcadia 0.377: LMD Mars dust climatology from orbiter data, Mars Years 24–36 average, 9.3 µm value × 2.6 visible equivalent (~180 km grid) |
 
 **Key findings.**
 - **Hottest ground (Moon):** Lonar Crater, India comes closest to Malapert (52.0 vs 47 °C;
@@ -72,14 +74,22 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
   (3.8° vs 5.6°; 0.83).
 - **Sun angle (Mars):** Western Qaidam Basin, China and Río Tinto, Spain match Arcadia
   best (about 75° vs 68°; 0.91), because they lie at a similar latitude.
+- **Slope (Mars, 463 m pixels):** Lut Desert is closest to Arcadia's very flat plain
+  (0.44° vs 0.36°; 0.98), then Bodélé and Dallol (0.15°; 0.95).
+- **Dust (Mars):** Dallol (0.40 vs 0.38; 0.96) and Harrat Khaybar (0.34; 0.94) have the
+  most Arcadia-like haze; the clear air of Antarctica and Atacama matches worst.
 - **Where Earth falls short:**
   - Nowhere on Earth does the Sun's highest point of the year stay below 23.4°; at Malapert it never rises above 5.5°. So Malapert's long shadows and glare can't be found on Earth.
   - Earth's coldest surface (about −98 °C) is about 135 °C warmer than the Moon's shadowed craters.
   - Gravity, vacuum or thin atmosphere, and radiation can't be reproduced anywhere on Earth.
 
 **Limitations.**
-- **Only a few conditions are scored.** Arcadia is scored on Sun angle only: we found no
-  comparable Mars ground temperature or slope for it.
+- **Only a few conditions are scored.** Malapert: slope, temperature, Sun angle. Arcadia:
+  slope, dust, Sun angle. We found no measured Mars ground temperature for Arcadia.
+- **Dust is only roughly comparable.** Earth: all aerosols at 0.55 µm; Mars: dust only,
+  converted from 9.3 µm with LMD's factor of 2.6. Both are yearly averages on coarse grids.
+- **Mars slope map is smoothed.** MOLA fills in between laser tracks, so Arcadia may be
+  rougher than 0.36°; Earth is averaged to the same ~463 m pixels to keep it fair.
 - **Temperatures are measured differently.** Earth is the hottest reading at one fixed
   time of day (~1:30 pm), averaged over a 1 km pixel; Malapert is Diviner's maximum.
   Cloudy and low-quality days are dropped (about half the year at Lonar: 185 of 365 days, mostly monsoon cloud).
@@ -107,6 +117,8 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 | NASA Earth Observatory | Lut, Harrat Khaybar and Bodélé write-ups | https://science.nasa.gov/earth/earth-observatory/ |
 | Viking lander meteorology (PDS) | Mars air temperature, text only (not scored) | https://arcnav.psi.edu/urn:nasa:pds:context:instrument:met.vl2 |
 | MGS TES bolometric albedo map (PDS Geosciences) | Arcadia albedo, prepared, not yet scored | https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html |
+| NASA POWER AOD_55 (CERES SYN1deg) | Earth dust/haze (scored vs Arcadia) | https://power.larc.nasa.gov |
+| MGS MOLA gridded topography, MEGDR (Smith et al. 2003, PDS) | Arcadia slope (scored) | https://pds-geosciences.wustl.edu/missions/mgs/megdr.html |
 | NASA POWER (MERRA-2) | First temperature source; kept for reference, not scored | https://power.larc.nasa.gov |
 
 ## Space agency partner data
@@ -115,6 +127,10 @@ between 0 and 1. 1 = same as the target; 0 = as different as anything in our dat
 |---|---|---|---|
 | Copernicus DEM GLO-30 (doi:10.5270/ESA-c5d3d65) | ESA / European Union | Earth slope (scored) | https://copernicus-dem-30m.s3.amazonaws.com/readme.html |
 | Mars Express | ESA | Arcadia dust devils; Mars facts (text) | https://www.esa.int/Science_Exploration/Space_Science/Mars_Express/Earth_tones_on_Mars |
+
+**Other data (not a space agency):** LMD Mars dust climatology v2 (Laboratoire de Météorologie
+Dynamique, France; Montabone et al. 2015, built from NASA TES, THEMIS and MCS measurements):
+Arcadia dust, scored. https://www-mars.lmd.jussieu.fr/mars/dust_climatology/index.html
 
 ## References
 
@@ -129,6 +145,9 @@ Nov 15 (see [link-check.md](link-check.md)); fix them in the Sheet before submit
 - AppEEARS Team (2026), Application for Extracting and Exploring Analysis Ready Samples (AppEEARS), Ver. 3.137, NASA EOSDIS LP DAAC, https://appeears.earthdatacloud.nasa.gov
 - ORNL DAAC (2018), MODIS and VIIRS Land Product Subsets RESTful Web Service, doi:10.3334/ORNLDAAC/1600 (8-day data, reference only)
 - Copernicus DEM GLO-30, ESA / European Union, doi:10.5270/ESA-c5d3d65
+- Montabone, L. et al. (2015), Eight-year climatology of dust optical depth on Mars, *Icarus* 251, 65–95, doi:10.1016/j.icarus.2014.12.034
+- Smith, D. E. et al. (2003), MGS MOLA Mission Experiment Gridded Data Record, NASA PDS, MGS-M-MOLA-5-MEGDR-L3-V1.0
+- NASA POWER AOD_55 (aerosol optical depth at 0.55 µm), POWER climatology API, https://power.larc.nasa.gov
 - NASA (2022), release 22-089; NASA (2024), "NASA Provides Update on Artemis III Moon Landing Regions"
 - The Planetary Society, "Artemis, NASA's Moon landing program" (Artemis III in Earth orbit; first landing on Artemis IV): https://www.planetary.org/space-missions/artemis
 - NASA POWER: "The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth Science Division." (reference only)
@@ -159,7 +178,7 @@ AI tools helped with research and coding; the team made the decisions and checke
 
 - **What AI did (Claude Code; Cursor also used):**
   - wrote the Python scripts and the website code, and the project notes;
-  - wrote the scripts that download or read data (MODIS, AppEEARS, Copernicus DEM, TES);
+  - wrote the scripts that download or read data (MODIS, AppEEARS, Copernicus DEM, MOLA, POWER, LMD dust, TES);
   - checked links;
   - suggested methods, such as the 15 km slope box and the sun-angle formula check;
   - flagged problems, such as a dead source link and a temperature citation to clarify.
@@ -177,8 +196,8 @@ AI tools helped with research and coding; the team made the decisions and checke
 1. **Problem:** before the Moon and Mars, crews rehearse on Earth, but which places really match?
 2. **Targets:** Malapert Massif (an Artemis candidate landing region) and Arcadia Planitia (icy Mars plain).
 3. **12 Earth sites on one map,** including 10 lesser-known ones, filterable by Moon / Mars analogs.
-4. **How we score:** one condition at a time, 0 to 1, from NASA MODIS, LRO Diviner, NASA fact sheets and ESA Copernicus data.
-5. **Findings:** Lonar matches Malapert's hottest ground; Qaidam and Río Tinto match Arcadia's Sun; no single best site.
+4. **How we score:** one condition at a time, 0 to 1, from NASA MODIS, LRO Diviner, MOLA, POWER, NASA fact sheets, ESA Copernicus and the LMD Mars dust climatology.
+5. **Findings:** Lonar matches Malapert's hottest ground; Lut matches Arcadia's flat plain, Dallol its dusty haze, Qaidam and Río Tinto its Sun; no single best site.
 6. **Where Earth falls short:** nowhere on Earth does the Sun's highest point of the year stay below 23.4° (Malapert: never above 5.5°); no −233 °C cold; no low gravity, vacuum or Mars radiation.
 7. **Use it:** live site + open data and code; AI disclosure; next steps (albedo, Mars temperatures, more sites).
 
