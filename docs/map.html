@@ -104,7 +104,7 @@
     document.querySelectorAll(".leaflet-control-layers-overlays label").forEach((label) => {
       const text = label.textContent || "";
       const both = text.includes("Moon and Mars analogs");
-      const relevant = both || text.includes(body === "moon" ? "Moon analogs" : "Mars analogs");
+      const relevant = body === "all" || both || text.includes(body === "moon" ? "Moon analogs" : "Mars analogs");
       const checkbox = label.querySelector('input[type="checkbox"]');
       if (checkbox && checkbox.checked !== relevant) checkbox.click();
     });
@@ -165,14 +165,14 @@
     window.setTimeout(() => planetMap.invalidateSize(), 80);
   }
 
-  function showEarth(body = "moon") {
+  function showEarth() {
     document.body.classList.remove("planetary-map-open");
     planetDiv.style.display = "none";
     panel.style.display = "none";
     if (earthMap) earthMap.style.visibility = "visible";
     if (mapInfo) mapInfo.style.display = "";
     if (layerControl) layerControl.style.display = "";
-    setEarthBody(body);
+    setEarthBody("all");
   }
 
   buttons.forEach((button) => button.addEventListener("click", () => {
