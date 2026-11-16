@@ -37,7 +37,9 @@ DIMENSION_SOURCES = {
                       "Both sides use the same pixel size, because bigger pixels make slopes look gentler.",
     "dust_aod": "Earth: NASA POWER aerosol optical depth at 0.55 µm (all aerosols: dust, smoke, salt), "
                 "2001–2025 average, ~1° (~100 km) grid. Mars: LMD Mars dust climatology from orbiter "
-                "measurements (Montabone et al. 2015), Mars Years 24–36 average, 3° (~180 km) grid, 9.3 µm "
+                "measurements (Montabone et al. 2015), Mars Years 24–36 average, 3° (~180 km) grid, for the full local "
+                "air column at Arcadia's surface pressure (~830 Pa average, from the Mars Climate Database; not "
+                "the 610 Pa reference), 9.3 µm "
                 "dust optical depth × 2.6 for the visible-light equivalent (LMD's conversion). Different "
                 "wavelengths and grid sizes, so treat the match as approximate.",
     # Ready for when Earth albedo arrives from AppEEARS (not scored yet):

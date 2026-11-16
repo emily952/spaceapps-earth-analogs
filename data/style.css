@@ -75,3 +75,12 @@ code { background: var(--bg); padding: 1px 5px; border-radius: 4px; }
 .bar span { display: block; height: 100%; background: #2a78d6; border-radius: 4px; }
 td.muted { color: var(--muted); }
 table.compare td:nth-last-child(-n+2) { white-space: nowrap; }
+
+/* Home page (Key findings): big intro and buttons into the site. */
+.hero { padding: 8px 0 4px; }
+.hero h1 { font-size: 2.3rem; max-width: 22ch; }
+.button { display: inline-block; margin: 6px 8px 6px 0; padding: 9px 16px; border-radius: 999px;
+          background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; }
+.button:hover { filter: brightness(1.1); }
+.card ul { padding-left: 20px; margin: 6px 0 10px; }
+.card li { margin: 4px 0; }

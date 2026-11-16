@@ -70,7 +70,7 @@ def page(title, body, root=""):
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{show(title)}</title><link rel="stylesheet" href="{root}style.css"></head>
-<body><nav><a href="{root}index.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
+<body><nav><a href="{root}index.html">Key findings</a><a href="{root}map.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
 <a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>
 <main>{body}</main></body></html>"""
 

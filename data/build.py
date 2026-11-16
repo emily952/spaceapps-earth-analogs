@@ -5,10 +5,10 @@ Steps:
   1. Turn the sheet exports into data/sites.csv (import_sheet.py).
   2. Score every Earth site against every target (score.py).
   3. Write one page per Earth site, the compare, gap, task and About pages.
-  4. Write docs/index.html: a world map with one marker per Earth site.
+  4. Write docs/map.html (world map) and docs/index.html (home page: Key findings).
   5. Print warnings about anything to fix before submitting.
 
-Run:  python3 data/build.py   then open docs/index.html in a browser.
+Run:  python3 data/build.py   then open docs/index.html (home) or docs/map.html in a browser.
 Everything in docs/ is generated: edit the Sheet or these scripts, not docs/.
 """
 import shutil
@@ -24,6 +24,7 @@ import topic_pages   # our own data/topic_pages.py
 import analog        # our own data/analog.py (Moon or Mars analog?)
 import compare_page  # our own data/compare_page.py
 import downloads     # our own data/downloads.py
+import findings_page # our own data/findings_page.py (home page)
 
 # Where the website goes.
 DOCS = Path(__file__).resolve().parent.parent / "docs"
@@ -79,9 +80,9 @@ def build_map(earth_sites, targets):
         "padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;"
         f"max-width:300px;font-size:14px'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
         f"for the site. Compared with:<ul style='margin:4px 0;padding-left:18px'>{target_list}</ul>"
-        f"<small>Markers: {legend}</small><br><a href='compare.html'>Compare sites</a> · <a href='gap.html'>Where Earth falls short</a> · "
+        f"<small>Markers: {legend}</small><br><a href='index.html'>Key findings</a> · <a href='compare.html'>Compare sites</a> · <a href='gap.html'>Where Earth falls short</a> · "
         "<a href='tasks.html'>Sites by mission task</a> · <a href='about.html'>About &amp; credits</a></div>"))
-    world.save(DOCS / "index.html")
+    world.save(DOCS / "map.html")
 
 
 def write(path, html_text):
@@ -117,7 +118,8 @@ def main():
 
     # Step 4: the map.
     build_map(earth_sites, targets)
-    print(f"  Wrote docs/index.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
+    print(f"  Wrote docs/map.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
+    write(DOCS / "index.html", findings_page.findings_page(sites, scores))  # home page: Key findings
 
     # Step 5: remind us of anything that breaks the challenge rules.
     warnings = score.check_sites(sites) + topic_pages.check_chart_values(limits) + analog.warnings(sites)

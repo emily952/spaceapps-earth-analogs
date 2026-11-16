@@ -31,7 +31,7 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/analog.py`: reads each site's "Analog for" text: Moon analogs are compared only with the Moon target, Mars analogs only with Mars, "both"/both-named with both. Unrecognised text shows both targets and build.py warns.
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
 - `data/style.css`: the look of all pages except the map; build.py copies it to `docs/style.css`.
-- `data/build.py`: runs everything, writes `docs/index.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
+- `data/build.py`: runs everything, writes `docs/index.html` (home page: Key findings, from `data/findings_page.py`), `docs/map.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
   `docs/gap.html`, `docs/tasks.html` and `docs/about.html`.
 - `docs/`: generated website. Do not hand-edit generated files.
 - `notes/`: site write-ups and citations (plain markdown).
@@ -62,7 +62,7 @@ name, type (earth / moon_target / mars_target), lat, lon, slope_deg, temp_max_c,
 - Make small changes and commit after each working step, with a clear message.
 - Comment every step in plain English. A teammate who knows basic Python must be able to follow it.
 - Keep each script short (aim for under 150 lines).
-- After a change, run `python3 data/build.py` and confirm `docs/index.html` opens in a browser.
+- After a change, run `python3 data/build.py` and confirm `docs/index.html` (home) and `docs/map.html` open in a browser.
 - Do not use NASA logos, insignia or mission patches anywhere.
 
 ## AI disclosure

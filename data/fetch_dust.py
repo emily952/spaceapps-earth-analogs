@@ -10,6 +10,8 @@ Mars: LMD Mars dust climatology (Montabone et al. 2015, Icarus 251:65-95,
   doi:10.1016/j.icarus.2014.12.034; v2 maps), built from orbiter measurements (TES, THEMIS,
   MCS) for Mars Years 24-36. Variable "cdodtot": 9.3 micrometre infrared ABSORPTION column
   dust optical depth for the whole local air column, on a 3 x 3 degree grid (~180 km).
+  It is already at the local surface pressure (LMD grid them with the Mars Climate Database;
+  ~830 Pa on average at Arcadia), unlike "cdod610", which is normalised to 610 Pa.
   LMD's own note: "Equivalent visible column optical depths can be obtained by multiplying
   the 9.3 um absorption column dust optical depth by 2.6." We do that, so Mars is in visible
   light like Earth's 0.55 um value. Moon: no air, no dust optical depth: "no data".
