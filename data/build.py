@@ -45,17 +45,51 @@ def marker_colour(category):
 # read from its "Analog for" text by analog.py. The map's checkboxes show or hide each group.
 
 
-MAP_TARGET_TABS = "<style>\n#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;width:min(540px,calc(100vw - 24px));padding:10px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.45 system-ui,sans-serif}\n#map-target-tabs .tab-buttons{display:flex;gap:8px;margin-top:6px}\n#map-target-tabs button{flex:1;padding:7px 12px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}\n#map-target-tabs button[aria-selected=\"true\"]{background:#7db4ff;color:#14203a;border-color:#7db4ff}\n#map-target-summary{margin:7px 0 0;color:#c8d2e5;font-size:12px}\n@media(max-width:640px){#map-target-tabs{top:56px;left:8px;right:8px;transform:none;width:auto;padding:8px 10px}#map-target-summary{max-width:100%}}\n</style>\n<aside id=\"map-target-tabs\" aria-label=\"Compare Earth analog sites by target\">\n  <strong>Compare Earth analog sites with:</strong>\n  <div class=\"tab-buttons\" role=\"tablist\" aria-label=\"Target body\">\n    <button type=\"button\" role=\"tab\" data-body=\"moon\" aria-selected=\"true\">Moon</button>\n    <button type=\"button\" role=\"tab\" data-body=\"mars\" aria-selected=\"false\">Mars</button>\n  </div>\n  <p id=\"map-target-summary\" aria-live=\"polite\"></p>\n</aside>\n<script>\n(() => {\n  const targets = __MAP_TARGETS__;\n  const buttons = document.querySelectorAll(\"#map-target-tabs [data-body]\");\n  const groupLabels = document.querySelectorAll(\".leaflet-control-layers-overlays label\");\n  const summary = document.getElementById(\"map-target-summary\");\n\n  function selectBody(body) {\n    groupLabels.forEach((label) => {\n      const text = label.textContent || \"\";\n      const isBoth = text.includes(\"Moon and Mars analogs\");\n      const belongs = isBoth || text.includes(body === \"moon\" ? \"Moon analogs\" : \"Mars analogs\");\n      const checkbox = label.querySelector('input[type=\"checkbox\"]');\n      if (checkbox && checkbox.checked !== belongs) checkbox.click();\n    });\n    buttons.forEach((button) => button.setAttribute(\"aria-selected\", String(button.dataset.body === body)));\n    const target = targets[body];\n    summary.textContent = `Target: ${target.name}. ${target.count} candidate Earth sites are marked for comparison. Earth markers stay at Earth locations; click a marker to open its site page and see the separate target scores.`;\n  }\n\n  buttons.forEach((button) => button.addEventListener(\"click\", () => selectBody(button.dataset.body)));\n  selectBody(\"moon\");\n})();\n</script>"
-def map_target_tabs(earth_sites, targets):
-    names = {str(row["type"]): str(row["name"]) for _, row in targets.iterrows()}
+PLANET_MAP_TABS = "<style>\n#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;display:flex;gap:8px;padding:8px 10px;background:#26334ff2;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055}\n#map-target-tabs button{padding:7px 14px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}\n#map-target-tabs button[aria-selected=\"true\"]{background:#7db4ff;color:#14203a}\n#planet-map{display:none;position:fixed;top:49px;left:0;right:0;bottom:0;z-index:600;background:#101827}\n#planet-analog-panel{display:none;position:fixed;right:18px;bottom:20px;z-index:8000;width:min(340px,calc(100vw - 36px));max-height:52vh;overflow:auto;padding:12px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.5 system-ui,sans-serif}\n#planet-analog-panel h3{margin:0 0 6px;font-size:16px}\n#planet-analog-panel p{margin:4px 0;color:#c8d2e5;font-size:12px}\n#planet-analog-panel ul{margin:8px 0;padding-left:20px}\n#planet-analog-panel li{margin:5px 0}\n#planet-analog-panel a{color:#9cc4ff}\n@media(max-width:640px){#map-target-tabs{top:54px}#planet-analog-panel{right:8px;bottom:10px;width:calc(100vw - 16px);max-height:38vh}}\n</style>\n<div id=\"map-target-tabs\" role=\"tablist\" aria-label=\"Map body\">\n  <button type=\"button\" role=\"tab\" data-mode=\"earth\" aria-selected=\"true\">Earth sites</button>\n  <button type=\"button\" role=\"tab\" data-mode=\"moon\" aria-selected=\"false\">Moon</button>\n  <button type=\"button\" role=\"tab\" data-mode=\"mars\" aria-selected=\"false\">Mars</button>\n</div>\n<div id=\"planet-map\" aria-label=\"Moon or Mars surface map\"></div>\n<aside id=\"planet-analog-panel\">\n  <h3 id=\"planet-target-title\"></h3>\n  <p id=\"planet-target-note\">Target-body map with its reference target. Earth analogs are listed here because their coordinates belong on an Earth map.</p>\n  <ul id=\"planet-analog-list\"></ul>\n  <p>Basemap: NASA/JPL Solar System Treks. Scores remain separate by condition; see each site page.</p>\n</aside>\n<script>\n(() => {\n  const bodyData = __PLANET_DATA__;\n  const buttons = document.querySelectorAll(\"#map-target-tabs [data-mode]\");\n  const planetDiv = document.getElementById(\"planet-map\");\n  const panel = document.getElementById(\"planet-analog-panel\");\n  const mapInfo = document.querySelector(\".map-info\");\n  const earthMap = document.querySelector(\".folium-map\");\n  const layerControl = document.querySelector(\".leaflet-control-layers\");\n  let planetMap = null;\n  let planetLayer = null;\n  let targetPin = null;\n\n  function setEarthBody(body) {\n    document.querySelectorAll(\".leaflet-control-layers-overlays label\").forEach((label) => {\n      const text = label.textContent || \"\";\n      const both = text.includes(\"Moon and Mars analogs\");\n      const relevant = body === \"all\" || both || text.includes(body === \"moon\" ? \"Moon analogs\" : \"Mars analogs\");\n      const checkbox = label.querySelector('input[type=\"checkbox\"]');\n      if (checkbox && checkbox.checked !== relevant) checkbox.click();\n    });\n  }\n\n  function fillAnalogPanel(body) {\n    const info = bodyData[body];\n    document.getElementById(\"planet-target-title\").textContent = `${info.body} target: ${info.name}`;\n    const list = document.getElementById(\"planet-analog-list\");\n    list.replaceChildren();\n    info.sites.forEach((site) => {\n      const item = document.createElement(\"li\");\n      const link = document.createElement(\"a\");\n      link.href = site.href;\n      link.textContent = site.name;\n      item.append(link);\n      if (site.scores.length) {\n        item.append(document.createTextNode(\" — \" + site.scores.join(\"; \")));\n      } else {\n        item.append(document.createTextNode(\" — suggested analog; no comparable scores yet\"));\n      }\n      list.append(item);\n    });\n  }\n\n  function showPlanet(body) {\n    const info = bodyData[body];\n    document.body.classList.add(\"planetary-map-open\");\n    if (earthMap) earthMap.style.visibility = \"hidden\";\n    if (mapInfo) mapInfo.style.display = \"none\";\n    if (layerControl) layerControl.style.display = \"none\";\n    planetDiv.style.display = \"block\";\n    panel.style.display = \"block\";\n\n    if (!planetMap) {\n      planetMap = L.map(planetDiv, {\n        crs: L.CRS.EPSG4326,\n        center: [info.lat, info.lon],\n        zoom: 1,\n        minZoom: 0,\n        maxZoom: 8,\n        zoomControl: true,\n        attributionControl: true,\n      });\n    }\n    if (planetLayer) planetMap.removeLayer(planetLayer);\n    planetLayer = L.tileLayer(info.tiles, {\n      tileSize: 256,\n      minZoom: 0,\n      maxZoom: 8,\n      noWrap: false,\n      attribution: info.attribution,\n    }).addTo(planetMap);\n    if (targetPin) planetMap.removeLayer(targetPin);\n    targetPin = L.marker([info.lat, info.lon]).bindTooltip(info.name).addTo(planetMap);\n    planetMap.setView([info.lat, info.lon], 2);\n    fillAnalogPanel(body);\n    window.setTimeout(() => planetMap.invalidateSize(), 80);\n  }\n\n  function showEarth() {\n    document.body.classList.remove(\"planetary-map-open\");\n    planetDiv.style.display = \"none\";\n    panel.style.display = \"none\";\n    if (earthMap) earthMap.style.visibility = \"visible\";\n    if (mapInfo) mapInfo.style.display = \"\";\n    if (layerControl) layerControl.style.display = \"\";\n    setEarthBody(\"all\");\n  }\n\n  buttons.forEach((button) => button.addEventListener(\"click\", () => {\n    const mode = button.dataset.mode;\n    buttons.forEach((item) => item.setAttribute(\"aria-selected\", String(item === button)));\n    if (mode === \"earth\") showEarth();\n    else showPlanet(mode);\n  }));\n  showEarth();\n})();\n</script>"
+def planet_map_tabs(earth_sites, targets, scores):
+    target_rows = {str(row["type"]): row for _, row in targets.iterrows()}
     details = {}
+    metrics = {
+        "moon_target": (("slope_deg", "Slope score"), ("temp_max_c", "Max-temperature score"), ("sun_max_elev_deg", "Sun-angle score")),
+        "mars_target": (("slope_463m_deg", "Slope score"), ("dust_aod", "Dust score"), ("sun_max_elev_deg", "Sun-angle score")),
+    }
     for body, target_type in (("moon", "moon_target"), ("mars", "mars_target")):
-        count = sum(body in analog.compared_targets(value) for value in earth_sites["analog_for"])
-        details[body] = {"name": names.get(target_type, body.title() + " target"), "count": count}
-    data = json.dumps(details, ensure_ascii=False).replace("</", "<" + chr(92) + "/")
-    return MAP_TARGET_TABS.replace("__MAP_TARGETS__", data)
+        target = target_rows.get(target_type)
+        candidates = []
+        for _, site in earth_sites.iterrows():
+            if body not in analog.compared_targets(site["analog_for"]):
+                continue
+            scored = scores[(scores["site"] == site["name"]) & (scores["target_type"] == target_type)]
+            score_row = scored.iloc[0] if not scored.empty else None
+            shown_scores = []
+            if score_row is not None:
+                for column, label in metrics[target_type]:
+                    value = score_row.get(column)
+                    if pd.notna(value):
+                        shown_scores.append(f"{label}: {float(value):.2f}")
+            candidates.append({
+                "name": str(site["name"]),
+                "href": f"sites/{pages.slugify(site['name'])}.html",
+                "scores": shown_scores,
+            })
+        details[body] = {
+            "body": "Moon" if body == "moon" else "Mars",
+            "name": str(target["name"]) if target is not None else body.title() + " target",
+            "lat": float(target["lat"]) if target is not None and pd.notna(target["lat"]) else 0,
+            "lon": float(target["lon"]) if target is not None and pd.notna(target["lon"]) else 0,
+            "sites": candidates,
+            "tiles": (
+                "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/{z}/{y}/{x}.jpg"
+                if body == "moon" else
+                "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm/{z}/{y}/{x}.jpg"
+            ),
+            "attribution": "Imagery: NASA/JPL Solar System Treks",
+        }
+    payload = json.dumps(details, ensure_ascii=False).replace("</", "<" + chr(92) + "/")
+    return PLANET_MAP_TABS.replace("__PLANET_DATA__", payload)
 
-def build_map(earth_sites, targets):
+
+def build_map(earth_sites, targets, scores):
     """World map with a clickable marker for each Earth site."""
     # Background map: NASA GIBS "Blue Marble" imagery (public, no API key).
     # We don't use OpenStreetMap's tile servers: they block pages opened from
@@ -95,7 +129,7 @@ def build_map(earth_sites, targets):
     world.save(DOCS / "map.html")
     map_path = DOCS / "map.html"
     map_html = map_path.read_text(encoding="utf-8")
-    map_html = map_html.replace("</body>", map_target_tabs(earth_sites, targets) + "\n</body>")
+    map_html = map_html.replace("</body>", planet_map_tabs(earth_sites, targets, scores) + "\n</body>")
     map_path.write_text(map_html, encoding="utf-8")
 
 
@@ -131,7 +165,7 @@ def main():
     shutil.copy(Path(__file__).parent / "style.css", DOCS / "style.css")  # shared look of all pages
 
     # Step 4: the map.
-    build_map(earth_sites, targets)
+    build_map(earth_sites, targets, scores)
     print(f"  Wrote docs/map.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
     write(DOCS / "index.html", findings_page.findings_page(sites, scores, DOCS))  # home page: Key findings
     write(DOCS / "slides.html", slides_page.slides_page(sites, scores, DOCS))  # 7-slide demo
