@@ -60,8 +60,9 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   (Kharga rainfall), a camping site listing (Río Tinto coordinates), Wondermondo
   (Atacama coordinates), volcanodb and Wikipedia. They're public, but judges may
   trust primary sources more.
-- [ ] **Small fix in the Earth's limits tab**, "Hottest surface" row: Lut's 80.8 °C
+- [x] **Small fix in the Earth's limits tab**, "Hottest surface" row: Lut's 80.8 °C
   is about 19 °C short of the Moon's "over 100 °C", not "at least 20 °C".
+  Done: the sheet now says "more than 19 °C short".
 - [x] Mission tasks: shown on the site as a table labelled "team judgment".
   Review the pairings before submitting.
 
