@@ -44,7 +44,16 @@ def marker_colour(category):
 # read from its "Analog for" text by analog.py. The map's checkboxes show or hide each group.
 
 
-def build_map(earth_sites, targets):
+MAP_TARGET_TABS = "<style>\n#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;width:min(540px,calc(100vw - 24px));padding:10px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.45 system-ui,sans-serif}\n#map-target-tabs .tab-buttons{display:flex;gap:8px;margin-top:6px}\n#map-target-tabs button{flex:1;padding:7px 12px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}\n#map-target-tabs button[aria-selected=\"true\"]{background:#7db4ff;color:#14203a;border-color:#7db4ff}\n#map-target-summary{margin:7px 0 0;color:#c8d2e5;font-size:12px}\n@media(max-width:640px){#map-target-tabs{top:56px;left:8px;right:8px;transform:none;width:auto;padding:8px 10px}#map-target-summary{max-width:100%}}\n</style>\n<aside id=\"map-target-tabs\" aria-label=\"Compare Earth analog sites by target\">\n  <strong>Compare Earth analog sites with:</strong>\n  <div class=\"tab-buttons\" role=\"tablist\" aria-label=\"Target body\">\n    <button type=\"button\" role=\"tab\" data-body=\"moon\" aria-selected=\"true\">Moon</button>\n    <button type=\"button\" role=\"tab\" data-body=\"mars\" aria-selected=\"false\">Mars</button>\n  </div>\n  <p id=\"map-target-summary\" aria-live=\"polite\"></p>\n</aside>\n<script>\n(() => {\n  const targets = __MAP_TARGETS__;\n  const buttons = document.querySelectorAll(\"#map-target-tabs [data-body]\");\n  const groupLabels = document.querySelectorAll(\".leaflet-control-layers-overlays label\");\n  const summary = document.getElementById(\"map-target-summary\");\n\n  function selectBody(body) {\n    groupLabels.forEach((label) => {\n      const text = label.textContent || \"\";\n      const isBoth = text.includes(\"Moon and Mars analogs\");\n      const belongs = isBoth || text.includes(body === \"moon\" ? \"Moon analogs\" : \"Mars analogs\");\n      const checkbox = label.querySelector('input[type=\"checkbox\"]');\n      if (checkbox && checkbox.checked !== belongs) checkbox.click();\n    });\n    buttons.forEach((button) => button.setAttribute(\"aria-selected\", String(button.dataset.body === body)));\n    const target = targets[body];\n    summary.textContent = `Target: ${target.name}. ${target.count} candidate Earth sites are marked for comparison. Earth markers stay at Earth locations; click a marker to open its site page and see the separate target scores.`;\n  }\n\n  buttons.forEach((button) => button.addEventListener(\"click\", () => selectBody(button.dataset.body)));\n  selectBody(\"moon\");\n})();\n</script>"
+def map_target_tabs(earth_sites, targets):
+    names = {str(row["type"]): str(row["name"]) for _, row in targets.iterrows()}
+    details = {}
+    for body, target_type in (("moon", "moon_target"), ("mars", "mars_target")):
+        count = sum(body in analog.compared_targets(value) for value in earth_sites["analog_for"])
+        details[body] = {"name": names.get(target_type, body.title() + " target"), "count": count}
+    data = json.dumps(details, ensure_ascii=False).replace("</", "<" + chr(92) + "/")
+    return MAP_TARGET_TABS.replace("__MAP_TARGETS__", data)
+\ndef build_map(earth_sites, targets):
     """World map with a clickable marker for each Earth site."""
     # Background map: NASA GIBS "Blue Marble" imagery (public, no API key).
     # We don't use OpenStreetMap's tile servers: they block pages opened from
@@ -81,7 +90,7 @@ def build_map(earth_sites, targets):
     world.get_root().html.add_child(folium.Element(
         f"{pages.nav()}<div class='map-info'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
         f"for the site. Compared with:<ul>{target_list}</ul><small>Markers: {legend}</small></div>"))
-    world.save(DOCS / "map.html")
+    world.save(DOCS / "map.html")\n    map_path = DOCS / "map.html"\n    map_html = map_path.read_text(encoding="utf-8")\n    map_html = map_html.replace("</body>", map_target_tabs(earth_sites, targets) + "\n</body>")\n    map_path.write_text(map_html, encoding="utf-8")
 
 
 def write(path, html_text):
