@@ -33,7 +33,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/downloads.py` | The About page's "How we score" (with a live worked example) and "Download our data" (copies CSVs to `docs/data/`) |
 | `data/read_appeears.py` | Reads AppEEARS results: daily MODIS temperature (MYD11A1) or ground brightness (MCD43A3) per site (not scored yet) |
-| `data/fetch_tes_albedo.py` | Arcadia's ground brightness (albedo 0.236) from NASA's TES map → `data/mars_albedo.csv` (not scored until Earth albedo arrives) |
+| `data/fetch_tes_albedo.py` | Arcadia's ground brightness (albedo 0.236) from NASA's TES map (one ~7.4 km pixel; dust in the air not removed) → `data/mars_albedo.csv` (not scored until Earth albedo, 500 m MODIS pixels, arrives) |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
 | `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |

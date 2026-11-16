@@ -27,7 +27,13 @@ DIMENSION_SOURCES = {
     "slope_deg": "Earth: Copernicus DEM GLO-30 (~30 m pixels; wider east-west near the poles), mean "
                  "slope over a 15 × 15 km box around the site, the size of an Artemis III landing region. "
                  "At this pixel size, measurement noise adds about 0.5–1° on flat ground. "
-                 "Moon: Wueller et al. 2025, Malapert candidate landing area, 5.6° ± 2.0°.",
+                 "Moon: Wueller et al. 2025, Malapert candidate landing area, 5.6° ± 2.0° (their map "
+                 "resolution is not given in the table we used, so the two may not be measured at the "
+                 "same pixel size).",
+    # Ready for when Earth albedo arrives from AppEEARS (not scored yet):
+    "albedo": "Earth: MODIS MCD43A3 white-sky shortwave albedo, 2025 average, one 500 m pixel. "
+              "Mars: MGS TES bolometric albedo map, one ~7.4 km pixel (8 per degree); dust in the "
+              "air was not removed, which can make dark areas look brighter. Moon: no value yet.",
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
          "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°"}

@@ -57,4 +57,6 @@ def gap_card(sites):
             f'summer, because Earth is tilted 23.44° but the Moon only 1.5°. Our lowest site, '
             f'{earth["name"]}, gets {earth["sun_max_elev_deg"]:.1f}°. Low-Sun lighting for cameras, solar panels '
             f'and shadow navigation has to be tested in a lab or simulated.</p><p class="meta">Calculated '
-            f'from latitude and axial tilt (NASA planetary fact sheets); flat horizon assumed.</p></section>')
+            f'from each place\'s latitude (one point; no map pixels involved) and axial tilt (NASA '
+            f'planetary fact sheets). Flat horizon assumed: on Malapert\'s slopes and peaks the Sun can '
+            f'look higher or lower than this.</p></section>')
