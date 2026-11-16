@@ -1,0 +1,2 @@
+target,lat,lon,albedo,map_row,map_column,source_url,label_url,product,accessed
+Arcadia Planitia,47.2,-175.7,0.2364,342,34,https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.img,https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.lbl,"MGS TES global bolometric albedo, 8 pixels/degree",2026-11-15

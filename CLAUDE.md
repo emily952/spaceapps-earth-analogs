@@ -23,7 +23,8 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/pages.py`: shared HTML helpers and site pages. `data/topic_pages.py`: gap, task and About pages.
 - `data/sun_angle.py`: calculates the highest Sun angle per row (scored as `sun_max_deg`).
 - `data/downloads.py`: About page "How we score" + "Download our data"; build.py copies sites.csv, scores.csv, modis_lst.csv to `docs/data/`.
-- `data/read_appeears.py`: reads AppEEARS daily MODIS results (MYD11A1) into `data/modis_daily_lst.csv`; not scored until switched in import_sheet.py.
+- `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature, MCD43A3 albedo) into `data/modis_daily_lst.csv` / `data/modis_albedo.csv`; not scored until switched in import_sheet.py.
+- `data/fetch_tes_albedo.py`: Mars target albedo from the MGS TES bolometric albedo map (PDS) into `data/mars_albedo.csv`.
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
 - `data/style.css`: the look of all pages except the map; build.py copies it to `docs/style.css`.
 - `data/build.py`: runs everything, writes `docs/index.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
