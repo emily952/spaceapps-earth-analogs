@@ -92,6 +92,8 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 - [x] Add a credits/about section listing data providers. Done: `docs/about.html`,
   built automatically from every row's `source_links`.
 - [ ] Check the site on a phone.
+- [ ] **Last step, once all scores are final:** a "Key findings" landing page (the problem,
+  who it's for, 3 headline findings, link to the map). Built last so its numbers don't go stale.
 - [x] `data/build.py` was at the 150-line limit. Done: page HTML moved to `data/pages.py`.
 - [x] `build.py` now prints a "BEFORE SUBMITTING" list (FAKE rows, missing
   sources, links that may need a login).
