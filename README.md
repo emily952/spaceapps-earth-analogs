@@ -42,7 +42,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/findings_page.py` | The home page: the problem, who it's for and the best match per condition, computed from the live scores |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
-| `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |
+| `data/style.css` | The look of every page, including the map (dark theme; copied to `docs/` by the build) |
 | `data/build.py` | Runs all of the above and prints warnings about anything that breaks the challenge rules |
 | `docs/` | Generated website for GitHub Pages. **Don't hand-edit.** |
 | `notes/` | Site write-ups and citations (markdown) |

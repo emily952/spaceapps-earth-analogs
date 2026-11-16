@@ -1,36 +1,57 @@
 /* style.css: the shared look of every page except the map.
-   build.py copies this file to docs/style.css. Edit it here, not in docs/. */
+   build.py copies this file to docs/style.css. Edit it here, not in docs/.
+   Theme: a dark "mission control" look, inspired by NASA's Solar System Treks portals:
+   deep space navy, slightly lighter panels, Moon in cool blue and Mars in rust.
+   The chart colours (#5a8fd8, #d9693a, #3aa676) passed the dataviz palette check on --card. */
 :root {
-  --bg: #f4f5f7; --card: #ffffff; --ink: #1d2330; --muted: #5b6474; --line: #e2e5ea;
-  --accent: #2a6fc4; --match: #1f8a5b; --break: #c2571a; --note-bg: #fff5ea;
+  --bg: #1e2a47; --card: #26334f; --card-2: #2b3a5a; --ink: #eef2f9; --muted: #aeb9cf;
+  --line: #3b4a70; --accent: #7db4ff; --moon: #5a8fd8; --mars: #d9693a;
+  --match: #4cc38a; --break: #f0884a; --note-bg: #3a2f2c;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+html { background: var(--bg); }
+/* Faint "star field" made of tiny dots, plus a soft glow at the top (CSS only, no images). */
+body { margin: 0; color: var(--ink); min-height: 100vh;
+       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+       background:
+         radial-gradient(1px 1px at 20px 30px, #ffffff55, transparent),
+         radial-gradient(1px 1px at 90px 120px, #ffffff40, transparent),
+         radial-gradient(1px 1px at 160px 60px, #ffffff33, transparent),
+         radial-gradient(1.5px 1.5px at 230px 170px, #ffffff44, transparent),
+         radial-gradient(ellipse 80% 50% at 50% -10%, #3a5a9466, transparent 70%),
+         var(--bg);
+       background-size: 260px 220px, 260px 220px, 260px 220px, 260px 220px, 100% 100%, auto;
+       background-attachment: fixed; }
 a { color: var(--accent); overflow-wrap: anywhere; }
+a:hover { color: #a9cdff; }
 
-/* Navigation bar: stays at the top while scrolling. */
-nav { position: sticky; top: 0; z-index: 10; background: var(--card); border-bottom: 1px solid var(--line);
-      padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; }
+/* Navigation bar: stays at the top while scrolling, slightly see-through. */
+nav { position: sticky; top: 0; z-index: 10; background: #1e2a47e6; backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line); padding: 12px 16px; display: flex; flex-wrap: wrap;
+      gap: 4px 22px; font-size: 15px; }
 nav a { color: var(--muted); text-decoration: none; }
-nav a:hover { color: var(--accent); text-decoration: underline; }
+nav a:hover { color: var(--ink); }
 
-main { max-width: 940px; margin: 0 auto; padding: 24px 16px 56px; }
-h1 { font-size: 2rem; line-height: 1.2; margin: 8px 0 12px; letter-spacing: -0.01em; }
-h2 { font-size: 1.1rem; margin: 0 0 8px; }
+main { max-width: 960px; margin: 0 auto; padding: 28px 16px 64px; }
+h1, h2, h3 { font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif; }
+h1 { font-size: 2.1rem; line-height: 1.15; margin: 8px 0 12px; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; margin: 0 0 8px; }
 h3 { font-size: 1rem; margin: 18px 0 4px; }
 p { margin: 0 0 10px; }
-.lead { font-size: 1.05rem; color: var(--muted); max-width: 70ch; }
+.lead { font-size: 1.08rem; color: var(--muted); max-width: 70ch; }
 .meta { color: var(--muted); font-size: 15px; }
+strong { color: #f3f6fc; }
 
 /* Cards and two-column grid (one column on narrow screens). */
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-        padding: 18px 20px; margin: 16px 0; }
+.card { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line);
+        border-radius: 14px; padding: 18px 20px; margin: 16px 0; box-shadow: 0 8px 24px #00000033; }
 .card > :last-child { margin-bottom: 0; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin: 16px 0; }
 .grid > .card { margin: 0; }
-.match { border-top: 4px solid var(--match); }
-.break { border-top: 4px solid var(--break); }
+.match { border-top: 3px solid var(--match); }
+.break { border-top: 3px solid var(--break); }
+.moon-card { border-top: 3px solid var(--moon); }
+.mars-card { border-top: 3px solid var(--mars); }
 
 /* Badges under the page title. The dot matches the site's map-marker colour. */
 .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
@@ -39,7 +60,7 @@ p { margin: 0 0 10px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 
 /* Orange callout for the limits note. */
-.note { background: var(--note-bg); border-left: 4px solid var(--break); border-radius: 8px;
+.note { background: var(--note-bg); border-left: 4px solid var(--break); border-radius: 10px;
         padding: 12px 16px; margin: 16px 0; }
 
 /* Label / value list for climate notes. */
@@ -54,33 +75,69 @@ table { border-collapse: collapse; width: 100%; font-size: 15px; }
 th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--line); }
 td, th { padding: 8px 10px; vertical-align: top; }
 tr + tr td { border-top: 1px solid var(--line); }
+tbody tr:hover td, table tr:hover td { background: #ffffff06; }
 
 /* Numbered source list: site name, full address underneath. */
 .sources { margin: 0; padding-left: 22px; }
 .sources li { margin: 6px 0; }
 .sources small { display: block; color: var(--muted); }
-code { background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+code { background: var(--bg); border: 1px solid var(--line); padding: 1px 5px; border-radius: 4px; }
+details summary { cursor: pointer; color: var(--accent); }
 
 /* Score cards: one per condition and target, big number on top. */
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 8px 0 10px; }
-.tile { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.tile { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
 .tile-title { font-size: 14px; color: var(--muted); }
-.big { font-size: 2.2rem; font-weight: 700; line-height: 1.15; margin: 4px 0; }
+.big { font-family: "Space Grotesk", system-ui, sans-serif; font-size: 2.3rem; font-weight: 700;
+       line-height: 1.15; margin: 4px 0; color: #ffffff; }
 .big.muted { color: var(--muted); font-size: 1.4rem; }
 .tile .meta { margin: 0; font-size: 14px; }
 
 /* Compare page: a small bar behind each score (width = score), and greyed "no data". */
 .bar { display: inline-block; width: 60px; height: 8px; background: var(--line); border-radius: 4px;
        margin-right: 8px; vertical-align: middle; overflow: hidden; }
-.bar span { display: block; height: 100%; background: #2a78d6; border-radius: 4px; }
+.bar span { display: block; height: 100%; background: var(--moon); border-radius: 4px; }
 td.muted { color: var(--muted); }
 table.compare td:nth-last-child(-n+2) { white-space: nowrap; }
 
 /* Home page (Key findings): big intro and buttons into the site. */
-.hero { padding: 8px 0 4px; }
-.hero h1 { font-size: 2.3rem; max-width: 22ch; }
-.button { display: inline-block; margin: 6px 8px 6px 0; padding: 9px 16px; border-radius: 999px;
-          background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; }
-.button:hover { filter: brightness(1.1); }
+.hero { padding: 36px 0 12px; }
+.hero h1 { font-size: 2.8rem; max-width: 20ch;
+           background: linear-gradient(90deg, #ffffff, #b9d4ff 60%, #f2b08d); -webkit-background-clip: text;
+           background-clip: text; color: transparent; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 13px; color: var(--accent); margin: 0; }
+.button { display: inline-block; margin: 6px 8px 6px 0; padding: 10px 18px; border-radius: 999px;
+          background: var(--accent); color: #0f1a30; text-decoration: none; font-weight: 700; }
+.button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.button:hover { filter: brightness(1.1); color: #08101f; }
+.button.ghost:hover { color: var(--ink); border-color: var(--accent); }
 .card ul { padding-left: 20px; margin: 6px 0 10px; }
 .card li { margin: 4px 0; }
+@media (max-width: 560px) { .hero h1 { font-size: 2.1rem; } }
+
+/* Radar charts: one per target, side by side (stacked on narrow screens). */
+.radar { min-width: 0; margin: 12px 0; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+
+/* Map page (map.html, made by folium): nav bar fixed on top, map fills the rest. */
+/* "!important" because folium also loads Bootstrap's stylesheet, which overrides plain rules. */
+body:has(.folium-map) nav { position: fixed; left: 0; right: 0; height: 49px; display: flex !important;
+                            gap: 4px 22px !important; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap;
+                            z-index: 10000; font-size: 15px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+body:has(.folium-map) nav a { flex: none; }
+.leaflet-container { background: var(--bg) !important; }
+.leaflet-control-layers label, .leaflet-control-layers span { color: var(--ink) !important; font-size: 13px; }
+.folium-map { position: absolute !important; top: 49px !important; bottom: 0; left: 0; right: 0;
+              height: auto !important; width: 100% !important; }
+.map-info { position: fixed; bottom: 24px; left: 16px; z-index: 9999; max-width: 300px; font-size: 14px;
+            background: #26334ff2; color: var(--ink); border: 1px solid var(--line); border-radius: 12px;
+            padding: 10px 14px; box-shadow: 0 8px 24px #00000055; }
+.map-info ul { margin: 4px 0; padding-left: 18px; }
+.map-info small { color: var(--muted); }
+.leaflet-control-layers { background: #26334ff2 !important; color: var(--ink); border: 1px solid var(--line) !important;
+                          border-radius: 10px !important; }
+.leaflet-bar { border: 1px solid var(--line) !important; border-radius: 10px !important; overflow: hidden; }
+.leaflet-bar a { background: #26334ff2 !important; color: var(--ink) !important; border-color: var(--line) !important; }
+.leaflet-bar a:hover { background: var(--card-2) !important; }
+.leaflet-control-attribution { color: #333; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--card); color: var(--ink); }
+.leaflet-popup-content a { color: var(--accent); }

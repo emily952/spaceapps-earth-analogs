@@ -37,6 +37,12 @@ TOOL_CREDITS = [
     ("Data handling: pandas", "https://pandas.pydata.org"),
 ]
 
+# Dark chart look shared by every plotly chart (matches style.css). Grid lines = --line.
+DARK_CHART = {"paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
+              "font": {"color": "#e6ebf5", "family": "system-ui, -apple-system, Segoe UI, sans-serif"}}
+GRID = "#3b4a70"
+MOON_COLOUR, MARS_COLOUR = "#5a8fd8", "#d9693a"  # passed the dataviz palette check on the dark cards
+
 # Site categories: (start of the Category text, map marker colour, matching dot colour, legend text).
 # build.py uses this for the map markers, so map and pages always agree.
 CATEGORIES = [("New find", "blue", "#38aadd", "new finds"),
@@ -64,14 +70,27 @@ def link_list(links):
     return f'<ol class="sources">{items}</ol>' if items else "<p>no data</p>"
 
 
+def head_links(root=""):
+    """Font and stylesheet links, shared by every page (the map page adds them too)."""
+    return f"""<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="{root}style.css">"""
+
+
+def nav(root=""):
+    """The navigation bar at the top of every page, including the map."""
+    return f"""<nav><a href="{root}index.html">Key findings</a><a href="{root}map.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
+<a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>"""
+
+
 def page(title, body, root=""):
     """Wrap a page body in the shared header, stylesheet and navigation bar.
     root is "" for pages in docs/ and "../" for pages in docs/sites/."""
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{show(title)}</title><link rel="stylesheet" href="{root}style.css"></head>
-<body><nav><a href="{root}index.html">Key findings</a><a href="{root}map.html">Map</a><a href="{root}gap.html">Where Earth falls short</a>
-<a href="{root}compare.html">Compare sites</a><a href="{root}tasks.html">Sites by mission task</a><a href="{root}about.html">About &amp; credits</a></nav>
+<title>{show(title)}</title>
+{head_links(root)}</head>
+<body>{nav(root)}
 <main>{body}</main></body></html>"""
 
 

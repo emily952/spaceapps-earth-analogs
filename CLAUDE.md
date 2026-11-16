@@ -30,7 +30,7 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/fetch_tes_albedo.py`: Mars target albedo from the MGS TES bolometric albedo map (PDS) into `data/mars_albedo.csv`.
 - `data/analog.py`: reads each site's "Analog for" text: Moon analogs are compared only with the Moon target, Mars analogs only with Mars, "both"/both-named with both. Unrecognised text shows both targets and build.py warns.
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
-- `data/style.css`: the look of all pages except the map; build.py copies it to `docs/style.css`.
+- `data/style.css`: the look of all pages, including the map page (dark "mission control" theme); build.py copies it to `docs/style.css`.
 - `data/build.py`: runs everything, writes `docs/index.html` (home page: Key findings, from `data/findings_page.py`), `docs/map.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
   `docs/gap.html`, `docs/tasks.html` and `docs/about.html`.
 - `docs/`: generated website. Do not hand-edit generated files.

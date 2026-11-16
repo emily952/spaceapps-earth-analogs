@@ -15,8 +15,8 @@ import pages        # our own data/pages.py
 import score        # our own data/score.py
 import scores_html  # our own data/scores_html.py
 
-DOT_COLOUR = "#2a78d6"   # Earth sites (same blue as the gap chart)
-LINE_COLOUR = "#5b6474"  # the target's value: neutral grey, so it doesn't look like a site
+DOT_COLOUR = pages.MOON_COLOUR  # Earth sites compared with the Moon
+LINE_COLOUR = "#9aa6bd"          # the target's value: neutral grey, so it doesn't look like a site
 
 
 def short_name(name):
@@ -32,16 +32,16 @@ def temp_chart(earth, target, site_scores):
              f"{site_scores.get(r['name'], float('nan')):.2f}" for _, r in rows.iterrows()]
     fig = go.Figure(go.Scatter(
         x=rows["temp_max_c"], y=[short_name(n) for n in rows["name"]], mode="markers",
-        marker={"size": 11, "color": DOT_COLOUR, "line": {"width": 2, "color": "#fff"}},
+        marker={"size": 11, "color": DOT_COLOUR, "line": {"width": 2, "color": "#26334f"}},
         hovertext=hover, hoverinfo="text"))
     # The Moon target's value as a dashed line with its own label.
     fig.add_vline(x=target["temp_max_c"], line_dash="dash", line_width=2, line_color=LINE_COLOUR,
                   annotation_text=f"{pages.show(target['name'])}: {target['temp_max_c']:g} °C",
                   annotation_position="top")
-    fig.update_layout(height=460, margin={"l": 10, "r": 20, "t": 40, "b": 40}, plot_bgcolor="#fff",
-                      xaxis={"title": "Hottest daily ground temperature, 2025 (°C)", "gridcolor": "#eee",
+    fig.update_layout(height=460, margin={"l": 10, "r": 20, "t": 40, "b": 40}, **pages.DARK_CHART,
+                      xaxis={"title": "Hottest daily ground temperature, 2025 (°C)", "gridcolor": pages.GRID,
                              "zeroline": False},
-                      yaxis={"gridcolor": "#f2f2f2"}, showlegend=False)
+                      yaxis={"gridcolor": pages.GRID}, showlegend=False)
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 

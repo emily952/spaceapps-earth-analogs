@@ -32,7 +32,7 @@ COLD_BARS = [
     ("Earth: East Antarctic Plateau", -98, "Coldest surface", "Earth's closest"),
     ("Moon: long-lit polar spots (±10)", -50, "Temperature in long-lit lunar polar spots", "Moon"),
 ]
-EARTH_COLOUR, SPACE_COLOUR = "#eb6834", "#2a78d6"  # validated pair (dataviz palette check)
+EARTH_COLOUR, SPACE_COLOUR = "#3aa676", "#5a8fd8"  # Earth green vs space blue: validated on the dark theme (dataviz check)
 
 
 def load_limits():
@@ -63,8 +63,8 @@ def cold_chart():
         marker_color=[EARTH_COLOUR if label.startswith("Earth") else SPACE_COLOUR for label in labels],
         hovertemplate="%{y}: %{x} °C<extra></extra>"))
     fig.update_layout(height=320, margin={"l": 10, "r": 30, "t": 10, "b": 40}, barcornerradius=4,
-                      bargap=0.35, plot_bgcolor="#fff", yaxis={"autorange": "reversed"},
-                      xaxis={"title": "Surface temperature (°C)", "range": [-270, 0], "gridcolor": "#eee"})
+                      bargap=0.35, **pages.DARK_CHART, yaxis={"autorange": "reversed"},
+                      xaxis={"title": "Surface temperature (°C)", "range": [-270, 0], "gridcolor": pages.GRID})
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 

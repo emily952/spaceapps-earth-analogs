@@ -49,7 +49,7 @@ DIMENSION_SOURCES = {
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
          "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°", "slope_463m_deg": "°"}
-COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}  # radar chart colour per target type
+COLOURS = {"moon_target": "#5a8fd8", "mars_target": "#d9693a"}  # radar colour per target (= pages.MOON/MARS_COLOUR)
 
 
 def source_for(col, compared):
@@ -77,21 +77,25 @@ def score_card(col, site, target, value):
             f'<p class="meta">This site {fmt(site[col], col)} · target {fmt(target[col], col)}</p></div>')
 
 
-def radar_chart(site_scores, scored):
-    """Radar chart with one shape per target, on the scored conditions only. Missing scores leave a gap."""
-    labels = [score.DIMENSIONS[col] for col in scored]
-    fig = go.Figure()
-    for _, row in site_scores.iterrows():
+def radar_chart(panels):
+    """One full-width radar per target (stacked, so they stay readable on phones), each on the
+    conditions scored against that target, so every shape closes. panels = [(score row, [columns])]."""
+    grid, charts = "#3b4a70", []  # grid colour = style.css --line
+    for row, scored in panels:
+        labels = [score.DIMENSIONS[col].replace(" (463 m pixels)", "<br>(463 m)") for col in scored]  # fits phones
         values = [row[col] for col in scored]
-        hover = ["no data" if pd.isna(v) else f"{v:.2f}" for v in values]
-        # Repeat the first point at the end so the shape closes.
-        fig.add_trace(go.Scatterpolar(
-            r=values + values[:1], theta=labels + labels[:1], customdata=hover + hover[:1],
-            name=row["target"], fill="toself", line_color=COLOURS[row["target_type"]],
+        hover = [f"{v:.2f}" for v in values]
+        fig = go.Figure(go.Scatterpolar(  # repeat the first point at the end so the shape closes
+            r=values + values[:1], theta=labels + labels[:1], customdata=hover + hover[:1], name=row["target"],
+            fill="toself", line_color=COLOURS[row["target_type"]],
             hovertemplate="%{theta}: %{customdata}<extra>%{fullData.name}</extra>"))
-    fig.update_layout(polar={"radialaxis": {"range": [0, 1]}}, height=480,
-                      legend={"orientation": "h"}, margin={"t": 30, "b": 30})
-    return fig.to_html(full_html=False, include_plotlyjs="cdn")
+        fig.update_layout(title={"text": f"vs {row['target']}", "x": 0.5, "font": {"size": 15}},
+                          polar={"bgcolor": "rgba(0,0,0,0)", "radialaxis": {"range": [0, 1], "gridcolor": grid},
+                                 "angularaxis": {"gridcolor": grid}}, height=360, paper_bgcolor="rgba(0,0,0,0)",
+                          font={"color": "#e6ebf5", "size": 12}, showlegend=False,
+                          margin={"t": 60, "b": 40, "l": 80, "r": 80})
+        charts.append(fig.to_html(full_html=False, include_plotlyjs="cdn", config={"responsive": True}))
+    return "".join(f'<div class="radar">{chart}</div>' for chart in charts)
 
 
 def scores_section(site, site_scores, sites):
@@ -115,8 +119,11 @@ def scores_section(site, site_scores, sites):
         parts.append(f'<div class="tiles">{cards}</div><p class="meta"><strong>Data:</strong> '
                      f'{source_for(col, list(site_scores["target_type"]))} <strong>Scale:</strong> 1 = same value as the '
                      f'target, 0 = as different as anything in our dataset{value_range}.</p>')
-    if len(scored) >= 3:
-        parts.append(radar_chart(site_scores, scored))
+    # One radar per target, drawn only when that target has 3+ scored conditions (fewer can't be read).
+    panels = [(row, cols) for _, row in site_scores.iterrows()
+              if len(cols := [c for c in score.DIMENSIONS if pd.notna(row[c])]) >= 3]
+    if panels:
+        parts.append(radar_chart(panels))
     parts.append('<p class="meta">Other conditions are not scored yet: we have no exact, '
                  'comparable values for them.</p>')
     return "".join(parts)

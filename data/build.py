@@ -75,13 +75,11 @@ def build_map(earth_sites, targets):
     # Info box: title, targets, marker legend and links to the other pages.
     target_list = "".join(f"<li>{pages.show(n)}</li>" for n in targets["name"])
     legend = " · ".join(f"{colour}: {text}" for _, colour, _, text in pages.CATEGORIES)
+    # Same fonts, stylesheet and nav bar as every other page (style.css: "Map page").
+    world.get_root().header.add_child(folium.Element(pages.head_links()))
     world.get_root().html.add_child(folium.Element(
-        "<div style='position:fixed;bottom:20px;left:20px;z-index:9999;background:white;"
-        "padding:8px 12px;border-radius:6px;box-shadow:0 1px 4px #0004;font-family:sans-serif;"
-        f"max-width:300px;font-size:14px'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
-        f"for the site. Compared with:<ul style='margin:4px 0;padding-left:18px'>{target_list}</ul>"
-        f"<small>Markers: {legend}</small><br><a href='index.html'>Key findings</a> · <a href='compare.html'>Compare sites</a> · <a href='gap.html'>Where Earth falls short</a> · "
-        "<a href='tasks.html'>Sites by mission task</a> · <a href='about.html'>About &amp; credits</a></div>"))
+        f"{pages.nav()}<div class='map-info'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
+        f"for the site. Compared with:<ul>{target_list}</ul><small>Markers: {legend}</small></div>"))
     world.save(DOCS / "map.html")
 
 

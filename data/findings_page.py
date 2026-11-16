@@ -42,19 +42,19 @@ def findings_page(sites, scores):
                if scores[scores["target"] == t][c].notna().any()}
     cold = {label: value for label, value, *_ in topic_pages.COLD_BARS}
     earth_cold, moon_cold = cold["Earth: East Antarctic Plateau"], cold["Moon: shadowed crater floors"]
-    buttons = "".join(f'<a class="button" href="{href}">{text}</a>' for href, text in [
-        ("map.html", "Explore the map"), ("compare.html", "Compare all sites"),
-        ("gap.html", "Where Earth falls short"), ("about.html", "How we score &amp; sources")])
+    buttons = "".join(f'<a class="button{extra}" href="{href}">{text}</a>' for href, text, extra in [
+        ("map.html", "Explore the map", ""), ("compare.html", "Compare all sites", " ghost"),
+        ("gap.html", "Where Earth falls short", " ghost"), ("about.html", "How we score &amp; sources", " ghost")])
     return pages.page("Earth Analogs for Moon and Mars", f"""
-<section class="hero"><h1>Where on Earth can we rehearse the Moon and Mars?</h1>
+<section class="hero"><p class="eyebrow">NASA Space Apps 2026 · Earth analogs</p><h1>Where on Earth can we rehearse the Moon and Mars?</h1>
 <p class="lead">Before astronauts land near the Moon's south pole or on Mars, crews, rovers and instruments
 practise in similar places on Earth. We compared {len(earth)} Earth sites with two targets, one condition at a
 time, so mission planners and field-test teams can see <strong>which site to use for which test</strong>, and
 where no place on Earth can help.</p>{buttons}</section>
-<div class="grid"><section class="card"><h2>Moon: {html.escape(moon['name'])}</h2>
+<div class="grid"><section class="card moon-card"><h2>Moon: {html.escape(moon['name'])}</h2>
 <p class="meta">An Artemis candidate landing region near the lunar south pole.</p>
 <p>Closest Earth site for each condition:</p><ul>{best_matches(sites, scores, moon['name'])}</ul></section>
-<section class="card"><h2>Mars: {html.escape(mars['name'])}</h2>
+<section class="card mars-card"><h2>Mars: {html.escape(mars['name'])}</h2>
 <p class="meta">A flat, ice-rich plain proposed for future landings.</p>
 <p>Closest Earth site for each condition:</p><ul>{best_matches(sites, scores, mars['name'])}</ul></section></div>
 <section class="card"><h2>No single best analog</h2><p>{len(winners)} different sites come out on top across the
