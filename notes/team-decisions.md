@@ -45,8 +45,8 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 - [x] **`temp_range_c`**: always calculate it as max − min in the sheet, so it can't
   disagree with the other two columns?
   Recommended: yes. Decision: Yes
-- [ ] **Slope**: average slope over what area, at what map resolution?
-  Decision:
+- [x] **Slope**: average slope over what area, at what map resolution?
+  Decision: find average slope over 1 cubic meter, and a map resolution of 1 meter or better
 - [ ] **Precipitation on the Moon and Mars**: enter 0 (with a citation), or leave
   blank ("no data")? Mars does get frost and snow, so 0 may be wrong there.
   Decision:
