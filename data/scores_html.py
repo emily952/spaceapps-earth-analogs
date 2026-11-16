@@ -76,10 +76,14 @@ def radar_chart(site_scores, scored):
 
 def scores_section(site, site_scores, sites):
     """Score cards (and a radar chart if 3+ conditions are scored) for one Earth site."""
+    names = " and ".join(html.escape(str(t)) for t in site_scores["target"])
+    only = " only" if len(site_scores) == 1 else ""
+    intro = (f'<p class="meta">Compared with {names}{only}, because this site is listed as an analog for '
+             f'{html.escape(str(site["analog_for"]))}.</p>')
     scored = [col for col in score.DIMENSIONS if site_scores[col].notna().any()]
     if not scored:
-        return f'<p class="meta">{NOT_SCORED_NOTE}</p>'
-    parts = []
+        return f'{intro}<p class="meta">{NOT_SCORED_NOTE}</p>'
+    parts = [intro]
     for col in scored:
         cards = "".join(score_card(col, site, sites[sites["name"] == row["target"]].iloc[0], row[col])
                         for _, row in site_scores.iterrows())

@@ -14,7 +14,7 @@ import sun_angle    # our own data/sun_angle.py (why the Sun angle matters)
 
 # (file in data/, what it holds). Copied to docs/data/ so the website can link to them.
 FILES = [("sites.csv", "Every Earth site and target: coordinates, scored values and all text"),
-         ("scores.csv", "Every score: one row per Earth site and target"),
+         ("scores.csv", "Every score shown on the site: one row per Earth site and the target it is compared with"),
          ("modis_lst.csv", "MODIS temperature per site, with the exact request we sent")]
 
 

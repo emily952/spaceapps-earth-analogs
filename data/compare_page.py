@@ -10,6 +10,7 @@ Each condition is shown on its own: we never add scores into one overall number.
 import pandas as pd
 import plotly.graph_objects as go
 
+import analog       # our own data/analog.py (Moon or Mars analog?)
 import pages        # our own data/pages.py
 import score        # our own data/score.py
 import scores_html  # our own data/scores_html.py
@@ -54,14 +55,17 @@ def score_cell(value):
 
 def score_table(earth, scores, targets, col):
     """One row per Earth site: its value, then one score column per target (best first)."""
-    wide = scores.pivot(index="site", columns="target", values=col)
-    first = targets.iloc[0]["name"]
-    earth = earth.assign(sort=earth["name"].map(wide[first])).sort_values("sort", ascending=False)
+    wide = scores.pivot(index="site", columns="target", values=col).reindex(
+        index=earth["name"], columns=targets["name"])  # pairs not compared become blank
+    # Best first, by each site's highest score against the target(s) it is compared with.
+    earth = earth.assign(sort=earth["name"].map(wide.max(axis=1))).sort_values("sort", ascending=False)
     head = "".join(f"<th>Score vs {pages.show(t)}</th>" for t in targets["name"])
     body = ""
     for _, site in earth.iterrows():
         link = f'<a href="sites/{pages.slugify(site["name"])}.html">{pages.show(site["name"])}</a>'
-        cells = "".join(score_cell(wide.loc[site["name"], t]) for t in targets["name"])
+        compared = analog.compared_targets(site["analog_for"])
+        cells = "".join(score_cell(wide.loc[site["name"], t["name"]]) if t["type"] in compared
+                        else '<td class="muted">not compared</td>' for _, t in targets.iterrows())
         body += (f"<tr><td>{link}</td><td>{pages.category_badge(site['category'])}</td>"
                  f"<td>{pages.show(site['analog_for'])}</td>"
                  f"<td>{scores_html.fmt(site[col], col)}</td>{cells}</tr>")
@@ -81,11 +85,12 @@ def compare_page(sites, scores):
                      f"{score_table(earth, scores, targets, col)}</section>" for col in scored)
     return pages.page("Compare sites", f"""
 <h1>Compare sites</h1>
-<p class="lead">All {len(earth)} Earth sites side by side. Each condition is compared on its own:
+<p class="lead">All {len(earth)} Earth sites side by side. Moon analogs are compared with the Moon target,
+Mars analogs with the Mars target ("not compared" otherwise). Each condition is compared on its own:
 we don't add scores into one overall ranking, because a site can be a great analog for one
 test and a poor one for another.</p>
-<section class="card"><h2>How close does each site get to {pages.show(moon['name'])}'s hottest ground?</h2>
-{temp_chart(earth, moon, moon_scores)}
+<section class="card"><h2>How close does each Moon-analog site get to {pages.show(moon['name'])}'s hottest ground?</h2>
+{temp_chart(earth[[moon["type"] in analog.compared_targets(a) for a in earth["analog_for"]]], moon, moon_scores)}
 <p class="meta">Each dot is one site's hottest 8-day average of clear-sky daytime readings in 2025
 (MODIS Aqua, which passes over at about 1:30 pm local time), one 1 km pixel at the site. The dashed line is
 {pages.show(moon['name'])}'s ridge top measured by LRO Diviner. The closer a dot is to the line, the higher

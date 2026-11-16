@@ -21,6 +21,7 @@ import import_sheet  # our own data/import_sheet.py
 import pages         # our own data/pages.py
 import score         # our own data/score.py
 import topic_pages   # our own data/topic_pages.py
+import analog        # our own data/analog.py (Moon or Mars analog?)
 import compare_page  # our own data/compare_page.py
 import downloads     # our own data/downloads.py
 
@@ -37,16 +38,8 @@ def marker_colour(category):
     return next((colour for start, colour, _, _ in pages.CATEGORIES if str(category).startswith(start)), "green")
 
 
-# Map filters: each site goes in exactly one group, read from its "Analog for" text
-# ("both" counts as Moon and Mars). The map's checkboxes show or hide each group.
-FILTER_GROUPS = ["Moon analogs", "Mars analogs", "Moon and Mars analogs"]
-
-
-def analog_group(analog_for):
-    """Which filter group a site belongs to, e.g. 'Mars (dust storms)' -> 'Mars analogs'."""
-    text = str(analog_for).lower()
-    moon, mars = ("moon" in text or "both" in text), ("mars" in text or "both" in text)
-    return FILTER_GROUPS[2] if moon and mars else FILTER_GROUPS[0] if moon else FILTER_GROUPS[1]
+# Map filters: each site goes in exactly one group (Moon / Mars / Moon and Mars analogs),
+# read from its "Analog for" text by analog.py. The map's checkboxes show or hide each group.
 
 
 def build_map(earth_sites, targets):
@@ -61,9 +54,9 @@ def build_map(earth_sites, targets):
     folium.TileLayer(GIBS_TILES, attr="Imagery: NASA EOSDIS GIBS, Blue Marble",
                      min_zoom=1, max_zoom=8, no_wrap=True, control=False).add_to(world)
     # One layer per filter group; its label says how many sites are in it.
-    counts = earth_sites["analog_for"].map(analog_group).value_counts()
+    counts = earth_sites["analog_for"].map(analog.group_name).value_counts()
     groups = {name: folium.FeatureGroup(name=f"{name} ({counts.get(name, 0)})").add_to(world)
-              for name in FILTER_GROUPS}
+              for name in analog.GROUP_NAMES.values()}
     for _, site in earth_sites.iterrows():
         # A site without coordinates can't go on the map; say so instead of guessing.
         if pd.isna(site["lat"]) or pd.isna(site["lon"]):
@@ -75,7 +68,7 @@ def build_map(earth_sites, targets):
         folium.Marker([site["lat"], site["lon"]], tooltip=pages.show(site["name"]),
                       popup=folium.Popup(popup, max_width=260),
                       icon=folium.Icon(color=marker_colour(site["category"]))
-                      ).add_to(groups[analog_group(site["analog_for"])])
+                      ).add_to(groups[analog.group_name(site["analog_for"])])
     # Checkboxes (top right) to show or hide each group.
     folium.LayerControl(collapsed=False).add_to(world)
     # Info box: title, targets, marker legend and links to the other pages.
@@ -100,7 +93,8 @@ def main():
     # Step 1 and 2: sheet exports -> sites.csv -> scores (also saved to data/scores.csv).
     import_sheet.main()
     sites = score.load_sites()
-    scores = score.compute_scores(sites)
+    # A Moon analog is compared only with the Moon target, a Mars analog only with Mars (analog.py).
+    scores = analog.keep_matching(score.compute_scores(sites), sites)
     scores.to_csv(score.SCORES_CSV, index=False)
     earth_sites = sites[sites["type"] == "earth"]
     targets = sites[sites["type"].isin(score.TARGET_TYPES)]
@@ -126,7 +120,7 @@ def main():
     print(f"  Wrote docs/index.html ({len(earth_sites)} Earth sites, {len(targets)} targets)")
 
     # Step 5: remind us of anything that breaks the challenge rules.
-    warnings = score.check_sites(sites) + topic_pages.check_chart_values(limits)
+    warnings = score.check_sites(sites) + topic_pages.check_chart_values(limits) + analog.warnings(sites)
     if warnings:
         print(f"\nBEFORE SUBMITTING, fix these {len(warnings)} issue(s):")
         for warning in warnings:

@@ -26,6 +26,7 @@ Deadline: Sunday Nov 15, 11:59 PM local time. Simple and working beats ambitious
 - `data/downloads.py`: About page "How we score" + "Download our data"; build.py copies sites.csv, scores.csv, modis_lst.csv to `docs/data/`.
 - `data/read_appeears.py`: reads AppEEARS results (MYD11A1 daily temperature, MCD43A3 albedo) into `data/modis_daily_lst.csv` / `data/modis_albedo.csv`; not scored until switched in import_sheet.py.
 - `data/fetch_tes_albedo.py`: Mars target albedo from the MGS TES bolometric albedo map (PDS) into `data/mars_albedo.csv`.
+- `data/analog.py`: reads each site's "Analog for" text: Moon analogs are compared only with the Moon target, Mars analogs only with Mars, "both"/both-named with both. Unrecognised text shows both targets and build.py warns.
 - `data/compare_page.py`: the Compare sites page (all sites side by side, one condition at a time).
 - `data/style.css`: the look of all pages except the map; build.py copies it to `docs/style.css`.
 - `data/build.py`: runs everything, writes `docs/index.html` (map with Moon/Mars filters), a page per site, `docs/compare.html`,
@@ -44,6 +45,7 @@ name, type (earth / moon_target / mars_target), lat, lon, slope_deg, temp_max_c,
 - Target rows with "(reference)" in the name are not scored; they appear on the gap page only.
 
 ## Scoring rules
+- Compare each Earth site only with the target(s) its "Analog for" names (team decision, Nov 15; see `data/analog.py`).
 - Score each dimension separately: 1 = same value as the target, 0 = as different as anything in the dataset.
   Formula: score = 1 - abs(earth_value - target_value) / (max - min of that column across all rows), clipped to 0..1.
 - Never combine dimensions into one overall number unless a teammate asks.
