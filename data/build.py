@@ -90,7 +90,11 @@ def map_target_tabs(earth_sites, targets):
     world.get_root().html.add_child(folium.Element(
         f"{pages.nav()}<div class='map-info'><b>Earth analogs for Moon and Mars</b><br>Click a marker "
         f"for the site. Compared with:<ul>{target_list}</ul><small>Markers: {legend}</small></div>"))
-    world.save(DOCS / "map.html")\n    map_path = DOCS / "map.html"\n    map_html = map_path.read_text(encoding="utf-8")\n    map_html = map_html.replace("</body>", map_target_tabs(earth_sites, targets) + "\n</body>")\n    map_path.write_text(map_html, encoding="utf-8")
+    world.save(DOCS / "map.html")
+    map_path = DOCS / "map.html"
+    map_html = map_path.read_text(encoding="utf-8")
+    map_html = map_html.replace("</body>", map_target_tabs(earth_sites, targets) + "\n</body>")
+    map_path.write_text(map_html, encoding="utf-8")
 
 
 def write(path, html_text):
