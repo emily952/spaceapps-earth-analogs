@@ -62,6 +62,8 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
   2 baselines: Atacama and Haughton Crater).
 - [x] Every site has matches, breaks and source links filled in.
 - [ ] **Check each source link opens and supports its number** (the sheet's own rule).
+  Script check done Nov 15: see [link-check.md](link-check.md) (5 dead links, 7 to click
+  by hand, suggested primary sources). Whether each source *supports its number* still needs a person.
 - [ ] **Swap weak sources where possible.** Some links are to a tour company
   (Kharga rainfall), a camping site listing (Río Tinto coordinates), Wondermondo
   (Atacama coordinates), volcanodb and Wikipedia. They're public, but judges may
