@@ -61,6 +61,46 @@
     
             <div class="folium-map" id="map_dfa9e6ef72b8094efe67939bc0e18cf5" ></div>
         
+<style>
+#map-target-tabs{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:10000;width:min(540px,calc(100vw - 24px));padding:10px 14px;background:#26334ff2;color:#eef2f9;border:1px solid #3b4a70;border-radius:12px;box-shadow:0 8px 24px #00000055;font:14px/1.45 system-ui,sans-serif}
+#map-target-tabs .tab-buttons{display:flex;gap:8px;margin-top:6px}
+#map-target-tabs button{flex:1;padding:7px 12px;border:1px solid #3b4a70;border-radius:8px;background:#1e2a47;color:#eef2f9;font:600 14px system-ui,sans-serif;cursor:pointer}
+#map-target-tabs button[aria-selected="true"]{background:#7db4ff;color:#14203a;border-color:#7db4ff}
+#map-target-summary{margin:7px 0 0;color:#c8d2e5;font-size:12px}
+@media(max-width:640px){#map-target-tabs{top:56px;left:8px;right:8px;transform:none;width:auto;padding:8px 10px}#map-target-summary{max-width:100%}}
+</style>
+<aside id="map-target-tabs" aria-label="Compare Earth analog sites by target">
+  <strong>Compare Earth analog sites with:</strong>
+  <div class="tab-buttons" role="tablist" aria-label="Target body">
+    <button type="button" role="tab" data-body="moon" aria-selected="true">Moon</button>
+    <button type="button" role="tab" data-body="mars" aria-selected="false">Mars</button>
+  </div>
+  <p id="map-target-summary" aria-live="polite"></p>
+</aside>
+<script>
+(() => {
+  const targets = {"moon": {"name": "Malapert Massif", "count": 5}, "mars": {"name": "Arcadia Planitia", "count": 11}};
+  const buttons = document.querySelectorAll("#map-target-tabs [data-body]");
+  const groupLabels = document.querySelectorAll(".leaflet-control-layers-overlays label");
+  const summary = document.getElementById("map-target-summary");
+
+  function selectBody(body) {
+    groupLabels.forEach((label) => {
+      const text = label.textContent || "";
+      const isBoth = text.includes("Moon and Mars analogs");
+      const belongs = isBoth || text.includes(body === "moon" ? "Moon analogs" : "Mars analogs");
+      const checkbox = label.querySelector('input[type="checkbox"]');
+      if (checkbox && checkbox.checked !== belongs) checkbox.click();
+    });
+    buttons.forEach((button) => button.setAttribute("aria-selected", String(button.dataset.body === body)));
+    const target = targets[body];
+    summary.textContent = `Target: ${target.name}. ${target.count} candidate Earth sites are marked for comparison. Earth markers stay at Earth locations; click a marker to open its site page and see the separate target scores.`;
+  }
+
+  buttons.forEach((button) => button.addEventListener("click", () => selectBody(button.dataset.body)));
+  selectBody("moon");
+})();
+</script>
 </body>
 <script>
     
