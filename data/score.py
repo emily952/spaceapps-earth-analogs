@@ -32,6 +32,7 @@ DIMENSIONS = {
     "temp_range_c": "Temperature range",
     "precip_mm_yr": "Precipitation",
     "dust_aod": "Dust (AOD)",
+    "sun_max_deg": "Highest Sun angle",  # calculated in sun_angle.py, not from the Sheet
 }
 
 # The only values allowed in the "type" column.

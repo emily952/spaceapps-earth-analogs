@@ -1,0 +1,40 @@
+"""
+sun_angle.py: the highest the Sun ever gets in the sky at each site or target.
+
+Why it matters: a low Sun means long shadows, glare and cold, which shape how
+landers, rovers and solar panels are tested. It is the one condition we can
+compare for BOTH the Moon and Mars targets, using only latitude.
+
+How: at noon on the day the Sun is furthest toward a site's hemisphere,
+    highest Sun angle = 90 - |latitude| + axial tilt   (never more than 90)
+(If |latitude| is less than the tilt, the Sun passes straight overhead: 90.)
+It is calculated from geometry, not measured. It assumes a flat horizon and
+ignores mountains and slopes, and the small bending of light by Earth's air.
+
+Axial tilts (tilt of the equator to the planet's path around the Sun), from the
+NASA planetary fact sheets (nssdc.gsfc.nasa.gov/planetary/factsheet/):
+  Earth 23.44 and Mars 25.19 ("Obliquity to orbit").
+  Moon 1.535 = 6.68 ("Obliquity to orbit") - 5.145 ("Inclination to ecliptic"):
+  the Moon's equator, orbit and Earth's path share one tilt line (Cassini's laws),
+  so its equator is tilted 6.68 - 5.145 degrees to Earth's path around the Sun.
+"""
+import pandas as pd
+
+TILT_DEG = {"earth": 23.44, "moon_target": 6.68 - 5.145, "mars_target": 25.19}
+SOURCE = ("Calculated from latitude and axial tilt (Earth 23.44°, Moon 1.535°, Mars 25.19°; "
+          "NASA planetary fact sheets). Flat horizon assumed. Nowhere on Earth is the highest "
+          "Sun lower than 23.44° (the poles), so no Earth site can match the Moon's south pole.")
+
+
+def highest_sun(lat, row_type):
+    """Highest Sun angle in degrees above the horizon, or None if latitude is missing."""
+    lat = pd.to_numeric(lat, errors="coerce")  # the Sheet gives text; blank -> NaN
+    if pd.isna(lat):  # no latitude, so no value (never guessed)
+        return None
+    return round(min(90.0, 90.0 - abs(lat) + TILT_DEG[row_type]), 2)
+
+
+def add_column(rows):
+    """Fill the sun_max_deg column for every row (Earth sites and targets)."""
+    rows["sun_max_deg"] = [highest_sun(lat, kind) for lat, kind in zip(rows["lat"], rows["type"])]
+    return rows

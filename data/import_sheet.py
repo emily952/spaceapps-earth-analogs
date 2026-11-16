@@ -17,7 +17,8 @@ re-export the tabs, and run build.py again.
 """
 import pandas as pd
 
-import score  # our own data/score.py (for the scoring column names and paths)
+import score      # our own data/score.py (for the scoring column names and paths)
+import sun_angle  # our own data/sun_angle.py (calculated from latitude)
 
 SITE_OPTIONS = score.DATA_DIR / "site_options.csv"
 TARGETS = score.DATA_DIR / "targets.csv"
@@ -119,7 +120,8 @@ def main():
     target_rows["type"] = targets["Body"].str.strip().str.lower() + "_target"
     target_rows["category"] = "Target"
 
-    combined = pd.concat([sites, target_rows], ignore_index=True)[OUTPUT_COLUMNS]
+    combined = pd.concat([sites, target_rows], ignore_index=True)
+    combined = sun_angle.add_column(combined)[OUTPUT_COLUMNS]  # highest Sun angle, from latitude
     combined.to_csv(score.SITES_CSV, index=False)
     print(f"  Wrote data/sites.csv ({len(sites)} Earth sites, {len(target_rows)} targets)")
 

@@ -28,7 +28,8 @@ Keep in step with the About page (`docs/about.html`), which lists every link.
 - **NASA EOSDIS GIBS, Blue Marble shaded relief:** the map's background imagery.
   https://nasa-gibs.github.io/gibs-api-docs/
 - **NASA planetary fact sheets (NSSDC):** Moon and Mars gravity, pressure, Viking 1
-  air temperatures (proxy only, not scored).
+  air temperatures (proxy only, not scored), and the axial tilts (Earth 23.44°, Mars
+  25.19°, Moon 6.68° − 5.145° = 1.535°) behind our scored "highest Sun angle".
 - **NASA Earth Observatory:** Lut Desert, Harrat Khaybar and Bodélé write-ups.
 - **MODIS land surface temperature** (via Azarderakhsh et al. 2020, NASA MODIS
   science team page): Lut's 80.8 °C record, shown in text only.

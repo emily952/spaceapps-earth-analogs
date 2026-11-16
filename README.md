@@ -29,6 +29,7 @@ scores; until then its page says "Not scored yet" and why.
 | `data/sites.csv` | Generated: one row per site or target. **Don't hand-edit.** |
 | `data/score.py` | Computes similarity scores (writes `data/scores.csv`) and checks the data |
 | `data/pages.py` | Shared HTML helpers and each site page |
+| `data/sun_angle.py` | Calculates each row's highest Sun angle from latitude and axial tilt (scored, Moon and Mars) |
 | `data/compare_page.py` | The Compare sites page: a temperature dot chart and a score table for all sites |
 | `data/topic_pages.py` | HTML for the gap page (with its chart), the task page and the About & credits page |
 | `data/style.css` | The look of every page except the map (copied to `docs/` by the build) |
@@ -57,7 +58,9 @@ open docs/index.html               # macOS; or double-click the file
    in `data/` (`site_options.csv`, `targets.csv`, `earths_limits.csv`, `mission_tasks.csv`).
 3. Put several source links in the "Source URLs (plain text)" cell separated by `;`.
    Links must be public (open without logging in).
-4. **Scores so far:** max ground temperature vs Malapert. Earth values come from
+4. **Scores so far:** (a) **highest Sun angle** vs Malapert *and* Arcadia, calculated in
+   `data/sun_angle.py` from latitude and axial tilt (NASA planetary fact sheets; no download);
+   (b) max ground temperature vs Malapert. Earth values come from
    MODIS Aqua land surface temperature, MYD11A2: the hottest 8-day average of clear-sky
    ~1:30 pm readings in 2025, in the one 1 km pixel at the site (`data/fetch_modis.py` →
    `data/modis_lst.csv`; re-run it if sites are added or moved). We first used NASA POWER,

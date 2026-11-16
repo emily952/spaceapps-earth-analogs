@@ -1,25 +1,25 @@
-site,target,target_type,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod
-"Kamil Crater, Egypt",Malapert Massif,moon_target,,0.905,,,,
-"Kamil Crater, Egypt",Arcadia Planitia,mars_target,,,,,,
-"Kharga yardangs (Western Desert), Egypt",Malapert Massif,moon_target,,0.946,,,,
-"Kharga yardangs (Western Desert), Egypt",Arcadia Planitia,mars_target,,,,,,
-"Lut Desert (Dasht-e Lut), Iran",Malapert Massif,moon_target,,0.804,,,,
-"Lut Desert (Dasht-e Lut), Iran",Arcadia Planitia,mars_target,,,,,,
-"Western Qaidam Basin, China",Malapert Massif,moon_target,,0.945,,,,
-"Western Qaidam Basin, China",Arcadia Planitia,mars_target,,,,,,
-"Bodélé Depression, Chad",Malapert Massif,moon_target,,0.858,,,,
-"Bodélé Depression, Chad",Arcadia Planitia,mars_target,,,,,,
-"Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia",Malapert Massif,moon_target,,0.912,,,,
-"Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia",Arcadia Planitia,mars_target,,,,,,
-"Lonar Crater, India",Malapert Massif,moon_target,,0.989,,,,
-"Lonar Crater, India",Arcadia Planitia,mars_target,,,,,,
-"Dallol, Danakil Depression, Ethiopia",Malapert Massif,moon_target,,0.921,,,,
-"Dallol, Danakil Depression, Ethiopia",Arcadia Planitia,mars_target,,,,,,
-"Río Tinto (Peña de Hierro), Spain",Malapert Massif,moon_target,,0.98,,,,
-"Río Tinto (Peña de Hierro), Spain",Arcadia Planitia,mars_target,,,,,,
-East Antarctic Plateau cold spots,Malapert Massif,moon_target,,0.196,,,,
-East Antarctic Plateau cold spots,Arcadia Planitia,mars_target,,,,,,
-"Atacama Desert (Yungay), Chile",Malapert Massif,moon_target,,0.943,,,,
-"Atacama Desert (Yungay), Chile",Arcadia Planitia,mars_target,,,,,,
-"Haughton Crater, Devon Island, Canada",Malapert Massif,moon_target,,0.626,,,,
-"Haughton Crater, Devon Island, Canada",Arcadia Planitia,mars_target,,,,,,
+site,target,target_type,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod,sun_max_deg
+"Kamil Crater, Egypt",Malapert Massif,moon_target,,0.905,,,,,0.0
+"Kamil Crater, Egypt",Arcadia Planitia,mars_target,,,,,,,0.739
+"Kharga yardangs (Western Desert), Egypt",Malapert Massif,moon_target,,0.946,,,,,0.024
+"Kharga yardangs (Western Desert), Egypt",Arcadia Planitia,mars_target,,,,,,,0.763
+"Lut Desert (Dasht-e Lut), Iran",Malapert Massif,moon_target,,0.804,,,,,0.085
+"Lut Desert (Dasht-e Lut), Iran",Arcadia Planitia,mars_target,,,,,,,0.824
+"Western Qaidam Basin, China",Malapert Massif,moon_target,,0.945,,,,,0.173
+"Western Qaidam Basin, China",Arcadia Planitia,mars_target,,,,,,,0.912
+"Bodélé Depression, Chad",Malapert Massif,moon_target,,0.858,,,,,0.0
+"Bodélé Depression, Chad",Arcadia Planitia,mars_target,,,,,,,0.739
+"Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia",Malapert Massif,moon_target,,0.912,,,,,0.024
+"Harrat Khaybar and Umm Jirsan lava tube, Saudi Arabia",Arcadia Planitia,mars_target,,,,,,,0.764
+"Lonar Crater, India",Malapert Massif,moon_target,,0.989,,,,,0.0
+"Lonar Crater, India",Arcadia Planitia,mars_target,,,,,,,0.739
+"Dallol, Danakil Depression, Ethiopia",Malapert Massif,moon_target,,0.921,,,,,0.0
+"Dallol, Danakil Depression, Ethiopia",Arcadia Planitia,mars_target,,,,,,,0.739
+"Río Tinto (Peña de Hierro), Spain",Malapert Massif,moon_target,,0.98,,,,,0.169
+"Río Tinto (Peña de Hierro), Spain",Arcadia Planitia,mars_target,,,,,,,0.908
+East Antarctic Plateau cold spots,Malapert Massif,moon_target,,0.196,,,,,0.674
+East Antarctic Plateau cold spots,Arcadia Planitia,mars_target,,,,,,,0.587
+"Atacama Desert (Yungay), Chile",Malapert Massif,moon_target,,0.943,,,,,0.007
+"Atacama Desert (Yungay), Chile",Arcadia Planitia,mars_target,,,,,,,0.747
+"Haughton Crater, Devon Island, Canada",Malapert Massif,moon_target,,0.626,,,,,0.615
+"Haughton Crater, Devon Island, Canada",Arcadia Planitia,mars_target,,,,,,,0.646

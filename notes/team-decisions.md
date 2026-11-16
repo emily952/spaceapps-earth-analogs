@@ -16,7 +16,13 @@ write the decision and who agreed, and commit. Deadline: **Sun Nov 15, 11:59 PM*
 
 ## 2. How to measure each column (so all rows compare like with like)
 
-> **Status (Nov 15):** one condition is scored: **max ground temperature vs Malapert**.
+> **Status (Nov 15):** two conditions are scored: **highest Sun angle** (vs Malapert 5.54°
+> and Arcadia 67.99°; calculated from latitude and axial tilt, `data/sun_angle.py`) and
+> **max ground temperature vs Malapert**. Sun angle gives Mars its first score (best:
+> Qaidam and Río Tinto 0.91). No Earth site can get the Sun below 23.44°, so Moon
+> sun scores are low except the polar sites (Antarctic 0.67, Haughton 0.62).
+>
+> Max ground temperature:
 > Earth: MODIS Aqua MYD11A2 land surface temperature, hottest 8-day average of
 > clear-sky ~1:30 pm readings in 2025, one 1 km pixel (`data/fetch_modis.py`).
 > Moon: LRO Diviner 47 °C at the Malapert ridge top.
