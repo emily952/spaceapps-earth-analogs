@@ -23,10 +23,10 @@ DIMENSION_SOURCES = {
     "temp_max_c": "Earth: MODIS Aqua land surface temperature (MYD11A2), hottest 8-day average "
                   "of clear-sky ~1:30 pm readings in 2025, one 1 km pixel. "
                   "Moon: LRO Diviner, Malapert ridge top.",
-    "sun_max_deg": sun_angle.SOURCE,
+    "sun_max_elev_deg": sun_angle.SOURCE,
 }
 UNITS = {"slope_deg": "°", "temp_max_c": " °C", "temp_min_c": " °C", "temp_range_c": " °C",
-         "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_deg": "°"}
+         "precip_mm_yr": " mm/yr", "dust_aod": "", "sun_max_elev_deg": "°"}
 COLOURS = {"moon_target": "#7f8c8d", "mars_target": "#c0392b"}  # radar chart colour per target type
 
 

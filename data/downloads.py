@@ -10,6 +10,7 @@ import shutil
 
 import score        # our own data/score.py
 import scores_html  # our own data/scores_html.py (units and data labels)
+import sun_angle    # our own data/sun_angle.py (why the Sun angle matters)
 
 # (file in data/, what it holds). Copied to docs/data/ so the website can link to them.
 FILES = [("sites.csv", "Every Earth site and target: coordinates, scored values and all text"),
@@ -43,8 +44,10 @@ def worked_example(sites, scores):
 def section(sites, scores):
     """HTML for the two About page sections."""
     scored = [c for c in score.DIMENSIONS if scores[c].notna().any()]
+    why = {"sun_max_elev_deg": sun_angle.WHY}  # extra "why it matters" text per condition
     conditions = "".join(f"<li><strong>{score.DIMENSIONS[c]}:</strong> "
-                         f"{html.escape(scores_html.DIMENSION_SOURCES.get(c, ''))}</li>" for c in scored)
+                         f"{html.escape(scores_html.DIMENSION_SOURCES.get(c, ''))} "
+                         f"{html.escape(why.get(c, ''))}</li>" for c in scored)
     links = "".join(f'<li><a href="data/{name}">{name}</a>: {html.escape(text)}</li>'
                     for name, text in FILES if (score.DATA_DIR / name).exists())
     return (f'<section class="card"><h2>How we score</h2>'

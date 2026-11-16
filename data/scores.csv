@@ -1,4 +1,4 @@
-site,target,target_type,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod,sun_max_deg
+site,target,target_type,slope_deg,temp_max_c,temp_min_c,temp_range_c,precip_mm_yr,dust_aod,sun_max_elev_deg
 "Kamil Crater, Egypt",Malapert Massif,moon_target,,0.905,,,,,0.0
 "Kamil Crater, Egypt",Arcadia Planitia,mars_target,,,,,,,0.739
 "Kharga yardangs (Western Desert), Egypt",Malapert Massif,moon_target,,0.946,,,,,0.024
